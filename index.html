@@ -1,0 +1,2480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impact Motors: Crash Investigation — Stories in Science</title>
+
+  <!--
+  ============================================================
+    SINS Lesson Shell: "Impact Motors: Crash Investigation"
+    Grade 5 | Impact Motors Crash Investigation
+    
+    STRUCTURE:
+      - 12 sections, one visible at a time
+      - Two decision points with branching paths (DP1, DP2)
+      - Field Journal auto-saved to localStorage per section
+      - Decision choices tracked in localStorage
+      - Export Journal on Section 12
+    
+    NAVIGATION FLOW:
+      1 → 2 → 3(DP1)
+        DP1-A: 3 → 4A → 5
+        DP1-B: 3 → 4B → 5
+      5 → 6(DP2)
+        DP2-A: 6 → 7A → 8
+        DP2-B: 6 → 7B → 8
+      8 → 9 → 10 → 11 → 12
+
+    PLACEHOLDERS: All teacher-replaceable content is marked with
+      [PLACEHOLDER: description] and wrapped in .placeholder divs.
+
+    DEPENDENCIES: None — no external libraries or fonts.
+  ============================================================
+  -->
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS — edit these to retheme
+    ============================================= */
+    :root {
+      --navy:       #1F2A44;
+      --navy-dark:  #141d30;
+      --navy-light: #263351;
+      --orange:     #F97316;
+      --orange-dim: #c45c0d;
+      --blue:       #3B82F6;
+      --blue-dim:   #2563eb;
+      --off-white:  #F8FAFC;
+      --gray-light: #E5E7EB;
+      --gray-steel: #6B7280;
+      --gray-mid:   #9CA3AF;
+      --success:    #22C55E;
+      --radius:     10px;
+      --radius-lg:  16px;
+      --shadow:     0 4px 24px rgba(0,0,0,0.35);
+      --shadow-sm:  0 2px 8px rgba(0,0,0,0.2);
+      --transition: 0.25s ease;
+      --font-head:  'Courier New', Courier, monospace;
+      --font-body:  Georgia, 'Times New Roman', serif;
+      --font-ui:    Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #EAECF1;
+      color: var(--off-white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      /* Subtle grid texture for lab-report atmosphere */
+      background-image:
+        linear-gradient(rgba(31,42,68,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31,42,68,0.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* =============================================
+       HEADER / MASTHEAD
+    ============================================= */
+    #masthead {
+      background: var(--navy);
+      border-bottom: 3px solid var(--orange);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+
+    #masthead .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Badge / logo area */
+    #masthead .badge {
+      width: 44px;
+      height: 44px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: bold;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+
+    #masthead .title-group h1 {
+      font-family: var(--font-head);
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+
+    #masthead .title-group h2 {
+      font-family: var(--font-head);
+      font-size: 17px;
+      color: var(--off-white);
+      letter-spacing: 0.5px;
+    }
+
+    /* =============================================
+       PROGRESS BAR & INDICATOR
+    ============================================= */
+    #progress-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      min-width: 160px;
+    }
+
+    #progress-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      color: var(--gray-mid);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    #progress-bar-track {
+      width: 160px;
+      height: 6px;
+      background: var(--navy-light);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    #progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--blue));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* =============================================
+       MAIN LAYOUT
+    ============================================= */
+    #app {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* =============================================
+       SECTION CARDS
+    ============================================= */
+    .section {
+      display: none; /* JS controls visibility */
+      animation: fadeIn 0.35s ease;
+    }
+    .section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section header strip */
+    .section-header {
+      background: var(--navy);
+      border-left: 5px solid var(--orange);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 20px 28px;
+      margin-bottom: 0;
+    }
+
+    /* Override border color for convergence sections (blue theme) */
+    .section-header.convergence {
+      border-left-color: var(--blue);
+    }
+
+    .section-tag {
+      font-family: var(--font-head);
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .section-tag.convergence { color: var(--blue); }
+    .section-tag.dp          { color: #a78bfa; } /* purple for decision points */
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 22px;
+      color: var(--off-white);
+      line-height: 1.3;
+    }
+
+    /* Section body card */
+    .section-body {
+      background: var(--navy-light);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top: none;
+    }
+
+    /* =============================================
+       PLACEHOLDER BLOCKS
+       (teacher-replaceable content areas)
+    ============================================= */
+    .placeholder {
+      background: rgba(249,115,22,0.06);
+      border: 2px dashed var(--orange);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 16px 0;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--orange);
+    }
+
+    .placeholder-label {
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 8px;
+      opacity: 0.8;
+    }
+
+    .placeholder-desc {
+      color: var(--gray-mid);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Image placeholder boxes */
+    .img-placeholder {
+      background: rgba(59,130,246,0.08);
+      border: 2px dashed var(--blue);
+      border-radius: var(--radius);
+      width: 100%;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 8px 0;
+    }
+
+    .img-placeholder svg {
+      opacity: 0.5;
+    }
+
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    /* Button group for simulation options */
+    .sim-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .sim-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 14px 10px;
+      background: rgba(59,130,246,0.12);
+      border: 2px dashed var(--blue);
+      border-radius: var(--radius);
+      color: var(--blue);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: not-allowed; /* placeholder — teacher activates */
+      text-align: center;
+    }
+
+    .sim-btn::before { content: '▶ '; }
+
+    /* Toggle placeholders for 7B */
+    .toggle-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .toggle-item {
+      background: rgba(59,130,246,0.08);
+      border: 2px dashed var(--blue);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--blue);
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       NARRATIVE TEXT AREA
+    ============================================= */
+    .narrative {
+      font-size: 16px;
+      color: var(--off-white);
+      line-height: 1.8;
+      margin: 0 0 20px;
+    }
+
+    .narrative p { margin-bottom: 12px; }
+
+    /* Scientist callout box */
+    .scientist-callout {
+      background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(59,130,246,0.08));
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 16px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .scientist-callout .icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .scientist-callout p {
+      font-size: 14px;
+      color: var(--gray-light);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* =============================================
+       FIELD JOURNAL
+    ============================================= */
+    .field-journal {
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 24px 0 0;
+      border-left: 4px solid var(--navy);
+    }
+
+    .journal-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .journal-icon {
+      width: 32px; height: 32px;
+      background: var(--navy);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .journal-label {
+      font-family: var(--font-ui);
+      font-weight: bold;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .journal-save-badge {
+      margin-left: auto;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .journal-save-badge.visible { opacity: 1; }
+
+    .journal-prompt {
+      font-size: 14px;
+      color: var(--navy);
+      margin-bottom: 10px;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .journal-textarea {
+      width: 100%;
+      min-height: 90px;
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--navy);
+      background: #fff;
+      border: 2px solid var(--gray-light);
+      border-radius: 6px;
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .journal-textarea:focus {
+      border-color: var(--blue);
+    }
+
+    /* =============================================
+       NAVIGATION BUTTONS
+    ============================================= */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+      outline: none;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    /* Continue — primary */
+    .btn-continue {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-continue:hover { background: var(--blue-dim); }
+
+    /* Back — ghost */
+    .btn-back {
+      background: transparent;
+      color: var(--gray-mid);
+      border: 2px solid rgba(107,114,128,0.4);
+    }
+    .btn-back:hover { color: var(--off-white); border-color: var(--gray-steel); }
+
+    /* Decision buttons — orange */
+    .btn-decision {
+      background: var(--orange);
+      color: #fff;
+      flex: 1;
+      text-align: center;
+      font-size: 15px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-decision:hover { background: var(--orange-dim); }
+
+    /* Decision row wraps two choices */
+    .decision-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    /* Start button — large center */
+    .btn-start {
+      background: linear-gradient(135deg, var(--orange), #e8610a);
+      color: #fff;
+      padding: 18px 48px;
+      font-size: 17px;
+      letter-spacing: 1px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 28px rgba(249,115,22,0.4);
+      display: block;
+      margin: 28px auto 0;
+    }
+    .btn-start:hover {
+      box-shadow: 0 8px 36px rgba(249,115,22,0.55);
+      transform: translateY(-1px);
+    }
+
+    /* Export button */
+    .btn-export {
+      background: var(--success);
+      color: #fff;
+      padding: 12px 28px;
+    }
+    .btn-export:hover { background: #16a34a; }
+
+    /* =============================================
+       CONVERGENCE SECTION ACCENT
+    ============================================= */
+    .section-body.convergence-body {
+      border-top: 3px solid var(--blue);
+    }
+
+    .convergence-tag {
+      display: inline-block;
+      background: rgba(59,130,246,0.15);
+      color: var(--blue);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 14px;
+    }
+
+    /* =============================================
+       SECTION 1 — COVER STYLE
+    ============================================= */
+    #section-1 .section-body {
+      text-align: center;
+      padding: 48px 28px;
+    }
+
+    .cover-eyebrow {
+      font-family: var(--font-head);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .cover-title {
+      font-family: var(--font-head);
+      font-size: 36px;
+      line-height: 1.2;
+      color: var(--off-white);
+      margin-bottom: 12px;
+    }
+
+    .cover-title span { color: var(--orange); }
+
+    .cover-subtitle {
+      font-size: 15px;
+      color: var(--gray-mid);
+      margin-bottom: 8px;
+    }
+
+    .cover-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--blue));
+      border-radius: 2px;
+      margin: 24px auto;
+    }
+
+    /* =============================================
+       SECTION 12 — FINAL / EXPORT
+    ============================================= */
+    .export-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 600px) {
+      #masthead { flex-direction: column; align-items: flex-start; gap: 10px; }
+      #progress-wrap { align-items: flex-start; }
+      #progress-bar-track { width: 100%; }
+      .cover-title { font-size: 26px; }
+      .section-body { padding: 20px 16px; }
+      .decision-row { flex-direction: column; }
+      .btn-decision { font-size: 14px; }
+      .nav-row { flex-direction: column-reverse; }
+      .btn { width: 100%; text-align: center; }
+    }
+
+    /* =============================================
+       MISC UTILITIES
+    ============================================= */
+    .spacer { height: 20px; }
+    .text-blue { color: var(--blue); }
+    .text-orange { color: var(--orange); }
+
+    hr.section-rule {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin: 22px 0;
+    }
+
+    /* =============================================
+       UTILITY BUTTONS (masthead)
+    ============================================= */
+    #util-buttons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-util {
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.07);
+      color: var(--gray-light);
+      transition: background var(--transition), color var(--transition);
+      white-space: nowrap;
+    }
+    .btn-util:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    .btn-util-danger { border-color: rgba(249,115,22,0.4); color: var(--orange); }
+    .btn-util-danger:hover { background: rgba(249,115,22,0.12); }
+
+    /* =============================================
+       MISSION PATH STRIP
+    ============================================= */
+    #mission-path {
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .mp-label {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--orange);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .mp-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mp-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 5px 12px 5px 8px;
+      transition: border-color var(--transition);
+    }
+    .mp-step.mp-done {
+      border-color: var(--orange);
+      background: rgba(249,115,22,0.08);
+    }
+
+    .mp-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--navy-light);
+      border: 1px solid var(--gray-steel);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--gray-mid);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mp-done .mp-num {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    .mp-step-title {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray-steel);
+    }
+    .mp-step-val {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--gray-mid);
+    }
+    .mp-done .mp-step-val { color: var(--off-white); }
+
+    .mp-connector {
+      color: var(--gray-steel);
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    /* =============================================
+       SECTION 0 — LANDING PAGE
+    ============================================= */
+
+    /* Section 0 has no section-header/body wrapper — full custom layout */
+    #section-0 { padding-bottom: 0; }
+
+    /* Hero card */
+    .s0-hero {
+      background: linear-gradient(150deg, var(--navy) 0%, #1a3360 60%, #0f1f40 100%);
+      border-radius: var(--radius-lg);
+      padding: 56px 40px 52px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      /* Subtle radial glow behind title */
+      background-image:
+        radial-gradient(ellipse 70% 50% at 50% 40%, rgba(249,115,22,0.12) 0%, transparent 70%),
+        linear-gradient(150deg, var(--navy) 0%, #1a3360 60%, #0f1f40 100%);
+    }
+
+    /* Decorative corner accent */
+    .s0-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--blue), var(--orange));
+    }
+
+    .s0-eyebrow {
+      font-family: var(--font-head);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 18px;
+    }
+
+    .s0-title {
+      font-family: var(--font-head);
+      font-size: clamp(30px, 6vw, 52px);
+      line-height: 1.15;
+      color: var(--off-white);
+      margin-bottom: 24px;
+    }
+
+    .s0-title span { color: var(--orange); }
+
+    .s0-desc {
+      font-size: 16px;
+      color: var(--gray-light);
+      max-width: 560px;
+      margin: 0 auto 14px;
+      line-height: 1.7;
+    }
+
+    .s0-mission {
+      font-size: 16px;
+      color: var(--off-white);
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    .btn-s0-start {
+      background: linear-gradient(135deg, var(--orange), #e8610a);
+      color: #fff;
+      padding: 18px 52px;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      border-radius: 40px;
+      box-shadow: 0 6px 32px rgba(249,115,22,0.45);
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-ui);
+      font-weight: bold;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+    .btn-s0-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(249,115,22,0.55);
+    }
+    .btn-s0-start:active { transform: scale(0.97); }
+
+    /* Objectives accordion */
+    .s0-accordion {
+      background: #fff;
+      border-radius: var(--radius);
+      margin-top: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .s0-acc-toggle {
+      width: 100%;
+      background: #fff;
+      border: none;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--navy);
+      text-align: left;
+      transition: background var(--transition);
+    }
+    .s0-acc-toggle:hover { background: var(--gray-light); }
+
+    .s0-acc-arrow {
+      font-size: 12px;
+      color: var(--gray-steel);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .s0-acc-body { /* hidden attr controls visibility */ }
+
+    .s0-acc-inner {
+      padding: 20px 20px 24px;
+      border-top: 1px solid var(--gray-light);
+      background: #fafbfc;
+    }
+
+    .s0-acc-heading {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    /* Override placeholder colors inside accordion (light bg) */
+    .s0-acc-inner .placeholder {
+      background: rgba(59,130,246,0.05);
+      border-color: var(--blue);
+      color: var(--navy);
+    }
+    .s0-acc-inner .placeholder-desc { color: #374151; }
+
+    /* Footer */
+    .s0-footer {
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      color: var(--gray-steel);
+      padding: 20px 16px 8px;
+      line-height: 1.6;
+    }
+
+    /* =============================================
+       RESPONSIVE — section 0 + masthead additions
+    ============================================= */
+    @media (max-width: 600px) {
+      #util-buttons { gap: 6px; }
+      .btn-util { font-size: 11px; padding: 6px 9px; }
+      #mission-path { gap: 10px; }
+      .mp-steps { gap: 6px; }
+      .s0-hero { padding: 36px 20px 40px; }
+      .btn-s0-start { padding: 15px 36px; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     MASTHEAD / HEADER
+============================================================ -->
+<header id="masthead">
+  <div class="brand">
+    <div class="badge">SinS</div>
+    <div class="title-group">
+      <h1>Stories in Science · Grade 5</h1>
+      <h2>Impact Motors: Crash Investigation</h2>
+    </div>
+  </div>
+  <!-- Progress bar — hidden on Section 0 -->
+  <div id="progress-wrap">
+    <div id="progress-label">Section 1 of 12</div>
+    <div id="progress-bar-track">
+      <div id="progress-bar-fill"></div>
+    </div>
+  </div>
+  <!-- Utility buttons — hidden on Section 0 -->
+  <div id="util-buttons">
+    <button class="btn-util" onclick="exportJournal()" title="Download your field journal">⬇ Export Journal</button>
+    <button class="btn-util btn-util-danger" onclick="restartLesson()" title="Clear progress and restart">↺ Restart</button>
+  </div>
+</header>
+
+<!-- Mission Path tracker strip — hidden on Section 0 -->
+<div id="mission-path">
+  <span class="mp-label">🗺 Your Mission Path</span>
+  <div class="mp-steps">
+    <div class="mp-step" id="mp-dp1">
+      <div class="mp-num">1</div>
+      <div class="mp-text">
+        <div class="mp-step-title">STARTING POINT</div>
+        <div class="mp-step-val" id="mp-dp1-val">Awaiting your choice…</div>
+      </div>
+    </div>
+    <div class="mp-connector">—</div>
+    <div class="mp-step" id="mp-dp2">
+      <div class="mp-num">2</div>
+      <div class="mp-text">
+        <div class="mp-step-title">ENERGY DIRECTION</div>
+        <div class="mp-step-val" id="mp-dp2-val">Awaiting your choice…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN APP CONTAINER
+============================================================ -->
+<main id="app">
+
+
+  <!-- ===================================================
+       SECTION 0 — Entry / Landing Page
+  =================================================== -->
+  <section id="section-0" class="section active">
+
+    <!-- Hero card -->
+    <div class="s0-hero">
+      <div class="s0-eyebrow">Junior Scientist Program &middot; Impact Motors</div>
+      <h1 class="s0-title">Impact Motors:<br><span>Crash Investigation</span></h1>
+      <p class="s0-desc">
+        [Placeholder — 1&ndash;2 sentence hook. Example: &ldquo;Something happened on the
+        crash test floor at Impact Motors &mdash; and the engineering team needs
+        Junior Scientists like you to figure out where all the energy went.&rdquo;]
+      </p>
+      <p class="s0-mission">
+        <strong>Your mission:</strong>
+        [Placeholder — bold mission statement. Example: &ldquo;Investigate the crash
+        evidence, trace the energy, and submit your scientific explanation
+        to the Impact Motors safety team.&rdquo;]
+      </p>
+      <button class="btn btn-s0-start" onclick="navigateTo('section-1')">
+        &#128302; Start Mission
+      </button>
+    </div>
+
+    <!-- Learning Objectives accordion -->
+    <div class="s0-accordion">
+      <button class="s0-acc-toggle" onclick="toggleObjectives(this)" aria-expanded="false">
+        <span>&#128203; Learning Objectives &amp; Instructional Alignment</span>
+        <span class="s0-acc-arrow">&#9660;</span>
+      </button>
+      <div class="s0-acc-body" hidden>
+        <div class="s0-acc-inner">
+
+          <p class="s0-acc-heading">Learning Objectives</p>
+          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
+            <div class="placeholder-label" style="color:#2563eb;">&#128203; Placeholder &mdash; Learning Objectives</div>
+            <div class="placeholder-desc" style="color:#374151;">
+              Replace with your lesson objectives. Example:<br>
+              &bull; Students will explain that energy is transferred and transformed during a collision.<br>
+              &bull; Students will construct a model showing energy before, during, and after a crash.<br>
+              &bull; Students will use evidence to support a safety recommendation.
+            </div>
+          </div>
+
+          <p class="s0-acc-heading" style="margin-top:16px;">Standards Alignment</p>
+          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
+            <div class="placeholder-label" style="color:#2563eb;">&#128203; Placeholder &mdash; NGSS / State Standards</div>
+            <div class="placeholder-desc" style="color:#374151;">
+              Add aligned NGSS performance expectations, disciplinary core ideas,
+              science &amp; engineering practices, and crosscutting concepts.
+              Example: NGSS 5-PS3-1, 4-PS3-2.
+            </div>
+          </div>
+
+          <p class="s0-acc-heading" style="margin-top:16px;">Teacher Notes</p>
+          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
+            <div class="placeholder-label" style="color:#2563eb;">&#128203; Placeholder &mdash; Facilitation Notes</div>
+            <div class="placeholder-desc" style="color:#374151;">
+              Add timing estimates, prerequisite knowledge, materials list,
+              accessibility notes, or pacing suggestions here.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="s0-footer">
+      [Placeholder &mdash; Copyright line. Example: &copy; 2026 Your Name. All rights reserved.
+      This lesson is part of the Stories in Science (SinS) Framework.
+      Not for redistribution without permission.]
+    </footer>
+
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 1 — Investigation Brief / Start
+  =================================================== -->
+  <section id="section-1" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 1 · Investigation Brief</div>
+      <div class="section-title">Start Investigation</div>
+    </div>
+    <div class="section-body" style="text-align:center; padding: 48px 28px;">
+
+      <div class="cover-eyebrow">Junior Scientist Program · Impact Motors</div>
+      <div class="cover-title">Impact Motors:<br><span>Crash Investigation</span></div>
+      <div class="cover-subtitle">A Crash Test Energy Investigation</div>
+      <div class="cover-divider"></div>
+
+      <!-- PLACEHOLDER: Framing / hook text -->
+      <div class="placeholder">
+        <div class="placeholder-label">📋 Placeholder — Framing / Hook Text</div>
+        <div class="placeholder-desc">
+          Replace this with your lesson hook: a compelling scenario, question, or
+          short video prompt to draw students into the investigation. Example:
+          "Something crashed at Impact Motors — and the engineers need YOUR help
+          figuring out where all the energy went."
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Optional intro image / video embed -->
+      <div class="img-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+        </svg>
+        <span>Placeholder — Intro Image or Video Embed</span>
+      </div>
+
+      <!-- Begin Investigation button triggers navigation to Section 2 -->
+      <button class="btn btn-start" onclick="navigateTo('section-2')">
+        🔬 Begin Investigation
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 2 — Welcome to Impact Motors
+  =================================================== -->
+  <section id="section-2" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 2 · Narrative Entry</div>
+      <div class="section-title">Welcome to Impact Motors</div>
+    </div>
+    <div class="section-body">
+
+      <!-- Narrative content -->
+      <div class="narrative">
+        <!-- PLACEHOLDER: Junior Scientist role intro -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Junior Scientist Role</div>
+          <div class="placeholder-desc">
+            Describe the student's role as a Junior Scientist at Impact Motors.
+            Who are they? Why are they here? What is their job on this investigation?
+          </div>
+        </div>
+
+        <!-- PLACEHOLDER: Crash test problem setup -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Crash Test Problem</div>
+          <div class="placeholder-desc">
+            Introduce the crash test scenario. What happened? What does the team
+            need to understand? Why is this investigation important for safety?
+          </div>
+        </div>
+
+        <!-- PLACEHOLDER: Why students are investigating -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Why We Investigate</div>
+          <div class="placeholder-desc">
+            Explain what students will discover. Link to the science concept:
+            energy transfer and transformation during a collision.
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional scientist callout / quote box -->
+      <div class="scientist-callout">
+        <div class="icon">👩‍🔬</div>
+        <p>
+          <strong>[Placeholder — Lead Engineer Quote or Scenario Briefing]</strong><br>
+          Replace with a character quote or additional context that sets the tone
+          and motivates students to keep reading.
+        </p>
+      </div>
+
+      <!-- PLACEHOLDER: Interaction (optional intro activity / pre-assessment) -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Interaction Area</div>
+        <div class="placeholder-desc">
+          Optional: add a pre-assessment question, a "what do you already know?"
+          poll, or a quick vocabulary preview here.
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s2">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Journal Prompt for Section 2]<br>
+          <em>Example: "What do you think happens to energy when two cars crash?
+          Write your prediction below."</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s2"
+                  placeholder="Write your thoughts here…"
+                  oninput="saveJournal('s2', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-3')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 3 — Decision Point 1
+  =================================================== -->
+  <section id="section-3" class="section">
+    <div class="section-header">
+      <div class="section-tag dp">Section 3 · Decision Point 1</div>
+      <div class="section-title">Where Do You Begin?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: DP1 framing text -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Decision Point 1 Framing</div>
+          <div class="placeholder-desc">
+            Set up the decision. Explain that students must choose which evidence
+            to examine first: what was happening BEFORE the crash (motion), or
+            what CHANGED during the crash (damage). Both paths lead to the same
+            understanding, but each offers a different starting angle.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Any supporting visual for DP1 -->
+      <div class="img-placeholder" style="min-height: 120px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+        </svg>
+        <span>Placeholder — Decision Context Image or Diagram</span>
+      </div>
+
+      <hr class="section-rule">
+
+      <p style="font-family: var(--font-ui); font-size: 14px; color: var(--gray-mid); text-align:center; margin-bottom: 6px;">
+        CHOOSE YOUR STARTING POINT
+      </p>
+
+      <!-- Decision buttons — orange, routes to 4A or 4B -->
+      <div class="decision-row">
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp1', 'A', 'section-4a')">
+          🚗 Path A: What Led Up to the Changes?<br>
+          <small style="font-weight:normal; font-size:13px; opacity:0.85;">
+            Investigate speed &amp; motion before impact
+          </small>
+        </button>
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp1', 'B', 'section-4b')">
+          💥 Path B: What Were the Changes?<br>
+          <small style="font-weight:normal; font-size:13px; opacity:0.85;">
+            Examine damage evidence from the crash
+          </small>
+        </button>
+      </div>
+
+      <!-- Back button only (no Continue — decision buttons navigate) -->
+      <div class="nav-row" style="justify-content: flex-start;">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 4A — DP1 Path A: What Led Up to the Changes?
+  =================================================== -->
+  <section id="section-4a" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 4A · DP1 Path A</div>
+      <div class="section-title">What Led Up to the Changes?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Path A narrative — speed / motion before crash -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Path A Narrative</div>
+          <div class="placeholder-desc">
+            Introduce the concept of speed and motion energy (kinetic energy)
+            leading up to the crash. No damage or impact imagery here — focus
+            purely on motion: how fast, how heavy, direction of travel.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Speed / Motion Simulation -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Speed / Motion Simulation</div>
+        <div class="placeholder-desc">
+          Replace with an interactive simulation showing a car at different speeds
+          approaching a barrier. Students observe how kinetic energy changes with
+          speed. Use the buttons below as speed selectors.
+        </div>
+      </div>
+
+      <!-- Simulation speed selector buttons (placeholders) -->
+      <div class="sim-buttons">
+        <div class="sim-btn">Slow</div>
+        <div class="sim-btn">Medium</div>
+        <div class="sim-btn">Fast</div>
+      </div>
+
+      <!-- PLACEHOLDER: Simulation output / data area -->
+      <div class="img-placeholder" style="min-height: 180px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 3v18h18"/><path d="m7 16 4-4 4 4 4-7"/>
+        </svg>
+        <span>Placeholder — Simulation Output / Speed-Energy Graph</span>
+      </div>
+
+      <!-- PLACEHOLDER: Interaction (data table, observation prompt, etc.) -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Interaction Area</div>
+        <div class="placeholder-desc">
+          Add any follow-up interaction: a simple data table for students to
+          record observations at each speed, or a drag-and-drop energy comparison.
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Path A</div>
+          <div class="journal-save-badge" id="saved-s4a">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Path A Journal Prompt]<br>
+          <em>Example: "What did you notice about the car's energy as the speed
+          increased? What do you predict will happen at the moment of impact?"</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s4a"
+                  placeholder="Write your observations here…"
+                  oninput="saveJournal('s4a', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation — converges to Section 5 -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 4B — DP1 Path B: What Were the Changes?
+  =================================================== -->
+  <section id="section-4b" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 4B · DP1 Path B</div>
+      <div class="section-title">What Were the Changes?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Path B narrative — impact / damage evidence -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Path B Narrative</div>
+          <div class="placeholder-desc">
+            Guide students to examine the physical evidence of a crash: deformation,
+            bending, breaking. What does the damage tell us? Frame this as forensic
+            science — reading what happened from what remains.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Impact image comparison -->
+      <div class="placeholder">
+        <div class="placeholder-label">🖼 Placeholder — Impact Image Comparison</div>
+        <div class="placeholder-desc">
+          Replace with a side-by-side or slider comparison of crash damage at
+          three impact levels. Students observe what changed and how much.
+        </div>
+      </div>
+
+      <!-- Image grid: Low / Medium / High Impact -->
+      <div class="img-grid">
+        <div>
+          <div class="img-placeholder" style="min-height:140px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+            <span>Low Impact</span>
+          </div>
+        </div>
+        <div>
+          <div class="img-placeholder" style="min-height:140px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+            <span>Medium Impact</span>
+          </div>
+        </div>
+        <div>
+          <div class="img-placeholder" style="min-height:140px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+            <span>High Impact</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Optional hotspot interaction -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Optional Hotspot Interaction</div>
+        <div class="placeholder-desc">
+          Add clickable hotspots on the impact images so students can tap
+          specific areas (crumpled hood, broken windshield) to reveal evidence
+          labels or questions. Replace this block with your hotspot component.
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Path B</div>
+          <div class="journal-save-badge" id="saved-s4b">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Path B Journal Prompt]<br>
+          <em>Example: "Look at the three impact images. What changed at each
+          level? What patterns do you notice about where the damage occurs?"</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s4b"
+                  placeholder="Describe the evidence you observe…"
+                  oninput="saveJournal('s4b', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation — converges to Section 5 -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 5 — DP1 Convergence: Connecting Motion and Change
+  =================================================== -->
+  <section id="section-5" class="section">
+    <div class="section-header convergence">
+      <div class="section-tag convergence">Section 5 · Convergence — DP1</div>
+      <div class="section-title">Connecting Motion and Change</div>
+    </div>
+    <div class="section-body convergence-body">
+
+      <div class="convergence-tag">🔵 Both Paths Converge Here</div>
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Convergence narrative — bridging motion + damage -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Convergence Narrative</div>
+          <div class="placeholder-desc">
+            Help students connect what both paths revealed: the motion (speed)
+            before the crash and the visible changes (damage) during the crash
+            are linked by energy. More speed = more energy = more change.
+            This section should explicitly bridge both paths.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Connecting diagram / visualization -->
+      <div class="img-placeholder" style="min-height: 160px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14m-4-4 4 4-4 4"/>
+        </svg>
+        <span>Placeholder — Motion → Impact → Change Diagram or Model</span>
+      </div>
+
+      <!-- PLACEHOLDER: Synthesis interaction -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Synthesis Interaction</div>
+        <div class="placeholder-desc">
+          Add a matching, sorting, or annotation activity where students connect
+          what they observed in their chosen path to what students on the other
+          path discovered. Could be a simple drag-and-drop or fill-in table.
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Convergence 1</div>
+          <div class="journal-save-badge" id="saved-s5">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Convergence 1 Journal Prompt]<br>
+          <em>Example: "In your own words, explain how the motion of a car
+          before a crash is connected to the damage you see after the crash."</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s5"
+                  placeholder="Write your connection here…"
+                  oninput="saveJournal('s5', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-6')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 6 — Decision Point 2: Where Did the Energy Go?
+  =================================================== -->
+  <section id="section-6" class="section">
+    <div class="section-header">
+      <div class="section-tag dp">Section 6 · Decision Point 2</div>
+      <div class="section-title">Where Did the Energy Go?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: DP2 framing text -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Decision Point 2 Framing</div>
+          <div class="placeholder-desc">
+            Build curiosity around the central question: if energy can't be
+            destroyed, where did it go? Set up the two investigation paths:
+            energy that went into changing the car itself, versus energy
+            that spread into the surroundings (heat, sound, movement).
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Context image -->
+      <div class="img-placeholder" style="min-height: 120px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+        </svg>
+        <span>Placeholder — Energy Path Decision Context Visual</span>
+      </div>
+
+      <hr class="section-rule">
+
+      <p style="font-family: var(--font-ui); font-size: 14px; color: var(--gray-mid); text-align:center; margin-bottom: 6px;">
+        WHERE DO YOU THINK THE ENERGY WENT?
+      </p>
+
+      <!-- Decision buttons — orange, routes to 7A or 7B -->
+      <div class="decision-row">
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp2', 'A', 'section-7a')">
+          🏎️ Path A: Into the Car<br>
+          <small style="font-weight:normal; font-size:13px; opacity:0.85;">
+            Investigate deformation and structural changes
+          </small>
+        </button>
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp2', 'B', 'section-7b')">
+          🌡️ Path B: Into the Surroundings<br>
+          <small style="font-weight:normal; font-size:13px; opacity:0.85;">
+            Investigate heat, sound, and movement released
+          </small>
+        </button>
+      </div>
+
+      <!-- Back button only -->
+      <div class="nav-row" style="justify-content: flex-start;">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 7A — DP2 Path A: Into the Car — Deformation
+  =================================================== -->
+  <section id="section-7a" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 7A · DP2 Path A</div>
+      <div class="section-title">Into the Car: Deformation</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Deformation narrative -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Deformation Narrative</div>
+          <div class="placeholder-desc">
+            Explain how kinetic energy is transferred into the structure of the
+            car: bending metal, compressing materials, breaking connections.
+            Introduce the concept of crumple zones and why they are designed
+            the way they are (absorbing energy to protect passengers).
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Crumple zone / deformation evidence visuals -->
+      <div class="placeholder">
+        <div class="placeholder-label">🖼 Placeholder — Crumple Zone / Deformation Evidence</div>
+        <div class="placeholder-desc">
+          Replace with annotated diagrams, before/after cross-sections of a
+          crumple zone, or a short animation showing how deformation absorbs energy.
+        </div>
+      </div>
+
+      <div class="img-placeholder" style="min-height: 200px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        <span>Placeholder — Crumple Zone Diagram / Animation</span>
+      </div>
+
+      <!-- PLACEHOLDER: Interaction -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Interaction Area</div>
+        <div class="placeholder-desc">
+          Add an interactive: students could label where energy is absorbed,
+          drag arrows to show force directions, or compare a car with and
+          without a crumple zone.
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Path A (Deformation)</div>
+          <div class="journal-save-badge" id="saved-s7a">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — DP2 Path A Journal Prompt]<br>
+          <em>Example: "How does a crumple zone help protect a passenger?
+          Use the word 'energy' in your answer."</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s7a"
+                  placeholder="Write your explanation here…"
+                  oninput="saveJournal('s7a', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation — converges to Section 8 -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-8')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 7B — DP2 Path B: Heat, Sound, and Movement
+  =================================================== -->
+  <section id="section-7b" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 7B · DP2 Path B</div>
+      <div class="section-title">Into the Surroundings: Heat, Sound &amp; Movement</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Surroundings energy narrative -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Surroundings Energy Narrative</div>
+          <div class="placeholder-desc">
+            Explain how energy spreads outward from the crash: as thermal energy
+            (heat), sound waves (vibration), and movement of debris and air.
+            Relate to students' real-world observations: the "bang" of a crash,
+            the warmth felt after friction, parts flying through the air.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Overlay toggle interaction -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Overlay Toggle Interaction</div>
+        <div class="placeholder-desc">
+          Replace with an interactive crash scene image where students can toggle
+          overlays on/off to visualize: (1) heat radiation, (2) sound wave rings,
+          (3) flying debris/movement. Use the toggle placeholder items below.
+        </div>
+      </div>
+
+      <!-- Toggle item placeholders -->
+      <div class="toggle-group">
+        <div class="toggle-item">
+          <div class="toggle-dot"></div>
+          <span>🌡️ <strong>Heat / Thermal Energy</strong> — [Placeholder: toggle reveals heat radiation overlay on crash image]</span>
+        </div>
+        <div class="toggle-item">
+          <div class="toggle-dot"></div>
+          <span>🔊 <strong>Sound / Vibration</strong> — [Placeholder: toggle reveals sound wave rings spreading outward]</span>
+        </div>
+        <div class="toggle-item">
+          <div class="toggle-dot"></div>
+          <span>💨 <strong>Movement / Debris</strong> — [Placeholder: toggle reveals arrows showing parts, air, ground movement]</span>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Supporting visuals -->
+      <div class="img-placeholder" style="min-height: 180px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+        <span>Placeholder — Crash Scene with Energy Overlay Options</span>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Path B (Surroundings)</div>
+          <div class="journal-save-badge" id="saved-s7b">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — DP2 Path B Journal Prompt]<br>
+          <em>Example: "List at least two forms of energy released into the
+          surroundings during a crash. Where does each one go next?"</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s7b"
+                  placeholder="List the energy forms you observed…"
+                  oninput="saveJournal('s7b', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation — converges to Section 8 -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-8')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 8 — DP2 Convergence: Energy Did Not Disappear
+  =================================================== -->
+  <section id="section-8" class="section">
+    <div class="section-header convergence">
+      <div class="section-tag convergence">Section 8 · Convergence — DP2</div>
+      <div class="section-title">Energy Did Not Disappear</div>
+    </div>
+    <div class="section-body convergence-body">
+
+      <div class="convergence-tag">🔵 Both Paths Converge Here</div>
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Convergence 2 narrative -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Convergence 2 Narrative</div>
+          <div class="placeholder-desc">
+            Bring together both paths: energy went INTO the car (deformation) AND
+            INTO the surroundings (heat, sound, movement). The total energy is
+            conserved — it transferred and transformed, but it did not disappear.
+            Introduce or reinforce the conservation of energy concept at the 5th
+            grade level (no formulas needed — narrative and visual).
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Energy accounting / synthesis visualization -->
+      <div class="img-placeholder" style="min-height: 180px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        <span>Placeholder — Energy Balance / Sankey Diagram or Before-After Model</span>
+      </div>
+
+      <!-- PLACEHOLDER: Synthesis interaction -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Synthesis Interaction</div>
+        <div class="placeholder-desc">
+          Students from both paths combine their findings. Could be a shared
+          energy accounting diagram, a digital whiteboard annotation, or a
+          fill-in energy balance table: "Kinetic energy → [ ] + [ ] + [ ]"
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Convergence 2</div>
+          <div class="journal-save-badge" id="saved-s8">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Convergence 2 Journal Prompt]<br>
+          <em>Example: "Scientists say energy is never created or destroyed.
+          Based on what you investigated, explain what happened to the car's
+          energy in your own words."</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s8"
+                  placeholder="Explain what happened to the energy…"
+                  oninput="saveJournal('s8', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-9')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 9 — Transfer & Application Part 1: Build the Energy Model
+  =================================================== -->
+  <section id="section-9" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 9 · Transfer &amp; Application — Part 1</div>
+      <div class="section-title">Build the Energy Model</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Model builder intro -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Energy Model Builder Intro</div>
+          <div class="placeholder-desc">
+            Explain that students will now build a scientific model showing
+            what happens to energy Before, During, and After the crash.
+            This is their opportunity to organize and represent everything
+            they've investigated. Refer to any modeling vocabulary introduced earlier.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Before / During / After Model Builder -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Before / During / After Model Builder</div>
+        <div class="placeholder-desc">
+          Replace with an interactive model builder. Students drag energy labels
+          or draw arrows to show how energy moves through the three stages.
+          Could be a three-column layout, a flowchart builder, or an annotated
+          diagram editor. Include clear column headers: BEFORE | DURING | AFTER.
+        </div>
+      </div>
+
+      <!-- Three-column placeholder visual -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0;">
+        <div class="img-placeholder" style="min-height: 120px; flex-direction:column; border-color: var(--orange);">
+          <span style="color:var(--orange); font-weight:bold;">BEFORE</span>
+          <span style="font-size:11px; color:var(--gray-steel); text-align:center;">Kinetic Energy<br>[Add Components]</span>
+        </div>
+        <div class="img-placeholder" style="min-height: 120px; flex-direction:column;">
+          <span style="font-weight:bold;">DURING</span>
+          <span style="font-size:11px; color:var(--gray-steel); text-align:center;">Transfer<br>[Add Components]</span>
+        </div>
+        <div class="img-placeholder" style="min-height: 120px; flex-direction:column; border-color: var(--blue);">
+          <span style="color:var(--blue); font-weight:bold;">AFTER</span>
+          <span style="font-size:11px; color:var(--gray-steel); text-align:center;">Multiple Forms<br>[Add Components]</span>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Interaction scaffolding -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Interaction Scaffolding</div>
+        <div class="placeholder-desc">
+          Provide guiding questions or a word bank for students who need
+          support completing their model. Example: "What type of energy did
+          the car have before the crash? Where did it go?"
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Energy Model</div>
+          <div class="journal-save-badge" id="saved-s9">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Section 9 Journal Prompt]<br>
+          <em>Example: "Describe your energy model in words. Where did the energy
+          start? Where did it end up? Did any energy disappear?"</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s9"
+                  placeholder="Describe your energy model here…"
+                  oninput="saveJournal('s9', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-10')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 10 — Transfer & Application Part 2: Test a Safety Change
+  =================================================== -->
+  <section id="section-10" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 10 · Transfer &amp; Application — Part 2</div>
+      <div class="section-title">Test a Safety Change</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Safety change intro -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Safety Change Intro</div>
+          <div class="placeholder-desc">
+            Explain that engineers don't just study crashes — they use what they
+            learn to make cars safer. Students will now choose one safety change
+            to investigate and compare the original crash test result with the
+            revised (safer) design. Provide 2–4 options to choose from.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Safety change selector -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Safety Change Selector</div>
+        <div class="placeholder-desc">
+          Replace with a selector or card grid showing 2–4 safety modifications
+          students can choose from (e.g., added crumple zone, side airbag,
+          reinforced door beam, energy-absorbing bumper). Each should clearly
+          show what changed and why.
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Original vs Revised comparison -->
+      <div class="placeholder">
+        <div class="placeholder-label">🖼 Placeholder — Original vs. Revised Test Comparison</div>
+        <div class="placeholder-desc">
+          Replace with a side-by-side comparison tool. Students see the original
+          crash result alongside the revised crash result for their chosen
+          safety change. Could include data tables, image comparisons, or
+          animated overlays.
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin: 16px 0;">
+        <div class="img-placeholder" style="min-height:150px; border-color:var(--gray-steel);">
+          <span>Original Test</span>
+        </div>
+        <div class="img-placeholder" style="min-height:150px; border-color:var(--blue);">
+          <span>Revised Test (+ Safety Change)</span>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Data / evidence interaction -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Evidence Interaction</div>
+        <div class="placeholder-desc">
+          Add a data table or measurement tool where students record specific
+          changes (e.g., deformation distance, impact force) between original
+          and revised designs. Could include slider comparisons or bar chart builders.
+        </div>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Safety Test</div>
+          <div class="journal-save-badge" id="saved-s10">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Section 10 Journal Prompt]<br>
+          <em>Example: "Which safety change did you test? What evidence shows
+          that it made the car safer? How does it change where the energy goes?"</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s10"
+                  placeholder="Describe your safety test findings…"
+                  oninput="saveJournal('s10', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-11')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 11 — Creation & Communication: Submit Explanation
+  =================================================== -->
+  <section id="section-11" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 11 · Creation &amp; Communication</div>
+      <div class="section-title">Submit Your Scientific Explanation</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Explanation task framing -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Final Explanation Framing</div>
+          <div class="placeholder-desc">
+            Explain what students are being asked to submit: a complete scientific
+            explanation that includes their energy model, the evidence they collected,
+            and a safety recommendation. Clarify the audience (the engineering team
+            at Impact Motors) and purpose (improving vehicle safety).
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Final model submission area -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Final Model Submission</div>
+        <div class="placeholder-desc">
+          Replace with the student's completed energy model from Section 9
+          (could auto-populate or allow them to revise it here). This becomes
+          part of their final submission.
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Evidence-based explanation builder -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Evidence-Based Explanation Builder</div>
+        <div class="placeholder-desc">
+          Add a structured writing scaffold: Claim → Evidence → Reasoning
+          framework, or a free-write area for older/advanced students.
+          Consider offering sentence starters to support ELL or struggling writers.
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Safety recommendation -->
+      <div class="placeholder">
+        <div class="placeholder-label">🧪 Placeholder — Safety Recommendation</div>
+        <div class="placeholder-desc">
+          Students write or select a safety recommendation based on their
+          investigation. Could be a free-write, a structured template, or a
+          choice of pre-written recommendations students rank and justify.
+        </div>
+      </div>
+
+      <!-- Field Journal — multi-part for final submission -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Final Explanation</div>
+          <div class="journal-save-badge" id="saved-s11">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Section 11 Journal Prompt]<br>
+          <em>Example: "Write your complete scientific explanation below.
+          Include: (1) what happened to the energy, (2) the evidence you used,
+          and (3) your safety recommendation for the engineers."</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s11"
+                  style="min-height: 160px;"
+                  placeholder="Write your scientific explanation and safety recommendation here…"
+                  oninput="saveJournal('s11', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-12')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 12 — Final Reflection: Close the Investigation
+  =================================================== -->
+  <section id="section-12" class="section">
+    <div class="section-header convergence">
+      <div class="section-tag convergence">Section 12 · Final Reflection</div>
+      <div class="section-title">Close the Investigation</div>
+    </div>
+    <div class="section-body convergence-body">
+
+      <div class="convergence-tag">🏁 Investigation Complete</div>
+
+      <div class="narrative">
+        <!-- PLACEHOLDER: Closing narrative -->
+        <div class="placeholder">
+          <div class="placeholder-label">📋 Placeholder — Closing Narrative</div>
+          <div class="placeholder-desc">
+            Write a closing message from the Impact Motors team thanking students
+            for their investigation, highlighting what they discovered, and
+            connecting their work to real-world engineering and science.
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: Celebration / completion visual -->
+      <div class="img-placeholder" style="min-height: 120px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span>Placeholder — Completion Badge or Celebration Visual</span>
+      </div>
+
+      <!-- Final Reflection Journal — multiple prompts -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal — Final Reflection</div>
+          <div class="journal-save-badge" id="saved-s12">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          [Placeholder — Final Reflection Prompts. Replace with 2–3 prompts, for example:]<br>
+          <em>1. What was the most surprising thing you discovered?<br>
+          2. How did this investigation change how you think about car safety?<br>
+          3. What question do you still have that you'd like to investigate?</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s12"
+                  style="min-height: 140px;"
+                  placeholder="Write your final reflection here…"
+                  oninput="saveJournal('s12', this.value)"></textarea>
+      </div>
+
+      <!-- Export row -->
+      <div class="export-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-export" onclick="exportJournal()">
+          ⬇ Export My Field Journal
+        </button>
+      </div>
+
+      <p style="font-family:var(--font-ui); font-size:12px; color:var(--gray-steel); margin-top:14px;">
+        Your export will include all journal entries, your decisions, and a timestamp.
+        Your teacher may ask you to submit this file.
+      </p>
+
+    </div>
+  </section>
+
+</main><!-- /#app -->
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /*
+  ==============================================================
+    SINS LESSON NAVIGATION & DATA SYSTEM
+    
+    navigationHistory  — stack of section IDs visited, used
+                         by goBack() to return correctly even
+                         after branching.
+    decisions          — object tracking DP1 and DP2 choices.
+    journalData        — object keyed by section shorthand,
+                         mirrors localStorage.
+    
+    Total sections: 12 logical sections.
+    Section numbering for progress: 1–12 in display order,
+    but 4A/4B and 7A/7B share a "slot" in the linear count.
+  ==============================================================
+  */
+
+  // ── Progress map: section ID → {displayNum, title} ──────────
+  const SECTION_META = {
+    'section-0':  { num: 0,  title: 'Mission Briefing' },
+    'section-1':  { num: 1,  title: 'Investigation Brief' },
+    'section-2':  { num: 2,  title: 'Welcome to Impact Motors' },
+    'section-3':  { num: 3,  title: 'Decision Point 1' },
+    'section-4a': { num: 4,  title: 'Path A — Motion' },
+    'section-4b': { num: 4,  title: 'Path B — Damage' },
+    'section-5':  { num: 5,  title: 'Convergence 1' },
+    'section-6':  { num: 6,  title: 'Decision Point 2' },
+    'section-7a': { num: 7,  title: 'Path A — Deformation' },
+    'section-7b': { num: 7,  title: 'Path B — Surroundings' },
+    'section-8':  { num: 8,  title: 'Convergence 2' },
+    'section-9':  { num: 9,  title: 'Build Energy Model' },
+    'section-10': { num: 10, title: 'Test Safety Change' },
+    'section-11': { num: 11, title: 'Submit Explanation' },
+    'section-12': { num: 12, title: 'Final Reflection' },
+  };
+  const TOTAL_SECTIONS = 12;
+
+  // ── State ────────────────────────────────────────────────────
+  let currentSection = 'section-0';
+  let navigationHistory = [];  // stack of previously-visited section IDs
+  
+  // decisions: keyed by 'dp1' and 'dp2', value is 'A' or 'B'
+  let decisions = {};
+
+  // journalData: keyed by short section key (e.g. 's2', 's4a')
+  let journalData = {};
+
+
+  // ── Initialise on page load ──────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    loadFromStorage();
+    restoreJournalFields();
+    showSection('section-0');
+  });
+
+
+  // ── Navigation ───────────────────────────────────────────────
+
+  /**
+   * Navigate to a new section, pushing current onto the history stack.
+   * @param {string} sectionId  - the id of the target section element
+   */
+  function navigateTo(sectionId) {
+    if (!document.getElementById(sectionId)) {
+      console.warn('Section not found:', sectionId);
+      return;
+    }
+    // Push current onto history stack before leaving
+    navigationHistory.push(currentSection);
+    showSection(sectionId);
+  }
+
+  /**
+   * Go back to the previously visited section (stack-based, works after branching).
+   */
+  function goBack() {
+    if (navigationHistory.length === 0) return; // already at start
+    const previous = navigationHistory.pop();
+    showSection(previous);
+  }
+
+  /**
+   * Record a decision-point choice and navigate to the chosen branch.
+   * @param {string} dpKey      - 'dp1' or 'dp2'
+   * @param {string} choice     - 'A' or 'B'
+   * @param {string} sectionId  - target section to navigate to
+   */
+  function makeDecision(dpKey, choice, sectionId) {
+    decisions[dpKey] = choice;
+    saveToStorage();
+    navigateTo(sectionId);
+  }
+
+  /**
+   * Display a section and hide all others. Updates progress UI.
+   * @param {string} sectionId
+   */
+  function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    
+    // Show target
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.classList.add('active');
+      currentSection = sectionId;
+      updateProgress(sectionId);
+      // Scroll to top of page smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  /**
+   * Update the progress bar and label in the masthead.
+   * @param {string} sectionId
+   */
+  function updateProgress(sectionId) {
+    const meta = SECTION_META[sectionId] || { num: 0, title: '' };
+    const isLanding = (sectionId === 'section-0');
+
+    // Toggle progress bar, util buttons, and mission path strip visibility
+    document.getElementById('progress-wrap').style.display  = isLanding ? 'none' : '';
+    document.getElementById('util-buttons').style.display   = isLanding ? 'none' : '';
+    document.getElementById('mission-path').style.display   = isLanding ? 'none' : '';
+
+    if (!isLanding) {
+      const pct = Math.round((meta.num / TOTAL_SECTIONS) * 100);
+      document.getElementById('progress-label').textContent =
+        `Section ${meta.num} of ${TOTAL_SECTIONS} — ${meta.title}`;
+      document.getElementById('progress-bar-fill').style.width = pct + '%';
+    }
+
+    // Update mission path decision labels whenever they change
+    const dp1Labels = { A: 'Path A — Motion', B: 'Path B — Damage' };
+    const dp2Labels = { A: 'Path A — Into the Car', B: 'Path B — Surroundings' };
+    document.getElementById('mp-dp1-val').textContent =
+      decisions.dp1 ? dp1Labels[decisions.dp1] : 'Awaiting your choice…';
+    document.getElementById('mp-dp2-val').textContent =
+      decisions.dp2 ? dp2Labels[decisions.dp2] : 'Awaiting your choice…';
+
+    // Mark completed steps
+    document.getElementById('mp-dp1').classList.toggle('mp-done', !!decisions.dp1);
+    document.getElementById('mp-dp2').classList.toggle('mp-done', !!decisions.dp2);
+  }
+
+
+  // ── Field Journal ─────────────────────────────────────────────
+
+  /**
+   * Save a journal entry to both in-memory state and localStorage.
+   * Also shows the "Saved" badge briefly.
+   * @param {string} key    - section key, e.g. 's2', 's4a'
+   * @param {string} value  - textarea content
+   */
+  function saveJournal(key, value) {
+    journalData[key] = value;
+    saveToStorage();
+    // Flash the saved badge for this section
+    const badge = document.getElementById('saved-' + key);
+    if (badge) {
+      badge.classList.add('visible');
+      clearTimeout(badge._timeout);
+      badge._timeout = setTimeout(() => badge.classList.remove('visible'), 2000);
+    }
+  }
+
+  /**
+   * Restore textarea values from journalData (called on load).
+   */
+  function restoreJournalFields() {
+    Object.keys(journalData).forEach(key => {
+      const el = document.getElementById('journal-' + key);
+      if (el) el.value = journalData[key] || '';
+    });
+  }
+
+
+  // ── localStorage persistence ──────────────────────────────────
+
+  const STORAGE_KEY = 'sins_impact_motors';
+
+  function saveToStorage() {
+    try {
+      const payload = { decisions, journalData };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch(e) {
+      console.warn('localStorage save failed:', e);
+    }
+  }
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const payload = JSON.parse(raw);
+      if (payload.decisions)   decisions   = payload.decisions;
+      if (payload.journalData) journalData = payload.journalData;
+    } catch(e) {
+      console.warn('localStorage load failed:', e);
+    }
+  }
+
+
+  // ── Export Journal ────────────────────────────────────────────
+
+  /**
+   * Build and download a plain-text export of the student's
+   * full Field Journal, decisions made, and a timestamp.
+   */
+  function exportJournal() {
+    const now       = new Date();
+    const timestamp = now.toLocaleString();
+    const lines     = [];
+
+    // Header
+    lines.push('======================================================');
+    lines.push('  STORIES IN SCIENCE — FIELD JOURNAL EXPORT');
+    lines.push('  Lesson: Impact Motors: Crash Investigation');
+    lines.push('  Grade 5 | Impact Motors Investigation');
+    lines.push('======================================================');
+    lines.push('');
+    lines.push('Exported: ' + timestamp);
+    lines.push('');
+
+    // Decisions
+    lines.push('------------------------------------------------------');
+    lines.push('  DECISIONS MADE');
+    lines.push('------------------------------------------------------');
+    lines.push('Decision Point 1 (Where Do You Begin?): ' +
+      (decisions.dp1 ? 'Path ' + decisions.dp1 +
+        (decisions.dp1 === 'A' ? ' — What Led Up to the Changes?' : ' — What Were the Changes?')
+      : '(not recorded)'));
+    lines.push('Decision Point 2 (Where Did the Energy Go?): ' +
+      (decisions.dp2 ? 'Path ' + decisions.dp2 +
+        (decisions.dp2 === 'A' ? ' — Into the Car' : ' — Into the Surroundings')
+      : '(not recorded)'));
+    lines.push('');
+
+    // Journal entries in section order
+    const journalOrder = [
+      { key: 's2',  label: 'Section 2 — Welcome to Impact Motors' },
+      { key: 's4a', label: 'Section 4A — Path A: Motion (DP1)' },
+      { key: 's4b', label: 'Section 4B — Path B: Damage (DP1)' },
+      { key: 's5',  label: 'Section 5 — Convergence 1: Connecting Motion and Change' },
+      { key: 's7a', label: 'Section 7A — Path A: Deformation (DP2)' },
+      { key: 's7b', label: 'Section 7B — Path B: Surroundings (DP2)' },
+      { key: 's8',  label: 'Section 8 — Convergence 2: Energy Did Not Disappear' },
+      { key: 's9',  label: 'Section 9 — Build the Energy Model' },
+      { key: 's10', label: 'Section 10 — Test a Safety Change' },
+      { key: 's11', label: 'Section 11 — Scientific Explanation' },
+      { key: 's12', label: 'Section 12 — Final Reflection' },
+    ];
+
+    lines.push('------------------------------------------------------');
+    lines.push('  JOURNAL RESPONSES');
+    lines.push('------------------------------------------------------');
+    lines.push('');
+
+    journalOrder.forEach(({ key, label }) => {
+      const entry = journalData[key];
+      // Only include sections that were visited (have an entry) or list all
+      lines.push('[ ' + label + ' ]');
+      if (entry && entry.trim() !== '') {
+        lines.push(entry.trim());
+      } else {
+        lines.push('(no response recorded)');
+      }
+      lines.push('');
+    });
+
+    lines.push('======================================================');
+    lines.push('  END OF FIELD JOURNAL');
+    lines.push('======================================================');
+
+    // Create and trigger download
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain; charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'FieldJournal_ImpactMotors_CrashInvestigation.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+
+  // ── Restart Lesson ───────────────────────────────────────────
+
+  /**
+   * Clear all stored progress and return to Section 0.
+   */
+  function restartLesson() {
+    if (!confirm('This will clear all your journal entries and decisions. Are you sure?')) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    decisions   = {};
+    journalData = {};
+    navigationHistory = [];
+    // Clear all textareas
+    document.querySelectorAll('.journal-textarea').forEach(el => el.value = '');
+    navigateTo('section-0');
+  }
+
+
+  // ── Objectives Accordion ──────────────────────────────────────
+
+  /**
+   * Toggle the Learning Objectives accordion on Section 0.
+   * @param {HTMLElement} btn - the toggle button
+   */
+  function toggleObjectives(btn) {
+    const body     = btn.nextElementSibling;
+    const arrow    = btn.querySelector('.s0-acc-arrow');
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    body.hidden    = expanded;
+    arrow.textContent = expanded ? '\u25BC' : '\u25B2';
+  }
+
+</script>
+
+</body>
+</html>
