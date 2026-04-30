@@ -38,17 +38,17 @@
        DESIGN TOKENS — edit these to retheme
     ============================================= */
     :root {
-      --navy:       #1F2A44;
-      --navy-dark:  #141d30;
-      --navy-light: #263351;
+      --navy:       #2E4A72;
+      --navy-dark:  #1E3354;
+      --navy-light: #3A5A87;
       --orange:     #F97316;
       --orange-dim: #c45c0d;
       --blue:       #3B82F6;
       --blue-dim:   #2563eb;
       --off-white:  #F8FAFC;
       --gray-light: #E5E7EB;
-      --gray-steel: #6B7280;
-      --gray-mid:   #9CA3AF;
+      --gray-steel: #94A3B8;
+      --gray-mid:   #C1C9D4;
       --success:    #22C55E;
       --radius:     10px;
       --radius-lg:  16px;
@@ -175,7 +175,7 @@
        MAIN LAYOUT
     ============================================= */
     #app {
-      max-width: 860px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 32px 20px 80px;
     }
@@ -261,7 +261,7 @@
     }
 
     .placeholder-desc {
-      color: var(--gray-mid);
+      color: var(--gray-light);
       font-size: 13px;
       line-height: 1.5;
     }
@@ -362,7 +362,7 @@
       margin: 0 0 20px;
     }
 
-    .narrative p { margin-bottom: 12px; }
+    .narrative p { margin-bottom: 12px; color: var(--off-white); }
 
     /* Scientist callout box */
     .scientist-callout {
@@ -384,7 +384,7 @@
 
     .scientist-callout p {
       font-size: 14px;
-      color: var(--gray-light);
+      color: var(--off-white);
       margin: 0;
       line-height: 1.6;
     }
@@ -600,7 +600,7 @@
 
     .cover-subtitle {
       font-size: 15px;
-      color: var(--gray-mid);
+      color: var(--gray-light);
       margin-bottom: 8px;
     }
 
@@ -747,12 +747,12 @@
       font-size: 9px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: var(--gray-steel);
+      color: var(--gray-mid);
     }
     .mp-step-val {
       font-family: var(--font-ui);
       font-size: 12px;
-      color: var(--gray-mid);
+      color: var(--gray-light);
     }
     .mp-done .mp-step-val { color: var(--off-white); }
 
@@ -771,7 +771,7 @@
 
     /* Hero card */
     .s0-hero {
-      background: linear-gradient(150deg, var(--navy) 0%, #1a3360 60%, #0f1f40 100%);
+      background: linear-gradient(150deg, var(--navy) 0%, #2d5080 60%, #1e3d6a 100%);
       border-radius: var(--radius-lg);
       padding: 56px 40px 52px;
       text-align: center;
@@ -781,7 +781,7 @@
       /* Subtle radial glow behind title */
       background-image:
         radial-gradient(ellipse 70% 50% at 50% 40%, rgba(249,115,22,0.12) 0%, transparent 70%),
-        linear-gradient(150deg, var(--navy) 0%, #1a3360 60%, #0f1f40 100%);
+        linear-gradient(150deg, var(--navy) 0%, #2d5080 60%, #1e3d6a 100%);
     }
 
     /* Decorative corner accent */
@@ -1078,8 +1078,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       <div class="cover-divider"></div>
 
 
-    <div style="display:flex; align-items:center; gap:20px; margin:16px 0; flex-wrap:wrap;">      <div style="flex:1; min-width:200px;">
-       
+    <div style="max-width:680px; margin:0 auto 8px; text-align:left; color:var(--off-white);">
 <p>You’ve just joined Impact Motors as part of a newly hired team of <strong>Junior Crash Test Scientists</strong>.</p>
 
 <p>Recent crash tests have produced inconsistent results, and despite multiple attempts, no improvements in vehicle safety have been made.</p>
@@ -1089,14 +1088,10 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 <p>You report directly to the Senior Safety Engineer, who has asked your team to analyze the crash data and determine what is happening during these tests.</p>
 
 <p><em>All available test data has been loaded into your system.</em></p>
-        </div>
-      </div>
+    </div>
 
-      <div class="img-placeholder">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-        </svg>
-        <span><img src="images/Energy_Entry.png" alt="Junior Scientists Sitting at a Table" class="lesson-image lesson-image-small" style="flex-shrink:0; margin:0;"></span>
+      <div style="margin: 24px 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);">
+        <img src="images/Energy_Entry.png" alt="Junior Scientists Sitting at a Table" style="width:100%; display:block; border-radius: var(--radius-lg);">
       </div>
 
       <!-- Continue button triggers navigation to Section 2 -->
@@ -1228,7 +1223,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
       <hr class="section-rule">
 
-      <p style="font-family: var(--font-ui); font-size: 14px; color: var(--gray-mid); text-align:center; margin-bottom: 6px;">
+      <p style="font-family: var(--font-ui); font-size: 14px; color: var(--gray-light); text-align:center; margin-bottom: 6px;">
         CHOOSE YOUR STARTING POINT
       </p>
 
@@ -1544,7 +1539,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
       <hr class="section-rule">
 
-      <p style="font-family: var(--font-ui); font-size: 14px; color: var(--gray-mid); text-align:center; margin-bottom: 6px;">
+      <p style="font-family: var(--font-ui); font-size: 14px; color: var(--gray-light); text-align:center; margin-bottom: 6px;">
         WHERE DO YOU THINK THE ENERGY WENT?
       </p>
 
