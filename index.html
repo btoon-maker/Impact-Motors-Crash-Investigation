@@ -936,6 +936,520 @@
       .s0-hero { padding: 36px 20px 40px; }
       .btn-s0-start { padding: 15px 36px; font-size: 19px; }
     }
+
+  /* =============================================
+     SECTION 4A EMBED — Carsim Interactive
+     Scoped under .embed-4a to prevent conflicts
+  ============================================= */
+  .embed-4a {
+    /* Map carsim variables to lesson palette */
+    --offwhite:    var(--off-white);
+    --steelgray:   var(--gray-steel);
+    --navy-dark:   #141B2D;
+    --navy-light:  var(--navy);
+    --orange-glow: rgba(249,115,22,0.25);
+    --blue-glow:   rgba(59,130,246,0.20);
+    --radius-sm:   6px;
+    --radius-md:   var(--radius);
+    --radius-lg:   var(--radius-lg);
+    --shadow-card: var(--shadow);
+    font-family: var(--font-head);
+    margin-bottom: 24px;
+  }
+
+  .embed-4a .cs-track-stage {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background-color: #111827;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid rgba(59,130,246,0.25);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+  }
+
+  .embed-4a .cs-track-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .embed-4a .cs-car-on-track {
+    position: absolute;
+    bottom: -10px;
+    width: 320px;
+    height: auto;
+    left: 4%;
+    z-index: 10;
+  }
+
+  .embed-4a .cs-test-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .embed-4a .cs-btn-test {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-head);
+    font-size: clamp(13px, 2.2vw, 15px);
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .embed-4a .cs-btn-test::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.08);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .embed-4a .cs-btn-test:hover::after { opacity: 1; }
+  .embed-4a .cs-btn-test:active       { transform: scale(0.97); }
+  .embed-4a .cs-btn-test:disabled     { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .embed-4a .cs-btn-test-1 {
+    background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+    color: var(--off-white);
+    border: 2px solid var(--blue);
+  }
+  .embed-4a .cs-btn-test-1:hover:not(:disabled) { box-shadow: 0 0 12px var(--blue-glow); }
+
+  .embed-4a .cs-btn-test-2 {
+    background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+    color: var(--off-white);
+    border: 2px solid #8B5CF6;
+  }
+  .embed-4a .cs-btn-test-2:hover:not(:disabled) { box-shadow: 0 0 12px rgba(139,92,246,0.3); }
+
+  .embed-4a .cs-btn-test-3 {
+    background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+    color: var(--off-white);
+    border: 2px solid var(--orange);
+  }
+  .embed-4a .cs-btn-test-3:hover:not(:disabled) { box-shadow: 0 0 12px var(--orange-glow); }
+
+  .embed-4a .cs-btn-test.running { animation: cs-pulse-border 0.8s infinite alternate; }
+
+  @keyframes cs-pulse-border {
+    from { opacity: 0.7; }
+    to   { opacity: 1.0; }
+  }
+
+  .embed-4a .cs-btn-icon { margin-right: 6px; font-size: 14px; }
+
+  .embed-4a .cs-data-log-card {
+    background: var(--navy-dark);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .embed-4a .cs-card-title {
+    font-family: var(--font-head);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .embed-4a .cs-card-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
+
+  .embed-4a .cs-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-head);
+    font-size: clamp(12px, 1.8vw, 14px);
+  }
+
+  .embed-4a .cs-data-table th {
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-steel);
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(107,114,128,0.3);
+  }
+
+  .embed-4a .cs-data-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(107,114,128,0.15);
+    color: var(--off-white);
+    vertical-align: middle;
+  }
+
+  .embed-4a .cs-data-table tr:last-child td { border-bottom: none; }
+
+  .embed-4a .cs-log-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .embed-4a .cs-log-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-steel);
+    flex-shrink: 0;
+  }
+
+  .embed-4a .cs-log-dot.done { background: #22C55E; box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+
+  .embed-4a .cs-log-time {
+    font-size: 11px;
+    color: var(--gray-steel);
+  }
+
+  .embed-4a .cs-obs-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px 10px;
+    border: 1.5px solid rgba(107,114,128,0.4);
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.06);
+    color: var(--off-white);
+    font-family: var(--font-head);
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .embed-4a .cs-obs-textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.20);
+  }
+  .embed-4a .cs-obs-textarea::placeholder { color: var(--gray-steel); }
+
+  /* =============================================
+     SECTION 4B EMBED — DP1PB Interactive
+     Scoped under .embed-4b to prevent conflicts
+  ============================================= */
+  .embed-4b {
+    --offwhite:   var(--off-white);
+    --steelgray:  var(--gray-steel);
+    --navy-dark:  #141d30;
+    --orange-dim: rgba(249,115,22,0.15);
+    --blue-dim:   rgba(59,130,246,0.15);
+    --card-bg:    #ffffff;
+    --shadow-md:  0 4px 20px rgba(31,42,68,0.12);
+    --shadow-lg:  0 8px 40px rgba(31,42,68,0.18);
+    --radius:     var(--radius);
+    --radius-sm:  var(--radius);
+    font-family: var(--font-head);
+    margin-bottom: 24px;
+  }
+
+  .embed-4b .pb-instruction-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-left: 4px solid var(--blue);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: #c7d9f8;
+    line-height: 1.6;
+  }
+
+  .embed-4b .pb-instruction-banner .icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+
+  .embed-4b .pb-tests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 8px;
+  }
+
+  .embed-4b .pb-test-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .embed-4b .pb-test-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .embed-4b .pb-card-header {
+    background: var(--navy);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .embed-4b .pb-card-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--off-white);
+  }
+
+  .embed-4b .pb-toggle-pill {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .embed-4b .pb-toggle-btn {
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-head);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 16px;
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .embed-4b .pb-toggle-btn.active {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .embed-4b .pb-card-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--gray-light);
+    overflow: hidden;
+  }
+
+  .embed-4b .pb-card-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.35s ease;
+  }
+
+  .embed-4b .pb-card-img.hidden { opacity: 0; pointer-events: none; }
+
+  .embed-4b .pb-after-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--orange);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .embed-4b .pb-card-image-wrap.is-after .pb-after-badge { opacity: 1; transform: scale(1); }
+
+  .embed-4b .pb-hotspot-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease 0.1s;
+    z-index: 3;
+  }
+
+  .embed-4b .pb-card-image-wrap.is-after .pb-hotspot-layer { opacity: 1; pointer-events: auto; }
+
+  .embed-4b .pb-hotspot {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2.5px solid #fff;
+    background: var(--orange);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    transition: background 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 0 0 4px rgba(249,115,22,0.35);
+    animation: pb-ring-pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pb-ring-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(249,115,22,0.35); }
+    50%       { box-shadow: 0 0 0 9px rgba(249,115,22,0.10); }
+  }
+
+  .embed-4b .pb-hotspot:hover,
+  .embed-4b .pb-hotspot:focus {
+    outline: none;
+    animation: none;
+    transform: translate(-50%, -50%) scale(1.18);
+    box-shadow: 0 0 0 7px rgba(249,115,22,0.5);
+  }
+
+  .embed-4b .pb-hotspot.open {
+    background: var(--navy);
+    border-color: var(--orange);
+    animation: none;
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 0 6px rgba(249,115,22,0.45);
+  }
+
+  .embed-4b .pb-hotspot-label {
+    position: absolute;
+    top: calc(50% + 22px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+    pointer-events: none;
+    background: rgba(0,0,0,0.5);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .embed-4b .pb-card-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--gray-light);
+    background: #fafafa;
+    font-size: 0.78rem;
+    color: var(--gray-steel);
+    line-height: 1.5;
+    min-height: 48px;
+    transition: color 0.2s;
+  }
+
+  .embed-4b .pb-card-footer.prompt-active { color: var(--navy); font-style: italic; }
+
+  .embed-4b .pb-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--gray-light);
+    color: var(--gray-steel);
+    font-size: 0.8rem;
+  }
+
+  .embed-4b .pb-img-placeholder svg { width: 40px; height: 40px; opacity: 0.4; }
+
+  /* Hotspot portal — global, fixed to viewport */
+  #hotspot-portal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    pointer-events: none;
+    width: 220px;
+    background: var(--navy);
+    color: var(--off-white);
+    border-top: 3px solid var(--orange);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.65), 0 0 0 1px rgba(249,115,22,0.3);
+    padding: 11px 14px;
+    font-family: var(--font-head);
+    font-size: 0.83rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  #hotspot-portal.visible { display: block; animation: portal-in 0.15s ease both; }
+
+  @keyframes portal-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  #hotspot-portal .tip-title {
+    display: block;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+
+  #hotspot-portal.caret-down::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--caret-x, 50%);
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--navy);
+  }
+
+  #hotspot-portal.caret-up::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: var(--caret-x, 50%);
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-bottom-color: var(--orange);
+  }
+
+  @media (max-width: 680px) {
+    .embed-4b .pb-tests-grid { grid-template-columns: 1fr; }
+    #hotspot-portal { width: 190px; font-size: 0.78rem; }
+  }
+
   </style>
 </head>
 <body>
@@ -1229,9 +1743,8 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   </section>
 
 
-  <!-- ===================================================
-       SECTION 4A — DP1 Path A: What Led Up to the Changes?
-  =================================================== -->
+
+
   <section id="section-4a" class="section">
     <div class="section-header">
       <div class="section-tag">Section 4A · DP1 Path A</div>
@@ -1239,53 +1752,58 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     </div>
     <div class="section-body">
 
-      <div class="narrative">
-        <!-- PLACEHOLDER: Path A narrative — speed / motion before crash -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Path A Narrative</div>
-          <div class="placeholder-desc">
-            Introduce the concept of speed and motion energy (kinetic energy)
-            leading up to the crash. No damage or impact imagery here — focus
-            purely on motion: how fast, how heavy, direction of travel.
-          </div>
+      <div class="embed-4a">
+
+        <!-- ── TRACK STAGE ── -->
+        <section class="cs-track-stage" id="trackStage" aria-label="Car test track simulation">
+          <img class="cs-track-bg"
+               src="images/Energy_track2.png"
+               alt="Test track"
+               onerror="this.style.display='none'" />
+          <img class="cs-car-on-track"
+               id="carImage"
+               src="images/Energy_car.png"
+               alt="Test car"
+               onerror="this.src='data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 32'><rect x='2' y='10' width='76' height='16' rx='4' fill='%23F97316'/><rect x='10' y='6' width='40' height='14' rx='3' fill='%23EA580C'/><circle cx='14' cy='28' r='5' fill='%231F2A44'/><circle cx='14' cy='28' r='3' fill='%236B7280'/><circle cx='60' cy='28' r='5' fill='%231F2A44'/><circle cx='60' cy='28' r='3' fill='%236B7280'/></svg>'" />
+        </section>
+
+        <!-- ── TEST BUTTONS ── -->
+        <div class="cs-test-controls" role="group" aria-label="Test replay controls">
+          <button class="cs-btn-test cs-btn-test-1" id="btnTest1" onclick="runTest(1)" aria-label="Replay Test Run 1">
+            <span class="cs-btn-icon">▶</span> Replay Test Run 1
+          </button>
+          <button class="cs-btn-test cs-btn-test-2" id="btnTest2" onclick="runTest(2)" aria-label="Replay Test Run 2">
+            <span class="cs-btn-icon">▶</span> Replay Test Run 2
+          </button>
+          <button class="cs-btn-test cs-btn-test-3" id="btnTest3" onclick="runTest(3)" aria-label="Replay Test Run 3">
+            <span class="cs-btn-icon">▶</span> Replay Test Run 3
+          </button>
         </div>
-      </div>
 
-      <!-- PLACEHOLDER: Speed / Motion Simulation -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Speed / Motion Simulation</div>
-        <div class="placeholder-desc">
-          Replace with an interactive simulation showing a car at different speeds
-          approaching a barrier. Students observe how kinetic energy changes with
-          speed. Use the buttons below as speed selectors.
+        <!-- ── DATA LOG ── -->
+        <div class="cs-data-log-card" aria-label="Test Data Log">
+          <div class="cs-card-title">Test Data Log</div>
+          <p style="font-size:0.85rem;color:var(--gray-steel);margin-bottom:12px;">
+            Record what you notice during each test run. Focus on how the car moves.
+          </p>
+          <table class="cs-data-table" aria-label="Recorded test results">
+            <thead>
+              <tr>
+                <th>Test Run</th>
+                <th>Status</th>
+                <th>Observation</th>
+                <th>Replayed At</th>
+              </tr>
+            </thead>
+            <tbody id="dataLogBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      <!-- Simulation speed selector buttons (placeholders) -->
-      <div class="sim-buttons">
-        <div class="sim-btn">Slow</div>
-        <div class="sim-btn">Medium</div>
-        <div class="sim-btn">Fast</div>
-      </div>
+      </div><!-- /.embed-4a -->
 
-      <!-- PLACEHOLDER: Simulation output / data area -->
-      <div class="img-placeholder" style="min-height: 180px;">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M3 3v18h18"/><path d="m7 16 4-4 4 4 4-7"/>
-        </svg>
-        <span>Placeholder — Simulation Output / Speed-Energy Graph</span>
-      </div>
-
-      <!-- PLACEHOLDER: Interaction (data table, observation prompt, etc.) -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Interaction Area</div>
-        <div class="placeholder-desc">
-          Add any follow-up interaction: a simple data table for students to
-          record observations at each speed, or a drag-and-drop energy comparison.
-        </div>
-      </div>
-
-      <!-- Field Journal -->
+      <!-- ── FIELD JOURNAL (lesson's own) ── -->
       <div class="field-journal">
         <div class="journal-header">
           <div class="journal-icon">📓</div>
@@ -1293,9 +1811,8 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
           <div class="journal-save-badge" id="saved-s4a">✔ Saved</div>
         </div>
         <div class="journal-prompt">
-          [Placeholder — Path A Journal Prompt]<br>
-          <em>Example: "What did you notice about the car's energy as the speed
-          increased? What do you predict will happen at the moment of impact?"</em>
+          <strong>What did you notice about how the car moved in each test run?</strong><br>
+          <em>How did the motion differ between the three test runs? What patterns do you notice?</em>
         </div>
         <textarea class="journal-textarea"
                   id="journal-s4a"
@@ -1303,7 +1820,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
                   oninput="saveJournal('s4a', this.value)"></textarea>
       </div>
 
-      <!-- Navigation — converges to Section 5 -->
+      <!-- ── NAVIGATION ── -->
       <div class="nav-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
         <button class="btn btn-continue" onclick="navigateTo('section-5')">Continue →</button>
@@ -1313,9 +1830,8 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   </section>
 
 
-  <!-- ===================================================
-       SECTION 4B — DP1 Path B: What Were the Changes?
-  =================================================== -->
+  
+
   <section id="section-4b" class="section">
     <div class="section-header">
       <div class="section-tag">Section 4B · DP1 Path B</div>
@@ -1323,66 +1839,108 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     </div>
     <div class="section-body">
 
-      <div class="narrative">
-        <!-- PLACEHOLDER: Path B narrative — impact / damage evidence -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Path B Narrative</div>
-          <div class="placeholder-desc">
-            Guide students to examine the physical evidence of a crash: deformation,
-            bending, breaking. What does the damage tell us? Frame this as forensic
-            science — reading what happened from what remains.
-          </div>
-        </div>
-      </div>
+      <div class="embed-4b">
 
-      <!-- PLACEHOLDER: Impact image comparison -->
-      <div class="placeholder">
-        <div class="placeholder-label">🖼 Placeholder — Impact Image Comparison</div>
-        <div class="placeholder-desc">
-          Replace with a side-by-side or slider comparison of crash damage at
-          three impact levels. Students observe what changed and how much.
+        <!-- ── INSTRUCTION BANNER ── -->
+        <div class="pb-instruction-banner">
+          <span class="icon">🔍</span>
+          <span>
+            <strong>Your job:</strong> Toggle between <em>Before Impact</em> and <em>After Impact</em> for each test.
+            Tap the orange hotspots to examine specific areas.
+            Compare what changed across the test runs.
+            Record your observations in your Field Journal below.
+          </span>
         </div>
-      </div>
 
-      <!-- Image grid: Low / Medium / High Impact -->
-      <div class="img-grid">
-        <div>
-          <div class="img-placeholder" style="min-height:140px;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-            </svg>
-            <span>Low Impact</span>
-          </div>
-        </div>
-        <div>
-          <div class="img-placeholder" style="min-height:140px;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-            </svg>
-            <span>Medium Impact</span>
-          </div>
-        </div>
-        <div>
-          <div class="img-placeholder" style="min-height:140px;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-            </svg>
-            <span>High Impact</span>
-          </div>
-        </div>
-      </div>
+        <!-- ── TEST CARDS GRID ── -->
+        <div class="pb-tests-grid" id="testsGrid">
 
-      <!-- PLACEHOLDER: Optional hotspot interaction -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Optional Hotspot Interaction</div>
-        <div class="placeholder-desc">
-          Add clickable hotspots on the impact images so students can tap
-          specific areas (crumpled hood, broken windshield) to reveal evidence
-          labels or questions. Replace this block with your hotspot component.
-        </div>
-      </div>
+          <!-- TEST RUN 1 -->
+          <div class="pb-test-card" id="card-1">
+            <div class="pb-card-header">
+              <span class="pb-card-label">Test Run 1</span>
+              <div class="pb-toggle-pill" role="group" aria-label="Test 1 image toggle">
+                <button class="pb-toggle-btn active" data-card="1" data-state="before" onclick="setToggle(1,'before')" aria-pressed="true">Before Impact</button>
+                <button class="pb-toggle-btn" data-card="1" data-state="after" onclick="setToggle(1,'after')" aria-pressed="false">After Impact</button>
+              </div>
+            </div>
+            <div class="pb-card-image-wrap" id="imgWrap-1">
+              <div class="pb-img-placeholder" id="placeholder-1-before">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 8"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span>images/Energy_no impact.png</span>
+              </div>
+              <img class="pb-card-img" id="img-1-before" src="images/Energy_no impact.png" alt="Vehicle before impact — Test 1" onload="pbOnImgLoad('1','before')" onerror="pbOnImgError('1','before')" />
+              <img class="pb-card-img hidden" id="img-1-after" src="images/Energy_TestRun1.png" alt="Vehicle after impact — Test 1" onload="pbOnImgLoad('1','after')" onerror="pbOnImgError('1','after')" />
+              <div class="pb-after-badge">After Impact</div>
+              <div class="pb-hotspot-layer" id="hotspots-1">
+                <button class="pb-hotspot" style="left:76%; top:66%;" data-card="1" data-title="Bumper" data-text="The bumper is the front part of the vehicle closest to the barrier. In this test run, it shows only a small change at the point of impact." onclick="toggleHotspot(this)" aria-label="Bumper — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+                <button class="pb-hotspot" style="left:70%; top:58%;" data-card="1" data-title="Crumple Zone" data-text="The crumple zone is the front section designed to bend during a crash. In this test run, it remains mostly unchanged." onclick="toggleHotspot(this)" aria-label="Crumple Zone — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+                <button class="pb-hotspot" style="left:54%; top:39%;" data-card="1" data-title="Hood" data-text="The hood covers the front engine area. In this test run, the hood keeps nearly the same shape." onclick="toggleHotspot(this)" aria-label="Hood — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="1" data-title="Barrier" data-text="The barrier is the solid crash block the vehicle hits. It stays in place while the vehicle changes shape." onclick="toggleHotspot(this)" aria-label="Barrier — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+              </div>
+            </div>
+            <div class="pb-card-footer" id="footer-1">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
+          </div><!-- /test-card 1 -->
 
-      <!-- Field Journal -->
+          <!-- TEST RUN 2 -->
+          <div class="pb-test-card" id="card-2">
+            <div class="pb-card-header">
+              <span class="pb-card-label">Test Run 2</span>
+              <div class="pb-toggle-pill" role="group" aria-label="Test 2 image toggle">
+                <button class="pb-toggle-btn active" data-card="2" data-state="before" onclick="setToggle(2,'before')" aria-pressed="true">Before Impact</button>
+                <button class="pb-toggle-btn" data-card="2" data-state="after" onclick="setToggle(2,'after')" aria-pressed="false">After Impact</button>
+              </div>
+            </div>
+            <div class="pb-card-image-wrap" id="imgWrap-2">
+              <div class="pb-img-placeholder" id="placeholder-2-before">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 8"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span>images/Energy_no impact.png</span>
+              </div>
+              <img class="pb-card-img" id="img-2-before" src="images/Energy_no impact.png" alt="Vehicle before impact — Test 2" onload="pbOnImgLoad('2','before')" onerror="pbOnImgError('2','before')" />
+              <img class="pb-card-img hidden" id="img-2-after" src="images/Energy_TestRun2.png" alt="Vehicle after impact — Test 2" onload="pbOnImgLoad('2','after')" onerror="pbOnImgError('2','after')" />
+              <div class="pb-after-badge">After Impact</div>
+              <div class="pb-hotspot-layer" id="hotspots-2">
+                <button class="pb-hotspot" style="left:77%; top:67%;" data-card="2" data-title="Bumper" data-text="The bumper is heavily compressed near the barrier. Its original shape is difficult to see after the impact." onclick="toggleHotspot(this)" aria-label="Bumper — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+                <button class="pb-hotspot" style="left:72%; top:58%;" data-card="2" data-title="Crumple Zone" data-text="The crumple zone shows major deformation. A larger part of the front structure has bent and absorbed energy from the crash." onclick="toggleHotspot(this)" aria-label="Crumple Zone — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+                <button class="pb-hotspot" style="left:61%; top:39%;" data-card="2" data-title="Hood" data-text="The hood is bent upward and pushed back. This shows that the impact affected more than just the bumper." onclick="toggleHotspot(this)" aria-label="Hood — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="2" data-title="Barrier" data-text="The barrier remains in place. The vehicle presses into it over a larger area during this test run." onclick="toggleHotspot(this)" aria-label="Barrier — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+              </div>
+            </div>
+            <div class="pb-card-footer" id="footer-2">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
+          </div><!-- /test-card 2 -->
+
+          <!-- TEST RUN 3 -->
+          <div class="pb-test-card" id="card-3">
+            <div class="pb-card-header">
+              <span class="pb-card-label">Test Run 3</span>
+              <div class="pb-toggle-pill" role="group" aria-label="Test 3 image toggle">
+                <button class="pb-toggle-btn active" data-card="3" data-state="before" onclick="setToggle(3,'before')" aria-pressed="true">Before Impact</button>
+                <button class="pb-toggle-btn" data-card="3" data-state="after" onclick="setToggle(3,'after')" aria-pressed="false">After Impact</button>
+              </div>
+            </div>
+            <div class="pb-card-image-wrap" id="imgWrap-3">
+              <div class="pb-img-placeholder" id="placeholder-3-before">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 8"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span>images/Energy_no impact.png</span>
+              </div>
+              <img class="pb-card-img" id="img-3-before" src="images/Energy_no impact.png" alt="Vehicle before impact — Test 3" onload="pbOnImgLoad('3','before')" onerror="pbOnImgError('3','before')" />
+              <img class="pb-card-img hidden" id="img-3-after" src="images/Energy_TestRun3.png" alt="Vehicle after impact — Test 3" onload="pbOnImgLoad('3','after')" onerror="pbOnImgError('3','after')" />
+              <div class="pb-after-badge">After Impact</div>
+              <div class="pb-hotspot-layer" id="hotspots-3">
+                <button class="pb-hotspot" style="left:77%; top:67%;" data-card="3" data-title="Bumper" data-text="The bumper is pushed inward more than in Test Run 1, but less than in Test Run 2." onclick="toggleHotspot(this)" aria-label="Bumper — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+                <button class="pb-hotspot" style="left:71%; top:58%;" data-card="3" data-title="Crumple Zone" data-text="The crumple zone shows visible bending. More of the front structure changes shape compared with Test Run 1." onclick="toggleHotspot(this)" aria-label="Crumple Zone — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+                <button class="pb-hotspot" style="left:57%; top:39%;" data-card="3" data-title="Hood" data-text="The hood begins to bend slightly. The change is noticeable, but not as severe as in Test Run 2." onclick="toggleHotspot(this)" aria-label="Hood — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="3" data-title="Barrier" data-text="The barrier is the object the vehicle hits. It stays still while the front of the vehicle changes shape." onclick="toggleHotspot(this)" aria-label="Barrier — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+              </div>
+            </div>
+            <div class="pb-card-footer" id="footer-3">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
+          </div><!-- /test-card 3 -->
+
+        </div><!-- /pb-tests-grid -->
+
+      </div><!-- /.embed-4b -->
+
+      <!-- ── FIELD JOURNAL (lesson's own) ── -->
       <div class="field-journal">
         <div class="journal-header">
           <div class="journal-icon">📓</div>
@@ -1390,9 +1948,8 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
           <div class="journal-save-badge" id="saved-s4b">✔ Saved</div>
         </div>
         <div class="journal-prompt">
-          [Placeholder — Path B Journal Prompt]<br>
-          <em>Example: "Look at the three impact images. What changed at each
-          level? What patterns do you notice about where the damage occurs?"</em>
+          <strong>What changes do you observe during each crash?</strong><br>
+          <em>How do the changes differ between the test runs? What patterns do you notice about where the damage occurs?</em>
         </div>
         <textarea class="journal-textarea"
                   id="journal-s4b"
@@ -1400,7 +1957,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
                   oninput="saveJournal('s4b', this.value)"></textarea>
       </div>
 
-      <!-- Navigation — converges to Section 5 -->
+      <!-- ── NAVIGATION ── -->
       <div class="nav-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
         <button class="btn btn-continue" onclick="navigateTo('section-5')">Continue →</button>
@@ -1410,7 +1967,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   </section>
 
 
-  <!-- ===================================================
+    <!-- ===================================================
        SECTION 5 — DP1 Convergence: Connecting Motion and Change
   =================================================== -->
   <section id="section-5" class="section">
@@ -2444,7 +3001,284 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     arrow.textContent = expanded ? '\u25BC' : '\u25B2';
   }
 
+  // ── CARSIM — Section 4A interactive ──────────────────────────
+
+  const CAR_START_X      = 12;
+  const CAR_STOP_X       = 66;
+  const FRAME_RATE_MS    = 16;
+  const TEST_1_BASE_SPEED = 0.25;
+
+  const TEST_SPEEDS = {
+    1: TEST_1_BASE_SPEED,
+    2: TEST_1_BASE_SPEED * (9 / 3),  // HIGH — fastest
+    3: TEST_1_BASE_SPEED * (5 / 3)   // MEDIUM — middle
+  };
+
+  const CS_STORAGE_PREFIX      = 'sins_dp1_pathA_';
+  const CS_LS_LOG_KEY          = CS_STORAGE_PREFIX + 'testLog';
+  const CS_LS_OBSERVATIONS_KEY = CS_STORAGE_PREFIX + 'observations';
+
+  let csAnimationTimer = null;
+  let csIsAnimating    = false;
+  let csCurrentCarX    = CAR_START_X;
+  let csTestLog        = { 1: null, 2: null, 3: null };
+  let csObservations   = { 1: '', 2: '', 3: '' };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    csLoadPersistedData();
+    csResetCarToStart();
+    csRenderDataLog();
+  });
+
+  function runTest(testNumber) {
+    if (csIsAnimating) return;
+    csSetButtonsDisabled(true);
+    const btn = document.getElementById('btnTest' + testNumber);
+    btn.classList.add('running');
+    btn.textContent = '';
+    const icon = document.createElement('span');
+    icon.className = 'cs-btn-icon';
+    icon.textContent = '⏵';
+    btn.appendChild(icon);
+    btn.appendChild(document.createTextNode(` Running Test ${testNumber}\u2026`));
+    csResetCarToStart();
+    setTimeout(() => { csAnimateCar(testNumber); }, 400);
+  }
+
+  function csAnimateCar(testNumber) {
+    csIsAnimating = true;
+    const speedPerFrame = TEST_SPEEDS[testNumber];
+    const car = document.getElementById('carImage');
+    csAnimationTimer = setInterval(() => {
+      csCurrentCarX += speedPerFrame;
+      if (csCurrentCarX >= CAR_STOP_X - 1) {
+        csCurrentCarX = CAR_STOP_X;
+        car.style.left = csCurrentCarX + '%';
+        csFinishTest(testNumber);
+        return;
+      }
+      car.style.left = csCurrentCarX + '%';
+    }, FRAME_RATE_MS);
+  }
+
+  function csFinishTest(testNumber) {
+    clearInterval(csAnimationTimer);
+    csIsAnimating = false;
+    const now = new Date();
+    csTestLog[testNumber] = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    csSavePersistedData();
+    csRenderDataLog();
+    csSetButtonsDisabled(false);
+    csResetButtonLabel(testNumber);
+  }
+
+  function csResetCarToStart() {
+    clearInterval(csAnimationTimer);
+    csIsAnimating = false;
+    csCurrentCarX = CAR_START_X;
+    const car = document.getElementById('carImage');
+    if (car) car.style.left = CAR_START_X + '%';
+  }
+
+  function csSetButtonsDisabled(disabled) {
+    [1, 2, 3].forEach(n => {
+      const btn = document.getElementById('btnTest' + n);
+      if (btn) btn.disabled = disabled;
+    });
+  }
+
+  function csResetButtonLabel(testNumber) {
+    const btn = document.getElementById('btnTest' + testNumber);
+    if (!btn) return;
+    btn.classList.remove('running');
+    btn.innerHTML = `<span class="cs-btn-icon">▶</span> Replay Test Run ${testNumber}`;
+  }
+
+  function csRenderDataLog() {
+    const tbody = document.getElementById('dataLogBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    [1, 2, 3].forEach(n => {
+      const ran     = csTestLog[n] !== null;
+      const timeStr = csTestLog[n] || '—';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-family:var(--font-head);font-size:14px;color:var(--off-white);">Test Run ${n}</td>
+        <td>
+          <span class="cs-log-status">
+            <span class="cs-log-dot ${ran ? 'done' : ''}"></span>
+            <span style="color:var(--off-white);font-size:12px;">${ran ? 'Replayed' : 'Not yet run'}</span>
+          </span>
+        </td>
+        <td>
+          <textarea class="cs-obs-textarea"
+            placeholder="Record an observation..."
+            aria-label="Observation for Test Run ${n}"
+            oninput="csSaveObservation(${n}, this.value)"
+          ></textarea>
+        </td>
+        <td><span class="cs-log-time">${timeStr}</span></td>
+      `;
+      tbody.appendChild(tr);
+      tr.querySelector('textarea').value = csObservations[n] || '';
+    });
+  }
+
+  function csSaveObservation(n, value) {
+    csObservations[n] = value;
+    try { localStorage.setItem(CS_LS_OBSERVATIONS_KEY, JSON.stringify(csObservations)); } catch(e) {}
+  }
+
+  function csSavePersistedData() {
+    try { localStorage.setItem(CS_LS_LOG_KEY, JSON.stringify(csTestLog)); } catch(e) {}
+    try { localStorage.setItem(CS_LS_OBSERVATIONS_KEY, JSON.stringify(csObservations)); } catch(e) {}
+  }
+
+  function csLoadPersistedData() {
+    try {
+      const savedLog = localStorage.getItem(CS_LS_LOG_KEY);
+      if (savedLog) {
+        const parsed = JSON.parse(savedLog);
+        if (parsed && typeof parsed === 'object') {
+          [1,2,3].forEach(n => { if (parsed[n] !== undefined) csTestLog[n] = parsed[n]; });
+        }
+      }
+    } catch(e) {}
+    try {
+      const savedObs = localStorage.getItem(CS_LS_OBSERVATIONS_KEY);
+      if (savedObs) {
+        const parsed = JSON.parse(savedObs);
+        if (parsed && typeof parsed === 'object') {
+          [1,2,3].forEach(n => { if (parsed[n] !== undefined) csObservations[n] = parsed[n]; });
+        }
+      }
+    } catch(e) {}
+  }
+
+
+  // ── DP1PB — Section 4B interactive ──────────────────────────
+
+  const PB_STORAGE_KEY = 'sins_dp1_pathB_journal';
+  const PB_CARDS       = [1, 2, 3];
+  const pbCardState    = { 1: 'before', 2: 'before', 3: 'before' };
+
+  const pbPortal        = document.getElementById('hotspot-portal');
+  let   pbActiveHotspot = null;
+
+  function showPortal(btn) {
+    const title  = btn.dataset.title || '';
+    const text   = btn.dataset.text  || '';
+    pbPortal.innerHTML = `<span class="tip-title">${title}</span>${text}`;
+    const TIP_W = window.innerWidth <= 680 ? 190 : 220;
+    const GAP   = 12;
+    const PAD   = 10;
+    pbPortal.style.cssText = `display:block;visibility:hidden;position:fixed;left:-9999px;top:0;width:${TIP_W}px;`;
+    const tipH = pbPortal.offsetHeight;
+    const btnR = btn.getBoundingClientRect();
+    const vpW  = window.innerWidth;
+    const vpH  = window.innerHeight;
+    const btnCX = btnR.left + btnR.width / 2;
+    let left    = btnCX - TIP_W / 2;
+    left = Math.max(PAD, Math.min(left, vpW - TIP_W - PAD));
+    const rawCaret = btnCX - left;
+    const caretX   = Math.max(14, Math.min(rawCaret, TIP_W - 14));
+    let top, caretClass;
+    if (btnR.top - GAP >= tipH + PAD) {
+      top = btnR.top - tipH - GAP; caretClass = 'caret-down';
+    } else {
+      top = btnR.bottom + GAP; caretClass = 'caret-up';
+    }
+    top = Math.max(PAD, Math.min(top, vpH - tipH - PAD));
+    pbPortal.style.cssText = `display:block;visibility:visible;position:fixed;left:${left}px;top:${top}px;width:${TIP_W}px;--caret-x:${caretX}px;`;
+    pbPortal.className = `visible ${caretClass}`;
+  }
+
+  function hidePortal() {
+    pbPortal.className     = '';
+    pbPortal.style.display = 'none';
+    if (pbActiveHotspot) {
+      pbActiveHotspot.classList.remove('open');
+      pbActiveHotspot.setAttribute('aria-expanded', 'false');
+      pbActiveHotspot = null;
+    }
+  }
+
+  function toggleHotspot(btn) {
+    if (pbActiveHotspot === btn) { hidePortal(); return; }
+    if (pbActiveHotspot) {
+      pbActiveHotspot.classList.remove('open');
+      pbActiveHotspot.setAttribute('aria-expanded', 'false');
+    }
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    pbActiveHotspot = btn;
+    showPortal(btn);
+  }
+
+  function closeAllHotspots(cardNum) {
+    const layer = document.getElementById(`hotspots-${cardNum}`);
+    if (!layer) return;
+    layer.querySelectorAll('.pb-hotspot').forEach(h => {
+      h.classList.remove('open');
+      h.setAttribute('aria-expanded', 'false');
+    });
+    if (pbActiveHotspot && String(pbActiveHotspot.dataset.card) === String(cardNum)) hidePortal();
+  }
+
+  document.addEventListener('click', function(e) {
+    if (pbActiveHotspot && !e.target.closest('.pb-hotspot')) hidePortal();
+  });
+
+  function pbRepositionIfOpen() { if (pbActiveHotspot) showPortal(pbActiveHotspot); }
+  window.addEventListener('resize', pbRepositionIfOpen);
+  window.addEventListener('scroll', pbRepositionIfOpen, { passive: true });
+
+  function setToggle(cardNum, state) {
+    pbCardState[cardNum] = state;
+    const beforeImg = document.getElementById(`img-${cardNum}-before`);
+    const afterImg  = document.getElementById(`img-${cardNum}-after`);
+    const imgWrap   = document.getElementById(`imgWrap-${cardNum}`);
+    const footer    = document.getElementById(`footer-${cardNum}`);
+    document.querySelectorAll(`#card-${cardNum} .pb-toggle-pill [data-state]`).forEach(btn => {
+      const isActive = btn.dataset.state === state;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+    });
+    if (state === 'after') {
+      if (beforeImg) beforeImg.classList.add('hidden');
+      if (afterImg)  afterImg.classList.remove('hidden');
+      if (imgWrap)   imgWrap.classList.add('is-after');
+      if (footer)  { footer.textContent = 'Tap each orange circle to inspect the impact area.'; footer.classList.add('prompt-active'); }
+    } else {
+      if (afterImg)  afterImg.classList.add('hidden');
+      if (beforeImg) beforeImg.classList.remove('hidden');
+      if (imgWrap)   imgWrap.classList.remove('is-after');
+      if (footer)  { footer.innerHTML = 'Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.'; footer.classList.remove('prompt-active'); }
+      closeAllHotspots(cardNum);
+    }
+  }
+
+  function pbOnImgLoad(cardNum, state) {
+    const ph = document.getElementById(`placeholder-${cardNum}-${state}`);
+    if (ph) ph.style.display = 'none';
+  }
+
+  function pbOnImgError(cardNum, state) {
+    const img = document.getElementById(`img-${cardNum}-${state}`);
+    const ph  = document.getElementById(`placeholder-${cardNum}-${state}`);
+    if (img) img.style.display = 'none';
+    if (ph) {
+      ph.style.display = 'flex';
+      const label = ph.querySelector('span');
+      if (label && img) label.textContent = `Image not found: ${img.src.split('/').pop()}`;
+    }
+  }
+
+
 </script>
+
+<!-- Hotspot portal for section 4B (DP1PB) -->
+<div id="hotspot-portal" role="tooltip" aria-live="polite"></div>
 
 </body>
 </html>
