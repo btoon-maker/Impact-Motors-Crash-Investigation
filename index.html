@@ -1307,10 +1307,10 @@
 
   .embed-4b .pb-hotspot {
     position: absolute;
-    width: 34px;
-    height: 34px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    border: 2.5px solid #fff;
+    border: 2px solid #fff;
     background: var(--orange);
     cursor: pointer;
     display: flex;
@@ -1318,7 +1318,7 @@
     justify-content: center;
     transform: translate(-50%, -50%);
     transition: background 0.2s ease, border-color 0.2s ease;
-    box-shadow: 0 0 0 4px rgba(249,115,22,0.35);
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.35);
     animation: pb-ring-pulse 2.5s ease-in-out infinite;
   }
 
@@ -1344,21 +1344,7 @@
   }
 
   .embed-4b .pb-hotspot-label {
-    position: absolute;
-    top: calc(50% + 22px);
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.58rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #fff;
-    white-space: nowrap;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
-    pointer-events: none;
-    background: rgba(0,0,0,0.5);
-    padding: 1px 5px;
-    border-radius: 3px;
+    display: none; /* Labels now shown only via tooltip on click/hover */
   }
 
   .embed-4b .pb-card-footer {
@@ -1643,34 +1629,24 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
            style="width:100%; display:block; border-radius:var(--radius-lg); box-shadow:var(--shadow);">
     </div>
 
-    <!-- Dialogue -->
+<!-- Dialogue -->
     <div style="flex:1; min-width:260px;">
       <div class="dialogue">
-
         <p style="margin-bottom:14px;">
-          “You’ve just joined the crash analysis team as a <strong>Junior Crash Test Scientist</strong>.”
+          "Congratulations on joining the crash analysis team as a <strong>Junior Crash Test Scientist</strong>!"
         </p>
-
+        <p style="margin-bottom:14px; font-style:italic; color: var(--gray-steel);">
+          Molly continues...
+        </p>
         <p style="margin-bottom:14px;">
-          “We’ve been running tests, but something isn’t adding up.”
+          "We've been running tests, but something isn't adding up. Some vehicles show very little change. Others… don't. And we haven't been able to explain why."
         </p>
-
+        <p style="margin-bottom:14px; font-style:italic; color: var(--gray-steel);">
+          Molly pauses and looks at her computer.
+        </p>
         <p style="margin-bottom:14px;">
-          “Some vehicles show very little change. Others… don’t.”
+          "That's where you and your new team come in. I've made sure that all of the available test data has been loaded into your system. Please take a look and figure out what's happening."
         </p>
-
-        <p style="margin-bottom:14px;">
-          “We haven’t been able to explain why.”
-        </p>
-
-        <p style="margin-bottom:14px;">
-          “That’s where you come in.”
-        </p>
-
-        <p style="margin-bottom:14px;">
-          “All available test data has been loaded into your system. Please take a look and figure out what’s happening.”
-        </p>
-
       </div>
 
       <p style="margin-top:18px;">
@@ -1873,10 +1849,10 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
               <img class="pb-card-img hidden" id="img-1-after" src="images/Energy_TestRun1.png" alt="Vehicle after impact — Test 1" onload="pbOnImgLoad('1','after')" onerror="pbOnImgError('1','after')" />
               <div class="pb-after-badge">After Impact</div>
               <div class="pb-hotspot-layer" id="hotspots-1">
-                <button class="pb-hotspot" style="left:76%; top:66%;" data-card="1" data-title="Bumper" data-text="The bumper is the front part of the vehicle closest to the barrier. In this test run, it shows only a small change at the point of impact." onclick="toggleHotspot(this)" aria-label="Bumper — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
-                <button class="pb-hotspot" style="left:70%; top:58%;" data-card="1" data-title="Crumple Zone" data-text="The crumple zone is the front section designed to bend during a crash. In this test run, it remains mostly unchanged." onclick="toggleHotspot(this)" aria-label="Crumple Zone — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
-                <button class="pb-hotspot" style="left:54%; top:39%;" data-card="1" data-title="Hood" data-text="The hood covers the front engine area. In this test run, the hood keeps nearly the same shape." onclick="toggleHotspot(this)" aria-label="Hood — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
-                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="1" data-title="Barrier" data-text="The barrier is the solid crash block the vehicle hits. It stays in place while the vehicle changes shape." onclick="toggleHotspot(this)" aria-label="Barrier — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+                <button class="pb-hotspot" style="left:76%; top:66%;" data-card="1" data-title="Bumper" data-text="The bumper is the front part of the vehicle closest to the barrier. In this test run, it shows only a small change at the point of impact." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Bumper — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+                <button class="pb-hotspot" style="left:70%; top:58%;" data-card="1" data-title="Crumple Zone" data-text="The crumple zone is the front section designed to bend during a crash. In this test run, it remains mostly unchanged." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Crumple Zone — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+                <button class="pb-hotspot" style="left:54%; top:39%;" data-card="1" data-title="Hood" data-text="The hood covers the front engine area. In this test run, the hood keeps nearly the same shape." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Hood — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="1" data-title="Barrier" data-text="The barrier is the solid crash block the vehicle hits. It stays in place while the vehicle changes shape." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Barrier — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
               </div>
             </div>
             <div class="pb-card-footer" id="footer-1">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
@@ -1900,10 +1876,10 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
               <img class="pb-card-img hidden" id="img-2-after" src="images/Energy_TestRun2.png" alt="Vehicle after impact — Test 2" onload="pbOnImgLoad('2','after')" onerror="pbOnImgError('2','after')" />
               <div class="pb-after-badge">After Impact</div>
               <div class="pb-hotspot-layer" id="hotspots-2">
-                <button class="pb-hotspot" style="left:77%; top:67%;" data-card="2" data-title="Bumper" data-text="The bumper is heavily compressed near the barrier. Its original shape is difficult to see after the impact." onclick="toggleHotspot(this)" aria-label="Bumper — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
-                <button class="pb-hotspot" style="left:72%; top:58%;" data-card="2" data-title="Crumple Zone" data-text="The crumple zone shows major deformation. A larger part of the front structure has bent and absorbed energy from the crash." onclick="toggleHotspot(this)" aria-label="Crumple Zone — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
-                <button class="pb-hotspot" style="left:61%; top:39%;" data-card="2" data-title="Hood" data-text="The hood is bent upward and pushed back. This shows that the impact affected more than just the bumper." onclick="toggleHotspot(this)" aria-label="Hood — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
-                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="2" data-title="Barrier" data-text="The barrier remains in place. The vehicle presses into it over a larger area during this test run." onclick="toggleHotspot(this)" aria-label="Barrier — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+                <button class="pb-hotspot" style="left:77%; top:67%;" data-card="2" data-title="Bumper" data-text="The bumper is heavily compressed near the barrier. Its original shape is difficult to see after the impact." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Bumper — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+                <button class="pb-hotspot" style="left:72%; top:58%;" data-card="2" data-title="Crumple Zone" data-text="The crumple zone shows major deformation. A larger part of the front structure has bent and absorbed energy from the crash." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Crumple Zone — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+                <button class="pb-hotspot" style="left:61%; top:39%;" data-card="2" data-title="Hood" data-text="The hood is bent upward and pushed back. This shows that the impact affected more than just the bumper." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Hood — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="2" data-title="Barrier" data-text="The barrier remains in place. The vehicle presses into it over a larger area during this test run." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Barrier — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
               </div>
             </div>
             <div class="pb-card-footer" id="footer-2">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
@@ -1927,10 +1903,10 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
               <img class="pb-card-img hidden" id="img-3-after" src="images/Energy_TestRun3.png" alt="Vehicle after impact — Test 3" onload="pbOnImgLoad('3','after')" onerror="pbOnImgError('3','after')" />
               <div class="pb-after-badge">After Impact</div>
               <div class="pb-hotspot-layer" id="hotspots-3">
-                <button class="pb-hotspot" style="left:77%; top:67%;" data-card="3" data-title="Bumper" data-text="The bumper is pushed inward more than in Test Run 1, but less than in Test Run 2." onclick="toggleHotspot(this)" aria-label="Bumper — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
-                <button class="pb-hotspot" style="left:71%; top:58%;" data-card="3" data-title="Crumple Zone" data-text="The crumple zone shows visible bending. More of the front structure changes shape compared with Test Run 1." onclick="toggleHotspot(this)" aria-label="Crumple Zone — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
-                <button class="pb-hotspot" style="left:57%; top:39%;" data-card="3" data-title="Hood" data-text="The hood begins to bend slightly. The change is noticeable, but not as severe as in Test Run 2." onclick="toggleHotspot(this)" aria-label="Hood — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
-                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="3" data-title="Barrier" data-text="The barrier is the object the vehicle hits. It stays still while the front of the vehicle changes shape." onclick="toggleHotspot(this)" aria-label="Barrier — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+                <button class="pb-hotspot" style="left:77%; top:67%;" data-card="3" data-title="Bumper" data-text="The bumper is pushed inward more than in Test Run 1, but less than in Test Run 2." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Bumper — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+                <button class="pb-hotspot" style="left:71%; top:58%;" data-card="3" data-title="Crumple Zone" data-text="The crumple zone shows visible bending. More of the front structure changes shape compared with Test Run 1." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Crumple Zone — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+                <button class="pb-hotspot" style="left:57%; top:39%;" data-card="3" data-title="Hood" data-text="The hood begins to bend slightly. The change is noticeable, but not as severe as in Test Run 2." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Hood — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+                <button class="pb-hotspot" style="left:91%; top:55%;" data-card="3" data-title="Barrier" data-text="The barrier is the object the vehicle hits. It stays still while the front of the vehicle changes shape." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Barrier — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
               </div>
             </div>
             <div class="pb-card-footer" id="footer-3">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
@@ -3218,6 +3194,23 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     btn.setAttribute('aria-expanded', 'true');
     pbActiveHotspot = btn;
     showPortal(btn);
+  }
+
+  let pbHoverTimeout = null;
+
+  function hoverHotspot(btn) {
+    // Only show on hover if no hotspot is currently clicked open
+    if (pbActiveHotspot) return;
+    clearTimeout(pbHoverTimeout);
+    showPortal(btn);
+  }
+
+  function leaveHotspot(btn) {
+    // Hide hover tooltip only if no hotspot is clicked open
+    if (pbActiveHotspot) return;
+    pbHoverTimeout = setTimeout(() => {
+      if (!pbActiveHotspot) hidePortal();
+    }, 120);
   }
 
   function closeAllHotspots(cardNum) {
