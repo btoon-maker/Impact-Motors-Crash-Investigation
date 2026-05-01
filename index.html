@@ -3162,18 +3162,23 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   const PB_CARDS       = [1, 2, 3];
   const pbCardState    = { 1: 'before', 2: 'before', 3: 'before' };
 
-  const pbPortal        = document.getElementById('hotspot-portal');
-  let   pbActiveHotspot = null;
+  let pbPortal        = null;
+  let pbActiveHotspot = null;
+
+  function getPbPortal() {
+    if (!pbPortal) pbPortal = document.getElementById('hotspot-portal');
+    return pbPortal;
+  }
 
   function showPortal(btn) {
     const title  = btn.dataset.title || '';
     const text   = btn.dataset.text  || '';
-    pbPortal.innerHTML = `<span class="tip-title">${title}</span>${text}`;
+    getPbPortal().innerHTML = `<span class="tip-title">${title}</span>${text}`;
     const TIP_W = window.innerWidth <= 680 ? 190 : 220;
     const GAP   = 12;
     const PAD   = 10;
-    pbPortal.style.cssText = `display:block;visibility:hidden;position:fixed;left:-9999px;top:0;width:${TIP_W}px;`;
-    const tipH = pbPortal.offsetHeight;
+    getPbPortal().style.cssText = `display:block;visibility:hidden;position:fixed;left:-9999px;top:0;width:${TIP_W}px;`;
+    const tipH = getPbPortal().offsetHeight;
     const btnR = btn.getBoundingClientRect();
     const vpW  = window.innerWidth;
     const vpH  = window.innerHeight;
@@ -3189,13 +3194,13 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       top = btnR.bottom + GAP; caretClass = 'caret-up';
     }
     top = Math.max(PAD, Math.min(top, vpH - tipH - PAD));
-    pbPortal.style.cssText = `display:block;visibility:visible;position:fixed;left:${left}px;top:${top}px;width:${TIP_W}px;--caret-x:${caretX}px;`;
-    pbPortal.className = `visible ${caretClass}`;
+    getPbPortal().style.cssText = `display:block;visibility:visible;position:fixed;left:${left}px;top:${top}px;width:${TIP_W}px;--caret-x:${caretX}px;`;
+    getPbPortal().className = `visible ${caretClass}`;
   }
 
   function hidePortal() {
-    pbPortal.className     = '';
-    pbPortal.style.display = 'none';
+    getPbPortal().className     = '';
+    getPbPortal().style.display = 'none';
     if (pbActiveHotspot) {
       pbActiveHotspot.classList.remove('open');
       pbActiveHotspot.setAttribute('aria-expanded', 'false');
