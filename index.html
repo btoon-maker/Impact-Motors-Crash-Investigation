@@ -2005,59 +2005,80 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       <div class="convergence-tag">🔵 Both Paths Converge Here</div>
 
       <div class="narrative">
-        <p>Your investigation team has now shared evidence from the first crash-test review. Some teams started by looking at what was happening before the crash. Other teams started by looking at what happened during the crash.</p>
-        <p>Even though your teams started in different places, the evidence points to the same question: What patterns can we notice across the test runs?</p>
-        <p>Before your team explains why the crashes were different, look closely at the motion data and the post-impact observations.</p>
+        <p>Your <strong>Junior Crash Test Scientist</strong> team has now shared evidence from the first crash-test review.</p>
+        <p>Some teams studied how the car moved before the crash. Other teams studied what changed during the crash.</p>
+        <p>Now, compare the evidence from all three test runs. Look for patterns between the motion data and the post-impact observations.</p>
       </div>
 
-      <!-- Evidence Table -->
-      <div style="overflow-x:auto; margin: 20px 0;">
-        <table class="s5a-evidence-table">
-          <thead>
-            <tr>
-              <th>Test Run #</th>
-              <th>Motion Data</th>
-              <th>Post-Impact Observations</th>
-              <th>Post-Impact Image</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Test Run 1</strong><span>images/Energy_no impact.png</span></td>
-              <td>Slower motion before impact</td>
-              <td>Less front-end change after impact</td>
-              <td>
-                <img src="images/Energy_TestRun1.png"
-                     alt="Test Run 1 — vehicle front-end after impact, showing minimal deformation"
-                     class="s5a-evidence-img"
-                     onerror="this.style.display='none'" />
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Test Run 2</strong><<span>images/Energy_no impact.png</span>/td>
-              <td>Fastest motion before impact</td>
-              <td>Most front-end change after impact</td>
-              <td>
-                <img src="images/Energy_TestRun2.png"
-                     alt="Test Run 2 — vehicle front-end after impact, showing greatest deformation"
-                     class="s5a-evidence-img"
-                     onerror="this.style.display='none'" />
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Test Run 3</strong><span>images/Energy_no impact.png</span></td>
-              <td>Medium motion before impact</td>
-              <td>Moderate front-end change after impact</td>
-              <td>
-                <img src="images/Energy_TestRun3.png"
-                     alt="Test Run 3 — vehicle front-end after impact, showing moderate deformation"
-                     class="s5a-evidence-img"
-                     onerror="this.style.display='none'" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<!-- Evidence Table -->
+<div style="overflow-x:auto; margin: 20px 0;">
+  <table class="s5a-evidence-table">
+    <thead>
+      <tr>
+        <th>Test Run #</th>
+        <th>Motion Data</th>
+        <th>Post-Impact Observations</th>
+        <th>Post-Impact Image</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>
+          <strong>Test Run 1</strong>
+          <img src="images/Energy_no impact.png"
+               alt="Test Run 1 — vehicle before impact"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+        <td>Slower motion before impact</td>
+        <td>Less front-end change after impact</td>
+        <td>
+          <img src="images/Energy_TestRun1.png"
+               alt="Test Run 1 — vehicle front-end after impact, showing minimal deformation"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <strong>Test Run 2</strong>
+          <img src="images/Energy_no impact.png"
+               alt="Test Run 2 — vehicle before impact"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+        <td>Fastest motion before impact</td>
+        <td>Most front-end change after impact</td>
+        <td>
+          <img src="images/Energy_TestRun2.png"
+               alt="Test Run 2 — vehicle front-end after impact, showing greatest deformation"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <strong>Test Run 3</strong>
+          <img src="images/Energy_no impact.png"
+               alt="Test Run 3 — vehicle before impact"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+        <td>Medium motion before impact</td>
+        <td>Moderate front-end change after impact</td>
+        <td>
+          <img src="images/Energy_TestRun3.png"
+               alt="Test Run 3 — vehicle front-end after impact, showing moderate deformation"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
       <!-- Field Journal -->
       <div class="field-journal">
@@ -2067,14 +2088,16 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
           <div class="journal-save-badge" id="saved-s5a">✔ Saved</div>
         </div>
         <div class="journal-prompt">
-          <strong>What patterns do you notice across the test runs?</strong>
+          <strong>What patterns do you notice across the test runs? Use evidence from at least two test runs.</strong>
         </div>
         <textarea class="journal-textarea"
                   id="journal-s5a"
                   placeholder="Write your observations here…"
                   oninput="saveJournal('s5a', this.value)"></textarea>
       </div>
-
+<p class="section-bridge">
+  Once your team notices a pattern, the next step is to explain what might be causing it.
+</p>
       <!-- Navigation -->
       <div class="nav-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
