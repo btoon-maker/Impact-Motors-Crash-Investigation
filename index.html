@@ -2659,6 +2659,64 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       <!-- Navigation -->
       <div class="nav-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5c')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 5C — What Are We Wondering?
+  =================================================== -->
+  <section id="section-5c" class="section">
+    <div class="section-header">
+      <div class="section-title">What Are We Wondering?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <p>Your team pauses to think about what you've discovered.</p>
+      </div>
+
+      <div class="dialogue-block">
+        "If motion is different, then the energy involved must be different too…"
+      </div>
+
+      <div class="dialogue-block">
+        "And that energy has to go somewhere during the crash."
+      </div>
+
+      <div class="narrative">
+        <p>Now you have a new question to investigate.</p>
+      </div>
+
+      <div style="margin: 20px 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);">
+        <img src="images/Energy_wondering.png"
+             alt="Team wondering where the energy goes during a crash"
+             style="width: 100%; display: block; border-radius: var(--radius-lg);"
+             onerror="this.parentElement.style.display='none'" />
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s5c">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <strong>Where does the energy go during a crash?</strong>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s5c"
+                  placeholder="Write your thinking here…"
+                  oninput="saveJournal('s5c', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
         <button class="btn btn-continue" onclick="navigateTo('section-6')">Continue →</button>
       </div>
 
@@ -3016,7 +3074,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   =================================================== -->
   <section id="section-8" class="section">
     <div class="section-header convergence">
-      <div class="section-tag convergence">Section 8 · Convergence — DP2</div>
+      <div class="section-tag convergence">Section 9 · Convergence — DP2</div>
       <div class="section-title">Energy Did Not Disappear</div>
     </div>
     <div class="section-body convergence-body">
@@ -3091,7 +3149,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   =================================================== -->
   <section id="section-9" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 9 · Transfer &amp; Application — Part 1</div>
+      <div class="section-tag">Section 10 · Transfer &amp; Application — Part 1</div>
       <div class="section-title">Build the Energy Model</div>
     </div>
     <div class="section-body">
@@ -3179,7 +3237,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   =================================================== -->
   <section id="section-10" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 10 · Transfer &amp; Application — Part 2</div>
+      <div class="section-tag">Section 11 · Transfer &amp; Application — Part 2</div>
       <div class="section-title">Test a Safety Change</div>
     </div>
     <div class="section-body">
@@ -3271,7 +3329,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   =================================================== -->
   <section id="section-11" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 11 · Creation &amp; Communication</div>
+      <div class="section-tag">Section 12 · Creation &amp; Communication</div>
       <div class="section-title">Submit Your Scientific Explanation</div>
     </div>
     <div class="section-body">
@@ -3354,7 +3412,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   =================================================== -->
   <section id="section-12" class="section">
     <div class="section-header convergence">
-      <div class="section-tag convergence">Section 12 · Final Reflection</div>
+      <div class="section-tag convergence">Section 13 · Final Reflection</div>
       <div class="section-title">Close the Investigation</div>
     </div>
     <div class="section-body convergence-body">
@@ -3451,16 +3509,17 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     'section-4b': { num: 4,  title: 'Path B — Damage' },
     'section-5a': { num: 5,  title: 'Convergence 1A — What Did We Notice?' },
     'section-5b': { num: 5,  title: 'Convergence 1B — What Does It Mean?' },
-    'section-6':  { num: 6,  title: 'Decision Point 2' },
-    'section-7a': { num: 7,  title: 'Path A — Deformation' },
-    'section-7b': { num: 7,  title: 'Path B — Surroundings' },
-    'section-8':  { num: 8,  title: 'Convergence 2' },
-    'section-9':  { num: 9,  title: 'Build Energy Model' },
-    'section-10': { num: 10, title: 'Test Safety Change' },
-    'section-11': { num: 11, title: 'Submit Explanation' },
-    'section-12': { num: 12, title: 'Final Reflection' },
+    'section-5c': { num: 6,  title: 'What Are We Wondering?' },
+    'section-6':  { num: 7,  title: 'Decision Point 2' },
+    'section-7a': { num: 8,  title: 'Path A — Deformation' },
+    'section-7b': { num: 8,  title: 'Path B — Surroundings' },
+    'section-8':  { num: 9,  title: 'Convergence 2' },
+    'section-9':  { num: 10, title: 'Build Energy Model' },
+    'section-10': { num: 11, title: 'Test Safety Change' },
+    'section-11': { num: 12, title: 'Submit Explanation' },
+    'section-12': { num: 13, title: 'Final Reflection' },
   };
-  const TOTAL_SECTIONS = 12;
+  const TOTAL_SECTIONS = 13;
 
   // ── State ────────────────────────────────────────────────────
   let currentSection = 'section-0';
@@ -3670,13 +3729,14 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       { key: 's4b', label: 'Section 4B — Path B: Damage (DP1)' },
       { key: 's5a', label: 'Section 5A — Convergence 1: What Did We Notice?' },
       { key: 's5b', label: 'Section 5B — Convergence 1: What Does It Mean?' },
-      { key: 's7a', label: 'Section 7A — Path A: Deformation (DP2)' },
-      { key: 's7b', label: 'Section 7B — Path B: Surroundings (DP2)' },
-      { key: 's8',  label: 'Section 8 — Convergence 2: Energy Did Not Disappear' },
-      { key: 's9',  label: 'Section 9 — Build the Energy Model' },
-      { key: 's10', label: 'Section 10 — Test a Safety Change' },
-      { key: 's11', label: 'Section 11 — Scientific Explanation' },
-      { key: 's12', label: 'Section 12 — Final Reflection' },
+      { key: 's5c', label: 'Section 6 — What Are We Wondering?' },
+      { key: 's7a', label: 'Section 8A — Path A: Deformation (DP2)' },
+      { key: 's7b', label: 'Section 8B — Path B: Surroundings (DP2)' },
+      { key: 's8',  label: 'Section 9 — Convergence 2: Energy Did Not Disappear' },
+      { key: 's9',  label: 'Section 10 — Build the Energy Model' },
+      { key: 's10', label: 'Section 11 — Test a Safety Change' },
+      { key: 's11', label: 'Section 12 — Scientific Explanation' },
+      { key: 's12', label: 'Section 13 — Final Reflection' },
     ];
 
     lines.push('------------------------------------------------------');
