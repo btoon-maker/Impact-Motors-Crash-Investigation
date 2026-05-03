@@ -1,0 +1,5115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impact Motors: Crash Investigation — Stories in Science</title>
+
+  <!--.image-side {
+  ============================================================
+    SINS Lesson Shell: "Impact Motors: Crash Investigation"
+    Grade 5 | Impact Motors Crash Investigation
+    
+    STRUCTURE:
+      - 12 sections, one visible at a time
+      - Two decision points with branching paths (DP1, DP2)
+      - Field Journal auto-saved to localStorage per section
+      - Decision choices tracked in localStorage
+      - Export Journal on Section 12
+    
+    NAVIGATION FLOW:
+      1 → 2 → 3(DP1)
+        DP1-A: 3 → 4A → 5
+        DP1-B: 3 → 4B → 5
+      5 → 6(DP2)
+        DP2-A: 6 → 7A → 8
+        DP2-B: 6 → 7B → 8
+      8 → 9 → 10 → 11 → 12
+
+    PLACEHOLDERS: All teacher-replaceable content is marked with
+      [PLACEHOLDER: description] and wrapped in .placeholder divs.
+
+    DEPENDENCIES: None — no external libraries or fonts.
+  ============================================================
+  -->
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS — edit these to retheme
+    ============================================= */
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+    :root {
+      --navy:       #2E4A72;
+      --navy-dark:  #1E3354;
+      --navy-light: #3A5A87;
+      --orange:     #F97316;
+      --orange-dim: #c45c0d;
+      --blue:       #3B82F6;
+      --blue-dim:   #2563eb;
+      --off-white:  #F8FAFC;
+      --gray-light: #E5E7EB;
+      --gray-steel: #94A3B8;
+      --gray-mid:   #C1C9D4;
+      --success:    #22C55E;
+      --radius:     10px;
+      --radius-lg:  16px;
+      --shadow:     0 4px 24px rgba(0,0,0,0.35);
+      --shadow-sm:  0 2px 8px rgba(0,0,0,0.2);
+      --transition: 0.25s ease;
+      --font-head:  'Nunito', Verdana, sans-serif;
+      --font-body:  'Nunito', Verdana, sans-serif;
+      --font-ui:    'Nunito', Verdana, sans-serif;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #EAECF1;
+      color: var(--off-white);
+      font-family: var(--font-body);
+      font-size: 22px;
+      line-height: 1.7;
+      min-height: 100vh;
+      /* Subtle grid texture for lab-report atmosphere */
+      background-image:
+        linear-gradient(rgba(31,42,68,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31,42,68,0.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* =============================================
+       HEADER / MASTHEAD
+    ============================================= */
+    #masthead {
+      background: var(--navy);
+      border-bottom: 3px solid var(--orange);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+
+    #masthead .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Badge / logo area */
+    #masthead .badge {
+      width: 44px;
+      height: 44px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: bold;
+      font-size: 17px;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+
+    #masthead .title-group h1 {
+      font-family: var(--font-head);
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+
+    #masthead .title-group h2 {
+      font-family: var(--font-head);
+      font-size: 20px;
+      color: var(--off-white);
+      letter-spacing: 0.5px;
+    }
+
+    /* =============================================
+       PROGRESS BAR & INDICATOR
+    ============================================= */
+    #progress-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      min-width: 160px;
+    }
+
+    #progress-label {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      color: var(--gray-mid);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    #progress-bar-track {
+      width: 160px;
+      height: 6px;
+      background: var(--navy-light);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    #progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--blue));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* =============================================
+       MAIN LAYOUT
+    ============================================= */
+    #app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* =============================================
+       SECTION CARDS
+    ============================================= */
+    .section {
+      display: none; /* JS controls visibility */
+      animation: fadeIn 0.35s ease;
+    }
+    .section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section header strip */
+    .section-header {
+      background: var(--navy);
+      border-left: 5px solid var(--orange);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 22px 40px;
+      margin-bottom: 0;
+    }
+
+    /* Override border color for convergence sections (blue theme) */
+    .section-header.convergence {
+      border-left-color: var(--blue);
+    }
+
+    .section-tag {
+      font-family: var(--font-head);
+      font-size: 17px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .section-tag.convergence { color: var(--blue); }
+    .section-tag.dp          { color: #a78bfa; }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 31px;
+      color: var(--off-white);
+      line-height: 1.3;
+    }
+
+    /* Section body card */
+    .section-body {
+      background: var(--navy-light);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 36px 40px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top: none;
+    }
+
+    /* =============================================
+       PLACEHOLDER BLOCKS
+       (teacher-replaceable content areas)
+    ============================================= */
+    .placeholder {
+      background: rgba(249,115,22,0.06);
+      border: 2px dashed var(--orange);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 16px 0;
+      font-family: var(--font-ui);
+      font-size: 22px;
+      color: var(--orange);
+    }
+
+    .placeholder-label {
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 17px;
+      margin-bottom: 8px;
+      opacity: 0.8;
+    }
+
+    .placeholder-desc {
+      color: var(--gray-light);
+      font-size: 22px;
+      line-height: 1.5;
+    }
+
+    /* Image placeholder boxes */
+    .img-placeholder {
+      background: rgba(59,130,246,0.08);
+      border: 2px dashed var(--blue);
+      border-radius: var(--radius);
+      width: 100%;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-ui);
+      font-size: 17px;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 8px 0;
+    }
+
+    .img-placeholder svg {
+      opacity: 0.5;
+    }
+
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    /* Button group for simulation options */
+    .sim-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .sim-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 14px 10px;
+      background: rgba(59,130,246,0.12);
+      border: 2px dashed var(--blue);
+      border-radius: var(--radius);
+      color: var(--blue);
+      font-family: var(--font-ui);
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: not-allowed; /* placeholder — teacher activates */
+      text-align: center;
+    }
+
+    .sim-btn::before { content: '▶ '; }
+
+    /* Toggle placeholders for 7B */
+    .toggle-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .toggle-item {
+      background: rgba(59,130,246,0.08);
+      border: 2px dashed var(--blue);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-family: var(--font-ui);
+      font-size: 18px;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--blue);
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       NARRATIVE TEXT AREA
+    ============================================= */
+    .narrative {
+      font-size: 24px;
+      color: var(--off-white);
+      line-height: 1.8;
+      margin: 0 0 20px;
+    }
+
+    .narrative p { margin-bottom: 14px; color: var(--off-white); }
+
+    /* Scientist callout box */
+    .scientist-callout {
+      background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(59,130,246,0.08));
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 16px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .scientist-callout .icon {
+      font-size: 34px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .scientist-callout p {
+      font-size: 19px;
+      color: var(--off-white);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .dialogue {
+  border-left: 4px solid var(--orange); /* use your existing token */
+  padding-left: 16px;
+  margin-top: 10px;
+}
+
+    /* =============================================
+       FIELD JOURNAL
+    ============================================= */
+    .field-journal {
+      background: var(--gray-light);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 24px 0 0;
+      border-left: 4px solid var(--navy);
+    }
+
+    .journal-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .journal-icon {
+      width: 32px; height: 32px;
+      background: var(--navy);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .journal-label {
+      font-family: var(--font-ui);
+      font-weight: bold;
+      font-size: 22px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .journal-save-badge {
+      margin-left: auto;
+      font-family: var(--font-ui);
+      font-size: 17px;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .journal-save-badge.visible { opacity: 1; }
+
+    .journal-prompt {
+      font-size: 19px;
+      color: var(--navy);
+      margin-bottom: 10px;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .journal-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 20px;
+      color: var(--navy);
+      background: #fff;
+      border: 2px solid var(--gray-light);
+      border-radius: 6px;
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .journal-textarea:focus {
+      border-color: var(--blue);
+    }
+
+    /* =============================================
+       NAVIGATION BUTTONS
+    ============================================= */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-size: 19px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+      outline: none;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    /* Continue — primary */
+    .btn-continue {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-continue:hover { background: var(--blue-dim); }
+
+    /* Back — ghost */
+    .btn-back {
+      background: transparent;
+      color: var(--gray-mid);
+      border: 2px solid rgba(107,114,128,0.4);
+    }
+    .btn-back:hover { color: var(--off-white); border-color: var(--gray-steel); }
+
+    /* Decision buttons — orange */
+    .btn-decision {
+      background: var(--orange);
+      color: #fff;
+      flex: 1;
+      text-align: center;
+      font-size: 20px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-decision:hover { background: var(--orange-dim); }
+
+    /* Decision row wraps two choices */
+    .decision-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    /* Start button — large center */
+    .btn-start {
+      background: linear-gradient(135deg, var(--orange), #e8610a);
+      color: #fff;
+      padding: 18px 48px;
+      font-size: 20px;
+      letter-spacing: 1px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 28px rgba(249,115,22,0.4);
+      display: block;
+      margin: 28px auto 0;
+    }
+    .btn-start:hover {
+      box-shadow: 0 8px 36px rgba(249,115,22,0.55);
+      transform: translateY(-1px);
+    }
+
+    /* Export button */
+    .btn-export {
+      background: var(--success);
+      color: #fff;
+      padding: 12px 28px;
+    }
+    .btn-export:hover { background: #16a34a; }
+
+    /* =============================================
+       CONVERGENCE SECTION ACCENT
+    ============================================= */
+    .section-body.convergence-body {
+      border-top: 3px solid var(--blue);
+    }
+
+    .convergence-tag {
+      display: inline-block;
+      background: rgba(59,130,246,0.15);
+      color: var(--blue);
+      font-family: var(--font-ui);
+      font-size: 17px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 14px;
+    }
+
+    /* =============================================
+       SECTION 1 — COVER STYLE
+    ============================================= */
+    #section-1 .section-body {
+      text-align: center;
+      padding: 48px 28px;
+    }
+
+    .cover-eyebrow {
+      font-family: var(--font-head);
+      font-size: 17px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .cover-title {
+      font-family: var(--font-head);
+      font-size: 50px;
+      line-height: 1.2;
+      color: var(--off-white);
+      margin-bottom: 12px;
+    }
+
+    .cover-title span { color: var(--orange); }
+
+    .cover-subtitle {
+      font-size: 22px;
+      color: var(--gray-light);
+      margin-bottom: 8px;
+    }
+
+    .cover-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--blue));
+      border-radius: 2px;
+      margin: 24px auto;
+    }
+
+    /* =============================================
+       SECTION 12 — FINAL / EXPORT
+    ============================================= */
+    .export-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 600px) {
+      #masthead { flex-direction: column; align-items: flex-start; gap: 10px; }
+      #progress-wrap { align-items: flex-start; }
+      #progress-bar-track { width: 100%; }
+      .cover-title { font-size: 31px; }
+      .section-body { padding: 20px 16px; }
+      .decision-row { flex-direction: column; }
+      .btn-decision { font-size: 17px; }
+      .nav-row { flex-direction: column-reverse; }
+      .btn { width: 100%; text-align: center; }
+    }
+
+    /* =============================================
+       MISC UTILITIES
+    ============================================= */
+    .spacer { height: 20px; }
+    .text-blue { color: var(--blue); }
+    .text-orange { color: var(--orange); }
+
+    hr.section-rule {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin: 22px 0;
+    }
+
+    /* =============================================
+       UTILITY BUTTONS (masthead)
+    ============================================= */
+    #util-buttons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-util {
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.07);
+      color: var(--gray-light);
+      transition: background var(--transition), color var(--transition);
+      white-space: nowrap;
+    }
+    .btn-util:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    .btn-util-danger { border-color: rgba(249,115,22,0.4); color: var(--orange); }
+    .btn-util-danger:hover { background: rgba(249,115,22,0.12); }
+
+    /* =============================================
+       MISSION PATH STRIP
+    ============================================= */
+    #mission-path {
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .mp-label {
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--orange);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .mp-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mp-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 5px 12px 5px 8px;
+      transition: border-color var(--transition);
+    }
+    .mp-step.mp-done {
+      border-color: var(--orange);
+      background: rgba(249,115,22,0.08);
+    }
+
+    .mp-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--navy-light);
+      border: 1px solid var(--gray-steel);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--gray-mid);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mp-done .mp-num {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    .mp-step-title {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+    .mp-step-val {
+      font-family: var(--font-ui);
+      font-size: 17px;
+      color: var(--gray-light);
+    }
+    .mp-done .mp-step-val { color: var(--off-white); }
+
+    .mp-connector {
+      color: var(--gray-steel);
+      font-size: 19px;
+      letter-spacing: 2px;
+    }
+
+    /* =============================================
+       SECTION 0 — LANDING PAGE
+    ============================================= */
+
+    /* Section 0 has no section-header/body wrapper — full custom layout */
+    #section-0 { padding-bottom: 0; }
+
+    /* Hero card */
+    .s0-hero {
+      background: linear-gradient(150deg, var(--navy) 0%, #2d5080 60%, #1e3d6a 100%);
+      border-radius: var(--radius-lg);
+      padding: 56px 40px 52px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      /* Subtle radial glow behind title */
+      background-image:
+        radial-gradient(ellipse 70% 50% at 50% 40%, rgba(249,115,22,0.12) 0%, transparent 70%),
+        linear-gradient(150deg, var(--navy) 0%, #2d5080 60%, #1e3d6a 100%);
+    }
+
+    /* Decorative corner accent */
+    .s0-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--blue), var(--orange));
+    }
+
+    .s0-eyebrow {
+      font-family: var(--font-head);
+      font-size: 17px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 18px;
+    }
+
+    .s0-title {
+      font-family: var(--font-head);
+      font-size: clamp(30px, 6vw, 52px);
+      line-height: 1.15;
+      color: var(--off-white);
+      margin-bottom: 24px;
+    }
+
+    .s0-title span { color: var(--orange); }
+
+    .s0-desc {
+      font-size: 22px;
+      color: var(--gray-light);
+      max-width: 680px;
+      margin: 0 auto 14px;
+      line-height: 1.7;
+    }
+
+    .s0-mission {
+      font-size: 22px;
+      color: var(--off-white);
+      max-width: 680px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    .btn-s0-start {
+      background: linear-gradient(135deg, var(--orange), #e8610a);
+      color: #fff;
+      padding: 18px 52px;
+      font-size: 22px;
+      letter-spacing: 0.5px;
+      border-radius: 40px;
+      box-shadow: 0 6px 32px rgba(249,115,22,0.45);
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-ui);
+      font-weight: bold;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+    .btn-s0-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(249,115,22,0.55);
+    }
+    .btn-s0-start:active { transform: scale(0.97); }
+
+    /* Objectives accordion */
+    .s0-accordion {
+      background: #fff;
+      border-radius: var(--radius);
+      margin-top: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .s0-acc-toggle {
+      width: 100%;
+      background: #fff;
+      border: none;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      font-size: 19px;
+      font-weight: bold;
+      color: var(--navy);
+      text-align: left;
+      transition: background var(--transition);
+    }
+    .s0-acc-toggle:hover { background: var(--gray-light); }
+
+    .s0-acc-arrow {
+      font-size: 17px;
+      color: var(--gray-steel);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .s0-acc-body { /* hidden attr controls visibility */ }
+
+    .s0-acc-inner {
+      padding: 20px 20px 24px;
+      border-top: 1px solid var(--gray-light);
+      background: #fafbfc;
+    }
+
+    .s0-acc-heading {
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    /* Override placeholder colors inside accordion (light bg) */
+    .s0-acc-inner .placeholder {
+      background: rgba(59,130,246,0.05);
+      border-color: var(--blue);
+      color: var(--navy);
+    }
+    .s0-acc-inner .placeholder-desc { color: #374151; }
+
+    /* Footer */
+    .s0-footer {
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 16px;
+      color: var(--gray-steel);
+      padding: 20px 16px 8px;
+      line-height: 1.6;
+    }
+
+    /* =============================================
+       RESPONSIVE — section 0 + masthead additions
+    ============================================= */
+    @media (max-width: 600px) {
+      #util-buttons { gap: 6px; }
+      .btn-util { font-size: 16px; padding: 6px 9px; }
+      #mission-path { gap: 10px; }
+      .mp-steps { gap: 6px; }
+      .s0-hero { padding: 36px 20px 40px; }
+      .btn-s0-start { padding: 15px 36px; font-size: 19px; }
+    }
+
+  /* =============================================
+     SECTION 4A EMBED — Carsim Interactive
+     Scoped under .embed-4a to prevent conflicts
+  ============================================= */
+  .embed-4a {
+    /* Map carsim variables to lesson palette */
+    --offwhite:    var(--off-white);
+    --steelgray:   var(--gray-steel);
+    --navy-dark:   #141B2D;
+    --navy-light:  var(--navy);
+    --orange-glow: rgba(249,115,22,0.25);
+    --blue-glow:   rgba(59,130,246,0.20);
+    --radius-sm:   6px;
+    --radius-md:   var(--radius);
+    --radius-lg:   var(--radius-lg);
+    --shadow-card: var(--shadow);
+    font-family: var(--font-head);
+    margin-bottom: 24px;
+  }
+
+  .embed-4a .cs-track-stage {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background-color: #111827;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid rgba(59,130,246,0.25);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+  }
+
+  .embed-4a .cs-track-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .embed-4a .cs-car-on-track {
+    position: absolute;
+    bottom: -10px;
+    width: 320px;
+    height: auto;
+    left: 4%;
+    z-index: 10;
+  }
+
+  .embed-4a .cs-test-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .embed-4a .cs-btn-test {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-head);
+    font-size: clamp(13px, 2.2vw, 15px);
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .embed-4a .cs-btn-test::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.08);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .embed-4a .cs-btn-test:hover::after { opacity: 1; }
+  .embed-4a .cs-btn-test:active       { transform: scale(0.97); }
+  .embed-4a .cs-btn-test:disabled     { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .embed-4a .cs-btn-test-1 {
+    background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+    color: var(--off-white);
+    border: 2px solid var(--blue);
+  }
+  .embed-4a .cs-btn-test-1:hover:not(:disabled) { box-shadow: 0 0 12px var(--blue-glow); }
+
+  .embed-4a .cs-btn-test-2 {
+    background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+    color: var(--off-white);
+    border: 2px solid #8B5CF6;
+  }
+  .embed-4a .cs-btn-test-2:hover:not(:disabled) { box-shadow: 0 0 12px rgba(139,92,246,0.3); }
+
+  .embed-4a .cs-btn-test-3 {
+    background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+    color: var(--off-white);
+    border: 2px solid var(--orange);
+  }
+  .embed-4a .cs-btn-test-3:hover:not(:disabled) { box-shadow: 0 0 12px var(--orange-glow); }
+
+  .embed-4a .cs-btn-test.running { animation: cs-pulse-border 0.8s infinite alternate; }
+
+  @keyframes cs-pulse-border {
+    from { opacity: 0.7; }
+    to   { opacity: 1.0; }
+  }
+
+  .embed-4a .cs-btn-icon { margin-right: 6px; font-size: 14px; }
+
+  .embed-4a .cs-data-log-card {
+    background: var(--navy-dark);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .embed-4a .cs-card-title {
+    font-family: var(--font-head);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .embed-4a .cs-card-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
+
+  .embed-4a .cs-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-head);
+    font-size: clamp(12px, 1.8vw, 14px);
+  }
+
+  .embed-4a .cs-data-table th {
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-steel);
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(107,114,128,0.3);
+  }
+
+  .embed-4a .cs-data-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(107,114,128,0.15);
+    color: var(--off-white);
+    vertical-align: middle;
+  }
+
+  .embed-4a .cs-data-table tr:last-child td { border-bottom: none; }
+
+  .embed-4a .cs-log-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .embed-4a .cs-log-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-steel);
+    flex-shrink: 0;
+  }
+
+  .embed-4a .cs-log-dot.done { background: #22C55E; box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+
+  .embed-4a .cs-log-time {
+    font-size: 11px;
+    color: var(--gray-steel);
+  }
+
+  .embed-4a .cs-obs-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px 10px;
+    border: 1.5px solid rgba(107,114,128,0.4);
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.06);
+    color: var(--off-white);
+    font-family: var(--font-head);
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .embed-4a .cs-obs-textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.20);
+  }
+  .embed-4a .cs-obs-textarea::placeholder { color: var(--gray-steel); }
+
+  /* =============================================
+     SECTION 4B EMBED — DP1PB Interactive
+     Scoped under .embed-4b to prevent conflicts
+  ============================================= */
+  .embed-4b {
+    --offwhite:   var(--off-white);
+    --steelgray:  var(--gray-steel);
+    --navy-dark:  #141d30;
+    --orange-dim: rgba(249,115,22,0.15);
+    --blue-dim:   rgba(59,130,246,0.15);
+    --card-bg:    #ffffff;
+    --shadow-md:  0 4px 20px rgba(31,42,68,0.12);
+    --shadow-lg:  0 8px 40px rgba(31,42,68,0.18);
+    --radius:     var(--radius);
+    --radius-sm:  var(--radius);
+    font-family: var(--font-head);
+    margin-bottom: 24px;
+  }
+
+  .embed-4b .pb-instruction-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-left: 4px solid var(--blue);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: #c7d9f8;
+    line-height: 1.6;
+  }
+
+  .embed-4b .pb-instruction-banner .icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+
+  .embed-4b .pb-tests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 8px;
+  }
+
+  .embed-4b .pb-test-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .embed-4b .pb-test-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .embed-4b .pb-card-header {
+    background: var(--navy);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .embed-4b .pb-card-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--off-white);
+  }
+
+  .embed-4b .pb-toggle-pill {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .embed-4b .pb-toggle-btn {
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-head);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 16px;
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .embed-4b .pb-toggle-btn.active {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .embed-4b .pb-card-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--gray-light);
+    overflow: hidden;
+  }
+
+  .embed-4b .pb-card-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.35s ease;
+  }
+
+  .embed-4b .pb-card-img.hidden { opacity: 0; pointer-events: none; }
+
+  .embed-4b .pb-after-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--orange);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .embed-4b .pb-card-image-wrap.is-after .pb-after-badge { opacity: 1; transform: scale(1); }
+
+  .embed-4b .pb-hotspot-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease 0.1s;
+    z-index: 3;
+  }
+
+  .embed-4b .pb-card-image-wrap.is-after .pb-hotspot-layer { opacity: 1; pointer-events: auto; }
+
+  .embed-4b .pb-hotspot {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: var(--orange);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    transition: background 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.35);
+    animation: pb-ring-pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pb-ring-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(249,115,22,0.35); }
+    50%       { box-shadow: 0 0 0 9px rgba(249,115,22,0.10); }
+  }
+
+  .embed-4b .pb-hotspot:hover,
+  .embed-4b .pb-hotspot:focus {
+    outline: none;
+    animation: none;
+    transform: translate(-50%, -50%) scale(1.18);
+    box-shadow: 0 0 0 7px rgba(249,115,22,0.5);
+  }
+
+  .embed-4b .pb-hotspot.open {
+    background: var(--navy);
+    border-color: var(--orange);
+    animation: none;
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 0 6px rgba(249,115,22,0.45);
+  }
+
+  .embed-4b .pb-hotspot-label {
+    display: none; /* Labels now shown only via tooltip on click/hover */
+  }
+
+  .embed-4b .pb-card-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--gray-light);
+    background: #fafafa;
+    font-size: 0.78rem;
+    color: var(--gray-steel);
+    line-height: 1.5;
+    min-height: 48px;
+    transition: color 0.2s;
+  }
+
+  .embed-4b .pb-card-footer.prompt-active { color: var(--navy); font-style: italic; }
+
+  .embed-4b .pb-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--gray-light);
+    color: var(--gray-steel);
+    font-size: 0.8rem;
+  }
+
+  .embed-4b .pb-img-placeholder svg { width: 40px; height: 40px; opacity: 0.4; }
+
+  /* Hotspot portal — global, fixed to viewport */
+  #hotspot-portal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    pointer-events: none;
+    width: 220px;
+    background: var(--navy);
+    color: var(--off-white);
+    border-top: 3px solid var(--orange);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.65), 0 0 0 1px rgba(249,115,22,0.3);
+    padding: 11px 14px;
+    font-family: var(--font-head);
+    font-size: 0.83rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  #hotspot-portal.visible { display: block; animation: portal-in 0.15s ease both; }
+
+  @keyframes portal-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  #hotspot-portal .tip-title {
+    display: block;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+
+  #hotspot-portal.caret-down::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--caret-x, 50%);
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--navy);
+  }
+
+  #hotspot-portal.caret-up::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: var(--caret-x, 50%);
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-bottom-color: var(--orange);
+  }
+
+  @media (max-width: 680px) {
+    .embed-4b .pb-tests-grid { grid-template-columns: 1fr; }
+    #hotspot-portal { width: 190px; font-size: 0.78rem; }
+  }
+
+    /* =============================================
+       SECTION 5A — Evidence Table
+    ============================================= */
+    .s5a-evidence-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: 18px;
+      background: rgba(255,255,255,0.04);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .s5a-evidence-table th {
+      background: var(--navy-dark);
+      color: var(--blue);
+      font-family: var(--font-ui);
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 2px solid rgba(59,130,246,0.3);
+    }
+
+    .s5a-evidence-table td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      color: var(--off-white);
+      vertical-align: middle;
+    }
+
+    .s5a-evidence-table tr:last-child td { border-bottom: none; }
+
+    .s5a-evidence-table tr:hover td {
+      background: rgba(59,130,246,0.05);
+    }
+
+    .s5a-evidence-img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      border-radius: 6px;
+      display: block;
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (max-width: 600px) {
+      .s5a-evidence-img { max-width: 140px; }
+      .s5a-evidence-table th,
+      .s5a-evidence-table td { padding: 10px 8px; font-size: 16px; }
+    }
+    /* =============================================
+       SECTION 5B — Investigation Check Callout
+    ============================================= */
+  .investigation-check {
+    margin: 18px 0;
+    padding: 16px 18px;
+    background: rgba(249, 115, 22, 0.12);
+    border-left: 4px solid #F97316;
+    border-radius: 10px;
+    color: #ffffff;
+  }
+
+  .investigation-check-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #F97316;
+    margin-bottom: 6px;
+  }
+
+  .investigation-check p {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+    /* =============================================
+       DIALOGUE BLOCK — spoken character text
+       Use for dialogue lines from Molly or others.
+       Italicized, indented, with an orange left bar.
+    ============================================= */
+    .dialogue-block {
+      font-style: italic;
+      border-left: 3px solid var(--orange);
+      padding: 10px 16px;
+      margin: 14px 0 14px 8px;
+      color: var(--off-white);
+      line-height: 1.75;
+      background: rgba(249,115,22,0.06);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    /* Also apply to .dialogue-box (same intent, used in section 6) */
+    .dialogue-box {
+      font-style: italic;
+      border-left: 3px solid var(--orange);
+      padding: 10px 16px;
+      margin: 14px 0 14px 8px;
+      color: var(--off-white);
+      line-height: 1.75;
+      background: rgba(249,115,22,0.06);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    /* =============================================
+       NARRATIVE ACTION — non-spoken action lines
+       Use for scene-setting / action descriptions.
+       Normal text, slight spacing, no border or box.
+    ============================================= */
+    .narrative-action {
+      font-style: normal;
+      color: var(--gray-mid);
+      font-size: 20px;
+      margin: 12px 0;
+      line-height: 1.65;
+    }
+
+    /* =============================================
+       SECTIONS 7A & 7B — Energy Analysis Interactives
+       Scoped under .embed-7a and .embed-7b to prevent
+       conflicts with each other and with .btn globally.
+    ============================================= */
+    .embed-7a,
+    .embed-7b {
+      margin-bottom: 24px;
+      font-family: var(--font-body);
+    }
+
+    .embed-7a .ea-energy-analysis,
+    .embed-7b .ea-energy-analysis {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(249,115,22,0.25);
+      border-radius: var(--radius);
+      padding: 24px 28px 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .embed-7a .ea-energy-analysis__heading,
+    .embed-7b .ea-energy-analysis__heading {
+      font-family: var(--font-head);
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--off-white);
+      border-bottom: 3px solid var(--orange);
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+    }
+
+    .embed-7a .ea-energy-analysis__callout,
+    .embed-7b .ea-energy-analysis__callout {
+      background: rgba(59,130,246,0.1);
+      border-left: 4px solid var(--blue);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      color: var(--off-white);
+      line-height: 1.65;
+    }
+
+    .embed-7a .ea-energy-analysis__callout strong,
+    .embed-7b .ea-energy-analysis__callout strong {
+      display: block;
+      font-size: 13px;
+      color: var(--blue);
+      margin-bottom: 6px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .embed-7a .ea-run-prompt,
+    .embed-7b .ea-run-prompt {
+      font-size: 18px;
+      color: var(--gray-light);
+      margin-bottom: 10px;
+    }
+
+    .embed-7a .ea-energy-analysis__btn-group,
+    .embed-7b .ea-energy-analysis__btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* Base for interactive buttons — does NOT inherit lesson .btn */
+    .embed-7a .ea-btn,
+    .embed-7b .ea-btn {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: var(--radius);
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      letter-spacing: 0.5px;
+      border: none;
+      outline: none;
+    }
+
+    .embed-7a .ea-btn--run,
+    .embed-7b .ea-btn--run {
+      background: linear-gradient(135deg, #2E3D5C, #1F2A44);
+      color: var(--off-white);
+      border: 2px solid var(--blue);
+    }
+
+    .embed-7a .ea-btn--run:hover:not(:disabled),
+    .embed-7b .ea-btn--run:hover:not(:disabled) {
+      background: rgba(59,130,246,0.2);
+      box-shadow: 0 0 12px rgba(59,130,246,0.3);
+    }
+
+    .embed-7a .ea-btn--run.is-active,
+    .embed-7b .ea-btn--run.is-active {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+      box-shadow: 0 0 12px rgba(249,115,22,0.35);
+    }
+
+    .embed-7a .ea-btn--run.is-active:hover,
+    .embed-7b .ea-btn--run.is-active:hover {
+      background: var(--orange-dim);
+    }
+
+    .embed-7a .ea-btn--analyse,
+    .embed-7b .ea-btn--analyse {
+      background: var(--orange);
+      color: #fff;
+      border: 2px solid var(--orange);
+      display: block;
+      width: 100%;
+      margin-top: 14px;
+      font-size: 17px;
+      padding: 13px 20px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+    }
+
+    .embed-7a .ea-btn--analyse:hover,
+    .embed-7b .ea-btn--analyse:hover {
+      background: var(--orange-dim);
+      border-color: var(--orange-dim);
+    }
+
+    .embed-7a .ea-energy-analysis__table-wrap,
+    .embed-7b .ea-energy-analysis__table-wrap {
+      overflow-x: auto;
+      margin-top: 0;
+    }
+
+    .embed-7a .ea-energy-analysis__table,
+    .embed-7b .ea-energy-analysis__table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+    }
+
+    .embed-7a .ea-energy-analysis__table th,
+    .embed-7b .ea-energy-analysis__table th {
+      background: var(--navy-dark);
+      color: var(--blue);
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      border-bottom: 2px solid rgba(59,130,246,0.3);
+    }
+
+    .embed-7a .ea-energy-analysis__table td,
+    .embed-7b .ea-energy-analysis__table td {
+      text-align: center;
+      vertical-align: top;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.07);
+      width: 50%;
+      background: rgba(0,0,0,0.12);
+    }
+
+    .embed-7a .ea-energy-analysis__table img,
+    .embed-7b .ea-energy-analysis__table img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .embed-7a .ea-energy-analysis__result,
+    .embed-7b .ea-energy-analysis__result {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .embed-7a .ea-energy-analysis__result img,
+    .embed-7b .ea-energy-analysis__result img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid var(--orange);
+      border-radius: var(--radius);
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 0 16px rgba(249,115,22,0.2);
+    }
+
+    .embed-7a .ea-energy-analysis__result-label,
+    .embed-7b .ea-energy-analysis__result-label {
+      font-family: var(--font-ui);
+      font-size: 15px;
+      color: var(--gray-steel);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .embed-7a .is-hidden,
+    .embed-7b .is-hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .embed-7a .ea-energy-analysis,
+      .embed-7b .ea-energy-analysis { padding: 16px 14px 20px; }
+      .embed-7a .ea-btn--run,
+      .embed-7b .ea-btn--run { font-size: 15px; padding: 9px 14px; }
+    }
+
+    /* =============================================
+       SECTION 9 — Convergence DP2 Comparison Cards
+    ============================================= */
+    .s9-comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    @media (max-width: 600px) {
+      .s9-comparison-grid { grid-template-columns: 1fr; }
+    }
+
+    .s9-comparison-card {
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .s9-comparison-card-heading {
+      background: var(--navy-dark);
+      padding: 12px 16px;
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      border-bottom: 2px solid rgba(249,115,22,0.3);
+    }
+
+    .s9-comparison-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Scaffold box */
+    .s9-scaffold-box {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 20px 24px;
+      margin: 24px 0;
+      font-size: 20px;
+      line-height: 1.9;
+      color: var(--off-white);
+    }
+
+    .s9-scaffold-box p { margin-bottom: 10px; }
+    .s9-scaffold-box p:last-child { margin-bottom: 0; }
+
+    /* =============================================
+       SECTION 10 — Scientific Brief Builder
+    ============================================= */
+    .s10-brief-builder {
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin: 24px 0;
+    }
+
+    .s10-brief-builder-title {
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(249,115,22,0.25);
+    }
+
+    .s10-brief-field {
+      margin-bottom: 22px;
+    }
+
+    .s10-brief-field-label {
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--off-white);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .s10-brief-field-prompt {
+      font-size: 17px;
+      color: var(--gray-steel);
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .s10-brief-textarea {
+      width: 100%;
+      min-height: 90px;
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 19px;
+      color: var(--navy);
+      background: #fff;
+      border: 2px solid var(--gray-light);
+      border-radius: 6px;
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .s10-brief-textarea:focus { border-color: var(--blue); }
+
+    .s10-create-btn {
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--font-ui);
+      font-size: 19px;
+      font-weight: bold;
+      padding: 14px 36px;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 18px rgba(249,115,22,0.35);
+      transition: background var(--transition), box-shadow var(--transition);
+      display: block;
+      margin-top: 8px;
+    }
+
+    .s10-create-btn:hover { background: var(--orange-dim); box-shadow: 0 6px 24px rgba(249,115,22,0.45); }
+    .s10-create-btn:active { transform: scale(0.97); }
+
+    /* Generated Brief */
+    .s10-brief-output {
+      display: none;
+      margin-top: 32px;
+      background: var(--off-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      color: #1a1a2e;
+    }
+
+    .s10-brief-output.visible { display: block; animation: fadeIn 0.35s ease; }
+
+    .s10-brief-header {
+      background: var(--navy-dark);
+      padding: 20px 28px;
+      text-align: center;
+    }
+
+    .s10-brief-logo {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .s10-brief-doc-title {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--off-white);
+      line-height: 1.3;
+    }
+
+    .s10-brief-accent {
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--blue));
+    }
+
+    .s10-brief-body {
+      padding: 28px 32px;
+      background: var(--off-white);
+    }
+
+    .s10-brief-meta {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: #555;
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--gray-light);
+      line-height: 1.8;
+    }
+
+    .s10-brief-meta strong { color: var(--navy); }
+
+    .s10-brief-section {
+      margin-bottom: 22px;
+    }
+
+    .s10-brief-section-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .s10-brief-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-light);
+    }
+
+    .s10-brief-section-text {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+      color: #2d2d2d;
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 14px 18px;
+      border-left: 3px solid var(--orange);
+      min-height: 48px;
+      white-space: pre-wrap;
+    }
+
+    .s10-brief-footer {
+      background: var(--navy);
+      padding: 16px 28px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--gray-mid);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    /* =============================================
+       SECTION 11 — Final Wrap-Up
+    ============================================= */
+    .s11-takeaway-box {
+      background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(59,130,246,0.08));
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      margin: 24px 0;
+      font-size: 20px;
+      line-height: 1.75;
+      color: var(--off-white);
+    }
+
+    .s11-takeaway-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .s11-finish-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .s11-complete-badge {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      color: var(--success);
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+      .s10-brief-builder { padding: 18px 16px; }
+      .s10-brief-body    { padding: 18px 16px; }
+      .s10-brief-header  { padding: 16px; }
+      .s11-finish-row    { flex-direction: column; }
+      .s11-finish-row .btn { width: 100%; text-align: center; }
+    }
+
+    /* ============================================================
+       RESUME CODE PANEL
+    ============================================================ */
+    #resume-panel {
+      background: var(--navy-dark);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 8px 24px;
+      display: none; /* shown by JS when not on section-0 */
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    #resume-panel .rp-label {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    #resume-panel .rp-code-display {
+      font-family: 'Courier New', monospace;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--off-white);
+      background: rgba(255,255,255,0.08);
+      padding: 4px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      user-select: all;
+      cursor: text;
+    }
+    #resume-panel .rp-hint {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--gray-steel);
+      flex: 1;
+    }
+    #resume-panel .rp-divider {
+      width: 1px; height: 22px;
+      background: rgba(255,255,255,0.12);
+      flex-shrink: 0;
+    }
+    #resume-panel .rp-enter-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    #resume-panel .rp-enter-label {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--gray-mid);
+    }
+    #resume-code-input {
+      font-family: 'Courier New', monospace;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      width: 100px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.06);
+      color: var(--off-white);
+      outline: none;
+    }
+    #resume-code-input::placeholder { letter-spacing: 1px; color: var(--gray-steel); text-transform: none; }
+    #resume-code-input:focus { border-color: var(--blue); }
+    .rp-load-btn {
+      padding: 4px 12px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .rp-load-btn:hover { background: var(--blue-dim); }
+    @media (max-width: 700px) {
+      #resume-panel { flex-direction: column; align-items: flex-start; gap: 8px; }
+      #resume-panel .rp-divider { width: 40px; height: 1px; }
+    }
+
+    /* ============================================================
+       EXPORT MODAL
+    ============================================================ */
+    .im-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .im-modal-overlay.open { display: flex; }
+    .im-modal-box {
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-top: 4px solid var(--orange);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.7);
+      animation: fadeIn 0.2s ease;
+    }
+    .im-modal-title {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--off-white);
+      margin-bottom: 14px;
+    }
+    .im-modal-body {
+      font-size: 18px;
+      color: var(--gray-light);
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .im-modal-label {
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-mid);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .im-modal-input {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: var(--font-body);
+      font-size: 18px;
+      color: var(--navy);
+      background: #fff;
+      border: 2px solid var(--gray-light);
+      border-radius: 6px;
+      outline: none;
+      margin-bottom: 10px;
+      transition: border-color var(--transition);
+    }
+    .im-modal-input:focus { border-color: var(--blue); }
+    .im-modal-preview {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--gray-steel);
+      margin-bottom: 20px;
+    }
+    .im-modal-preview span {
+      font-weight: bold;
+      color: var(--off-white);
+      font-family: 'Courier New', monospace;
+    }
+    .im-modal-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .im-modal-btns .btn-cancel {
+      background: transparent;
+      color: var(--gray-mid);
+      border: 2px solid rgba(107,114,128,0.4);
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .im-modal-btns .btn-cancel:hover { color: var(--off-white); border-color: var(--gray-steel); }
+    .im-modal-btns .btn-export-go {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .im-modal-btns .btn-export-go:hover { background: var(--orange-dim); }
+
+    /* Confirm modal (restart) */
+    .im-confirm-box {
+      background: var(--navy);
+      border: 1px solid rgba(249,115,22,0.3);
+      border-top: 4px solid var(--orange);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.7);
+      animation: fadeIn 0.2s ease;
+    }
+    .im-confirm-box .im-modal-title { color: var(--orange); }
+    .im-confirm-box .im-modal-btns .btn-confirm-yes {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .im-confirm-box .im-modal-btns .btn-confirm-yes:hover { background: var(--orange-dim); }
+
+    /* ============================================================
+       TEXT-TO-SPEECH LISTEN BUTTON
+    ============================================================ */
+    .tts-listen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-mid);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+      margin-bottom: 18px;
+      letter-spacing: 0.3px;
+    }
+    .tts-listen-btn:hover { background: rgba(255,255,255,0.13); color: var(--off-white); border-color: rgba(255,255,255,0.3); }
+    .tts-listen-btn.tts-active { background: rgba(249,115,22,0.15); border-color: rgba(249,115,22,0.5); color: var(--orange); }
+    .tts-listen-btn .tts-icon { font-size: 15px; }
+    @media (max-width: 600px) { .tts-listen-btn { font-size: 13px; padding: 5px 11px; } }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     MASTHEAD / HEADER
+============================================================ -->
+<header id="masthead">
+  <div class="brand">
+    <div class="badge">SINS</div>
+    <div class="title-group">
+      <h1>Stories in Science · Grade 5</h1>
+      <h2>Impact Motors: Crash Investigation</h2>
+    </div>
+  </div>
+  <!-- Progress bar — hidden on Section 0 -->
+  <div id="progress-wrap">
+    <div id="progress-label">Section 1 of 12</div>
+    <div id="progress-bar-track">
+      <div id="progress-bar-fill"></div>
+    </div>
+  </div>
+  <!-- Utility buttons — hidden on Section 0 -->
+  <div id="util-buttons">
+    <button class="btn-util" onclick="exportModalOpen()" title="Download your field journal">⬇ Export Journal</button>
+    <button class="btn-util btn-util-danger" onclick="confirmModalOpen()" title="Clear progress and restart">↺ Restart</button>
+  </div>
+</header>
+
+<!-- Mission Path tracker strip — hidden on Section 0 -->
+<div id="mission-path">
+  <span class="mp-label">🗺 Your Mission Path</span>
+  <div class="mp-steps">
+    <div class="mp-step" id="mp-dp1">
+      <div class="mp-num">1</div>
+      <div class="mp-text">
+        <div class="mp-step-title">STARTING POINT</div>
+        <div class="mp-step-val" id="mp-dp1-val">Awaiting your choice…</div>
+      </div>
+    </div>
+    <div class="mp-connector">—</div>
+    <div class="mp-step" id="mp-dp2">
+      <div class="mp-num">2</div>
+      <div class="mp-text">
+        <div class="mp-step-title">ENERGY DIRECTION</div>
+        <div class="mp-step-val" id="mp-dp2-val">Awaiting your choice…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     RESUME CODE PANEL — shown on all sections except section-0
+============================================================ -->
+<div id="resume-panel" role="complementary" aria-label="Resume code panel">
+  <span class="rp-label">📌 Your Save Code:</span>
+  <span class="rp-code-display" id="rp-code-display" title="Write this code down to resume later">——————</span>
+  <span class="rp-hint">Write this down to resume your investigation later on this device.</span>
+  <div class="rp-divider"></div>
+  <div class="rp-enter-row">
+    <span class="rp-enter-label">Resume a code:</span>
+    <input type="text" id="resume-code-input" maxlength="6" placeholder="Enter code" aria-label="Enter resume code" />
+    <button class="rp-load-btn" onclick="resumeCodeLoad()">Load</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN APP CONTAINER
+============================================================ -->
+<main id="app">
+
+
+  <!-- ===================================================
+       SECTION 0 — Entry / Landing Page
+  =================================================== -->
+  <section id="section-0" class="section active">
+
+    <!-- Hero card -->
+    <div class="s0-hero">
+      <div class="s0-eyebrow">Junior Scientist Program &middot; Impact Motors</div>
+      <h1 class="s0-title">Impact Motors:<br><span>Crash Investigation</span></h1>
+<p class="s0-desc">
+  Impact Motors has completed a series of crash tests, but the results are inconsistent.
+  The team needs a <strong>Junior Scientist</strong> to examine the evidence and explain what happened.
+</p>
+
+<p class="s0-mission">
+  <strong>Your Job:</strong>
+  Examine the crash test results and figure out what’s really happening.</p>
+      <button class="btn btn-s0-start" onclick="navigateTo('section-1')">
+        &#128302; Begin Investigation
+      </button>
+    </div>
+
+    <!-- Learning Objectives accordion -->
+    <div class="s0-accordion">
+      <button class="s0-acc-toggle" onclick="toggleObjectives(this)" aria-expanded="false">
+        <span>&#128203; Learning Objectives &amp; Instructional Alignment</span>
+        <span class="s0-acc-arrow">&#9660;</span>
+      </button>
+      <div class="s0-acc-body" hidden>
+        <div class="s0-acc-inner">
+
+          <p class="s0-acc-heading">Learning Objectives</p>
+          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
+            <div class="placeholder-label" style="color:#2563eb;">&#128203; Learning Objectives</div>
+            <div class="placeholder-desc" style="color:#374151;">
+<ul>
+  <li>Students will analyze crash test evidence to identify patterns in motion and damage.</li>
+  <li>Students will develop a scientific explanation describing what happens before, during, and after a crash.</li>
+  <li>Students will construct a model to represent how energy is transferred and transformed during a collision.</li>
+  <li>Students will use evidence from multiple test runs to support their explanation.</li>
+</ul>
+            </div>
+          </div>
+
+          <p class="s0-acc-heading" style="margin-top:16px;">Standards Alignment</p>
+          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
+            <div class="placeholder-label" style="color:#2563eb;">&#128203; NGSS / State Standards</div>
+            <div class="placeholder-desc" style="color:#374151;">
+<p><strong>Arizona Science Standard:</strong><br>
+5.P4U1.6 — Construct an explanation relating energy transfer to changes in motion.</p>
+
+<p><strong>Science and Engineering Practices:</strong><br>
+Developing and Using Models; Constructing Explanations; Analyzing and Interpreting Data</p>
+
+<p><strong>Crosscutting Concepts:</strong><br>
+Cause and Effect; Systems and System Models; Energy and Matter</p>
+            </div>
+          </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="s0-footer">
+© 2026 Brooke Toon. All rights reserved. This lesson is part of the Stories in Science (SINS) Framework developed by the author. Generative AI tools were used to support the development of this instructional material. This content may not be reproduced, distributed, modified, or used for commercial purposes without permission.
+    </footer>
+
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 1 — Investigation Brief / Start
+  =================================================== -->
+  <section id="section-1" class="section">
+    <div class="section-header">
+      <div class="section-title">Start Investigation</div>
+    </div>
+    <div class="section-body" style="text-align:center; padding: 52px 40px;">
+
+      <div class="cover-eyebrow"><strong>Junior Crash Test Scientist Program · Impact Motors</strong></div>
+      <div class="cover-title">Impact Motors:<br><span>Crash Investigation</span></div>
+      <div class="cover-divider"></div>
+
+
+<div style="text-align:left; color:var(--off-white);">
+<p style="margin-bottom: 16px;">You've just joined Impact Motors as part of a newly hired team of <strong>Junior Crash Test Scientists</strong>.</p>
+<p style="margin-bottom: 16px;">Recent crash tests have produced inconsistent results, and in some cases, passenger safety may be at risk. The engineering team has not been able to explain what is happening during these crashes.</p>
+<p style="margin-bottom: 16px;">Because of this, your team was brought in to take a closer look at the evidence from a <strong>scientific perspective and will need to figure out why this is happening.</strong></p>
+<p style="margin-bottom: 16px;">You report directly to the <strong>Senior Safety Engineer</strong>, who has asked your team to analyze the crash data and determine what is happening during these tests.</p>
+</div>
+
+      <div style="margin: 24px 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);">
+        <img src="images/Energy_Entry.png" alt="Junior Scientists Sitting at a Table" style="width:100%; display:block; border-radius: var(--radius-lg);">
+      </div>
+
+      <!-- Continue button triggers navigation to Section 2 -->
+      <button class="btn btn-start" onclick="navigateTo('section-2')">
+        Continue
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 2 — Welcome to Impact Motors
+  =================================================== -->
+  <section id="section-2" class="section">
+    <div class="section-header">
+      <div class="section-title"><strong>Welcome to Impact Motors</strong></div>
+    </div>
+    <div class="section-body">
+
+<!-- Narrative content -->
+<div class="narrative">
+
+  <!-- Scene-setting (light narrative, NOT too much) -->
+  <p style="margin-bottom:18px;">
+    You enter the test facility at Impact Motors. The crash analysis team has been reviewing recent test results.</p>
+    <p style="margin-bottom:18px;">
+    You and your team meet with <strong>Molly</strong>, Impact Motors <strong>Senior Safety Engineer</strong>.</p>
+
+<div style="display:flex; gap:32px; align-items:center; flex-wrap:wrap;">
+
+    <!-- Molly image (slightly larger + more presence) -->
+    <div style="flex:1; min-width:300px; max-width:420px;">
+      <img src="images/Energy_Meet Molly.png" alt="Molly, Senior Safety Engineer"
+           style="width:100%; display:block; border-radius:var(--radius-lg); box-shadow:var(--shadow);">
+    </div>
+
+<!-- Dialogue -->
+    <div style="flex:1; min-width:260px;">
+<div class="dialogue-box">"Congratulations on joining the crash analysis team as a <strong>Junior Crash Test Scientist</strong>!"</div>
+
+
+<p class="narrative-action"> Molly continues…</p>
+
+<div class="dialogue-box">”We've been running tests and something is different between these tests, but we don’t know what’s causing it yet."</div>
+
+<p class="narrative-action">Molly looks at her computer and briefly pauses.</p>
+
+<div class="dialogue-box">"That's where you and your new team come in. I've made sure that all of the available test data has been loaded into your system. Please take a look and figure out what's happening."</div>
+
+
+      <p style="margin-top:18px;">
+    </div>
+  </div>
+</div>
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-3')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 3 — Decision Point 1
+  =================================================== -->
+  <section id="section-3" class="section">
+    <div class="section-header">
+      <div class="section-title"><strong>Where Will You Begin?</strong></div>
+    </div>
+    <div class="section-body">
+
+<div class="narrative">
+<p>After meeting with Molly, you review the crash test system she showed you. <strong>The results don’t all match.</strong></p>
+<p>Something is different between these tests, but it’s not immediately clear why.</p>
+<p>It’s time to dig in because in order to figure out what’s going wrong, you’ll need to decide where to start looking for evidence.</p>
+</div>
+
+<div class="placeholder" style="min-height: 120px; text-align: center;">
+  <img src="images/Energy_Laptop_with_Images.png" alt="Decision Context Image or Diagram"
+       style="max-width: 100%; max-height: 600px; object-fit: contain;"
+       onerror="this.style.display='none'" />
+</div>
+
+      <hr class="section-rule">
+
+      <p style="font-family: var(--font-ui); font-size: 19px; color: var(--gray-light); text-align:center; margin-bottom: 6px;">
+      </p>
+      <p><strong>Where will you start?</strong></p>
+      <p>You can start by examining how the car moved before the crash, or what changed during the crash.</p>
+      <p>Different starting points can reveal different clues, but they all help explain what’s happening.</p>
+      <!-- Decision buttons — orange, routes to 4A or 4B -->
+      <div class="decision-row">
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp1', 'A', 'section-4a')">
+          What Was Happening Before the Crash?<br>
+          <small style="font-weight:normal; font-size: 18px; opacity:0.85;">
+            Investigate how the car was moving
+          </small>
+        </button>
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp1', 'B', 'section-4b')">
+          What Changed During the Crash?<br>
+          <small style="font-weight:normal; font-size: 18px; opacity:0.85;">
+            Examine the damage evidence from the crash
+          </small>
+        </button>
+      </div>
+
+      <!-- Back button only (no Continue — decision buttons navigate) -->
+      <div class="nav-row" style="justify-content: flex-start;">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+      </div>
+
+    </div>
+  </section>
+
+
+
+
+  <section id="section-4a" class="section">
+    <div class="section-header">
+      <div class="section-title">What Was Happening Before the Crash?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="embed-4a">
+        <!-- ── INSTRUCTION BANNER ── -->
+        <div class="pb-instruction-banner">
+          <span class="icon">🔍</span>
+          <span>
+            <strong>Your job:</strong> Replay each test run. Watch how the car moves before it hits the barrier. Compare the motion across the test runs, then record your observations in your Field Journal below.</div>
+        <!-- ── TRACK STAGE ── -->
+        <section class="cs-track-stage" id="trackStage" aria-label="Car test track simulation">
+          <img class="cs-track-bg"
+               src="images/Energy_track2.png"
+               alt="Test track"
+               onerror="this.style.display='none'" />
+          <img class="cs-car-on-track"
+               id="carImage"
+               src="images/Energy_car.png"
+               alt="Test car"
+               onerror="this.src='data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 32'><rect x='2' y='10' width='76' height='16' rx='4' fill='%23F97316'/><rect x='10' y='6' width='40' height='14' rx='3' fill='%23EA580C'/><circle cx='14' cy='28' r='5' fill='%231F2A44'/><circle cx='14' cy='28' r='3' fill='%236B7280'/><circle cx='60' cy='28' r='5' fill='%231F2A44'/><circle cx='60' cy='28' r='3' fill='%236B7280'/></svg>'" />
+        </section>
+
+        <!-- ── TEST BUTTONS ── -->
+        <div class="cs-test-controls" role="group" aria-label="Test replay controls">
+          <button class="cs-btn-test cs-btn-test-1" id="btnTest1" onclick="runTest(1)" aria-label="Replay Test Run 1">
+            <span class="cs-btn-icon">▶</span> Replay Test Run 1
+          </button>
+          <button class="cs-btn-test cs-btn-test-2" id="btnTest2" onclick="runTest(2)" aria-label="Replay Test Run 2">
+            <span class="cs-btn-icon">▶</span> Replay Test Run 2
+          </button>
+          <button class="cs-btn-test cs-btn-test-3" id="btnTest3" onclick="runTest(3)" aria-label="Replay Test Run 3">
+            <span class="cs-btn-icon">▶</span> Replay Test Run 3
+          </button>
+        </div>
+
+        <!-- ── DATA LOG ── -->
+        <div class="cs-data-log-card" aria-label="Test Data Log">
+          <div class="cs-card-title">Test Data Log</div>
+          <p style="font-size:0.85rem;color:var(--gray-steel);margin-bottom:12px;">
+            Record what you notice during each test run. Focus on how the car moves.
+          </p>
+          <table class="cs-data-table" aria-label="Recorded test results">
+            <thead>
+              <tr>
+                <th>Test Run</th>
+                <th>Status</th>
+                <th>Observation</th>
+                <th>Replayed At</th>
+              </tr>
+            </thead>
+            <tbody id="dataLogBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /.embed-4a -->
+
+      <!-- ── FIELD JOURNAL (lesson's own) ── -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s4a">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <strong>What did you notice about how the car moved in each test run?</strong><br>
+          <em>How did the motion differ between the three test runs? What patterns do you notice?</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s4a"
+                  placeholder="Write your observations here…"
+                  oninput="saveJournal('s4a', this.value)"></textarea>
+      </div>
+
+      <!-- ── NAVIGATION ── -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5a')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  
+
+  <section id="section-4b" class="section">
+    <div class="section-header">
+      <div class="section-title">What Changed During the Crash?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="embed-4b">
+
+        <!-- ── INSTRUCTION BANNER ── -->
+        <div class="pb-instruction-banner">
+          <span class="icon">🔍</span>
+          <span>
+            <strong>Your job:</strong> Toggle between <em>Before Impact</em> and <em>After Impact</em> for each test. Tap the orange hotspots to examine specific areas. Compare what changed across the test runs. Record your observations in your Field Journal below.
+          </span>
+        </div>
+
+        <!-- ── TEST CARDS GRID ── -->
+        <div class="pb-tests-grid" id="testsGrid">
+
+          <!-- TEST RUN 1 -->
+          <div class="pb-test-card" id="card-1">
+            <div class="pb-card-header">
+              <span class="pb-card-label">Test Run 1</span>
+              <div class="pb-toggle-pill" role="group" aria-label="Test 1 image toggle">
+                <button class="pb-toggle-btn active" data-card="1" data-state="before" onclick="setToggle(1,'before')" aria-pressed="true">Before Impact</button>
+                <button class="pb-toggle-btn" data-card="1" data-state="after" onclick="setToggle(1,'after')" aria-pressed="false">After Impact</button>
+              </div>
+            </div>
+            <div class="pb-card-image-wrap" id="imgWrap-1">
+              <div class="pb-img-placeholder" id="placeholder-1-before">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 8"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span>images/Energy_no impact.png</span>
+              </div>
+              <img class="pb-card-img" id="img-1-before" src="images/Energy_no impact.png" alt="Vehicle before impact — Test 1" onload="pbOnImgLoad('1','before')" onerror="pbOnImgError('1','before')" />
+              <img class="pb-card-img hidden" id="img-1-after" src="images/Energy_TestRun1.png" alt="Vehicle after impact — Test 1" onload="pbOnImgLoad('1','after')" onerror="pbOnImgError('1','after')" />
+              <div class="pb-after-badge">After Impact</div>
+              <div class="pb-hotspot-layer" id="hotspots-1">
+<button class="pb-hotspot" style="left:76%; top:66%;" data-card="1" data-title="Bumper" data-text="The bumper is at the front of the car. In this test run, it shows only a small change where it meets the barrier." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Bumper — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+
+<button class="pb-hotspot" style="left:70%; top:58%;" data-card="1" data-title="Crumple Zone" data-text="The front section of the car shows very little change in this test run." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Crumple Zone — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+
+<button class="pb-hotspot" style="left:54%; top:39%;" data-card="1" data-title="Hood" data-text="The hood keeps nearly the same shape after the crash in this test run." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Hood — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+
+<button class="pb-hotspot" style="left:91%; top:55%;" data-card="1" data-title="Barrier" data-text="The barrier stays in the same position while the car makes contact with it." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Barrier — Test 1" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+              </div>
+            </div>
+            <div class="pb-card-footer" id="footer-1">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
+          </div><!-- /test-card 1 -->
+
+          <!-- TEST RUN 2 -->
+          <div class="pb-test-card" id="card-2">
+            <div class="pb-card-header">
+              <span class="pb-card-label">Test Run 2</span>
+              <div class="pb-toggle-pill" role="group" aria-label="Test 2 image toggle">
+                <button class="pb-toggle-btn active" data-card="2" data-state="before" onclick="setToggle(2,'before')" aria-pressed="true">Before Impact</button>
+                <button class="pb-toggle-btn" data-card="2" data-state="after" onclick="setToggle(2,'after')" aria-pressed="false">After Impact</button>
+              </div>
+            </div>
+            <div class="pb-card-image-wrap" id="imgWrap-2">
+              <div class="pb-img-placeholder" id="placeholder-2-before">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 8"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span>images/Energy_no impact.png</span>
+              </div>
+              <img class="pb-card-img" id="img-2-before" src="images/Energy_no impact.png" alt="Vehicle before impact — Test 2" onload="pbOnImgLoad('2','before')" onerror="pbOnImgError('2','before')" />
+              <img class="pb-card-img hidden" id="img-2-after" src="images/Energy_TestRun2.png" alt="Vehicle after impact — Test 2" onload="pbOnImgLoad('2','after')" onerror="pbOnImgError('2','after')" />
+              <div class="pb-after-badge">After Impact</div>
+              <div class="pb-hotspot-layer" id="hotspots-2">
+<button class="pb-hotspot" style="left:77%; top:67%;" data-card="2" data-title="Bumper" data-text="The bumper is heavily compressed near the barrier. Its original shape is difficult to recognize after the impact." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Bumper — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+
+<button class="pb-hotspot" style="left:72%; top:58%;" data-card="2" data-title="Crumple Zone" data-text="The front section of the car shows major bending. A larger area of the front has changed shape compared to Test Run 1." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Crumple Zone — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+
+<button class="pb-hotspot" style="left:61%; top:39%;" data-card="2" data-title="Hood" data-text="The hood is bent upward and pushed back. Its shape has clearly changed after the crash." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Hood — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+
+<button class="pb-hotspot" style="left:91%; top:55%;" data-card="2" data-title="Barrier" data-text="The barrier remains in the same position. The car presses into it across a wider area during this test run." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Barrier — Test 2" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+              </div>
+            </div>
+            <div class="pb-card-footer" id="footer-2">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
+          </div><!-- /test-card 2 -->
+
+          <!-- TEST RUN 3 -->
+          <div class="pb-test-card" id="card-3">
+            <div class="pb-card-header">
+              <span class="pb-card-label">Test Run 3</span>
+              <div class="pb-toggle-pill" role="group" aria-label="Test 3 image toggle">
+                <button class="pb-toggle-btn active" data-card="3" data-state="before" onclick="setToggle(3,'before')" aria-pressed="true">Before Impact</button>
+                <button class="pb-toggle-btn" data-card="3" data-state="after" onclick="setToggle(3,'after')" aria-pressed="false">After Impact</button>
+              </div>
+            </div>
+            <div class="pb-card-image-wrap" id="imgWrap-3">
+              <div class="pb-img-placeholder" id="placeholder-3-before">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-6 6 8"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+                <span>images/Energy_no impact.png</span>
+              </div>
+              <img class="pb-card-img" id="img-3-before" src="images/Energy_no impact.png" alt="Vehicle before impact — Test 3" onload="pbOnImgLoad('3','before')" onerror="pbOnImgError('3','before')" />
+              <img class="pb-card-img hidden" id="img-3-after" src="images/Energy_TestRun3.png" alt="Vehicle after impact — Test 3" onload="pbOnImgLoad('3','after')" onerror="pbOnImgError('3','after')" />
+              <div class="pb-after-badge">After Impact</div>
+              <div class="pb-hotspot-layer" id="hotspots-3">
+<button class="pb-hotspot" style="left:77%; top:67%;" data-card="3" data-title="Bumper" data-text="The bumper is pushed inward. The change is greater than in Test Run 1, but less than in Test Run 2." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Bumper — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Bumper</span></button>
+
+<button class="pb-hotspot" style="left:71%; top:58%;" data-card="3" data-title="Crumple Zone" data-text="The front section shows noticeable bending. More of the car changes shape than in Test Run 1, but less than in Test Run 2." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Crumple Zone — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Crumple Zone</span></button>
+
+<button class="pb-hotspot" style="left:57%; top:39%;" data-card="3" data-title="Hood" data-text="The hood bends slightly. The change is visible, but not as large as in Test Run 2." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Hood — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Hood</span></button>
+
+<button class="pb-hotspot" style="left:91%; top:55%;" data-card="3" data-title="Barrier" data-text="The barrier stays in the same position while the front of the car changes shape." onclick="toggleHotspot(this)" onmouseenter="hoverHotspot(this)" onmouseleave="leaveHotspot(this)" aria-label="Barrier — Test 3" aria-expanded="false"><span class="pb-hotspot-label">Barrier</span></button>
+              </div>
+            </div>
+            <div class="pb-card-footer" id="footer-3">Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.</div>
+          </div><!-- /test-card 3 -->
+
+        </div><!-- /pb-tests-grid -->
+
+      </div><!-- /.embed-4b -->
+
+      <!-- ── FIELD JOURNAL (lesson's own) ── -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s4b">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <strong>What changes do you observe during each crash?</strong><br>
+          <em>How do the changes differ between the test runs? What patterns do you notice about where the damage occurs?</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s4b"
+                  placeholder="Describe the evidence you observe…"
+                  oninput="saveJournal('s4b', this.value)"></textarea>
+      </div>
+
+      <!-- ── NAVIGATION ── -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5a')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+    <!-- ===================================================
+       SECTION 5A — DP1 Convergence: What Did We Notice?
+  =================================================== -->
+  <section id="section-5a" class="section">
+    <div class="section-header convergence">
+      <div class="section-title">What Did We Notice?</div>
+    </div>
+    <div class="section-body convergence-body">
+
+      <div class="narrative">
+<p>
+   Your <strong>Junior Crash Test Scientist</strong> team has now shared evidence from the first crash-test review.
+</p>
+
+<p>
+  Everyone investigated the same three test runs, but from different perspectives: <strong>motion before impact</strong> and <strong>changes during impact</strong>.
+</p>
+
+<p>
+  Now compare the evidence together. Look for patterns between the motion data and the post-impact observations.
+</p>
+      </div>
+
+<!-- Evidence Table -->
+<div style="overflow-x:auto; margin: 20px 0;">
+  <table class="s5a-evidence-table">
+    <thead>
+      <tr>
+        <th>Test Run #</th>
+        <th>Motion Data</th>
+        <th>Post-Impact Observations</th>
+        <th>Post-Impact Image</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>
+          <strong>Test Run 1</strong>
+          <img src="images/Energy_no impact.png"
+               alt="Test Run 1 — vehicle before impact"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+        <td>Slower motion before impact</td>
+        <td>Less front-end change after impact</td>
+        <td>
+          <img src="images/Energy_TestRun1.png"
+               alt="Test Run 1 — vehicle front-end after impact, showing minimal deformation"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <strong>Test Run 2</strong>
+          <img src="images/Energy_no impact.png"
+               alt="Test Run 2 — vehicle before impact"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+        <td>Fastest motion before impact</td>
+        <td>Most front-end change after impact</td>
+        <td>
+          <img src="images/Energy_TestRun2.png"
+               alt="Test Run 2 — vehicle front-end after impact, showing greatest deformation"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <strong>Test Run 3</strong>
+          <img src="images/Energy_no impact.png"
+               alt="Test Run 3 — vehicle before impact"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+        <td>Medium motion before impact</td>
+        <td>Moderate front-end change after impact</td>
+        <td>
+          <img src="images/Energy_TestRun3.png"
+               alt="Test Run 3 — vehicle front-end after impact, showing moderate deformation"
+               class="s5a-evidence-img"
+               onerror="this.style.display='none'" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s5a">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <strong>What patterns do you notice across the test runs? Use evidence from at least two test runs.</strong>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s5a"
+                  placeholder="Write your observations here…"
+                  oninput="saveJournal('s5a', this.value)"></textarea>
+      </div>
+<p class="section-bridge"><strong>Once your team notices a pattern, the next step is to explain what might be causing it.</strong></p>
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5b')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 5B — DP1 Convergence: What Does It Mean?
+  =================================================== -->
+  <section id="section-5b" class="section">
+    <div class="section-header convergence">
+      <div class="section-title">What Does It Mean?</div>
+    </div>
+    <div class="section-body convergence-body">
+
+      <div class="convergence-tag"></div>
+
+      <div class="narrative">
+        <p>
+  The engineering team is depending on your explanation to understand what’s happening in these crashes.
+</p>
+        <p>
+  Your job is not just to describe what changed in the crash tests. Your team was brought in to figure out <strong>why</strong> the results are different.
+</p>
+
+<p>The pattern is clear: <strong>when the car moved differently before impact, the amount of change after impact also looked different</strong>.</p>
+
+<p>
+  To help explain that pattern, review the <strong>Crash Science Briefing</strong>. Look for a clue that explains why some test runs showed more change than others.
+</p>
+      </div>
+
+      <!-- Crash Science Briefing Interactive -->
+      <iframe
+        srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;Crash Science Briefing — Impact Motors&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  :root {
+    --navy:       #2E4A72;
+    --navy-dark:  #1E3354;
+    --navy-light: #3A5A87;
+    --orange:     #F97316;
+    --orange-dim: #c45c0d;
+    --blue:       #3B82F6;
+    --blue-dim:   #2563eb;
+    --off-white:  #F8FAFC;
+    --gray-light: #E5E7EB;
+    --gray-steel: #94A3B8;
+    --gray-mid:   #C1C9D4;
+    --success:    #22C55E;
+    --radius:     10px;
+    --radius-lg:  16px;
+    --shadow:     0 4px 24px rgba(0,0,0,0.35);
+    --shadow-sm:  0 2px 8px rgba(0,0,0,0.2);
+    --transition: 0.25s ease;
+    --font-head:  &#x27;Nunito&#x27;, Verdana, sans-serif;
+    --font-body:  &#x27;Nunito&#x27;, Verdana, sans-serif;
+    --font-ui:    &#x27;Nunito&#x27;, Verdana, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; font-family: var(--font-body); padding: 0; margin: 0; }
+  .doc { width: 100%; background: var(--off-white); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .classbar { background: var(--navy-dark); padding: 8px 32px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .classbar-left { display: flex; align-items: center; gap: 10px; }
+  .company-logo { font-family: var(--font-head); font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.04em; }
+  .company-logo span { color: var(--orange); }
+  .classbar-badge { font-family: var(--font-ui); font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: var(--orange); color: #fff; padding: 3px 10px; border-radius: 99px; }
+  .accent-stripe { height: 3px; background: linear-gradient(90deg, var(--orange) 0%, var(--orange-dim) 60%, transparent 100%); }
+  .doc-inner { padding: 36px 40px 40px; }
+  .doc-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-bottom: 22px; border-bottom: 2px solid var(--gray-light); margin-bottom: 24px; }
+  .role-line { font-family: var(--font-ui); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: var(--orange); text-transform: uppercase; margin-bottom: 6px; }
+  .doc-title { font-family: var(--font-head); font-size: 28px; font-weight: 800; color: var(--navy-dark); line-height: 1.15; }
+  .doc-subtitle { font-size: 13px; font-weight: 400; color: var(--gray-steel); margin-top: 4px; }
+  .doc-meta { text-align: right; flex-shrink: 0; }
+  .doc-ref { font-family: var(--font-ui); font-size: 9px; font-weight: 600; color: var(--gray-steel); line-height: 2; letter-spacing: 0.06em; text-transform: uppercase; }
+  .status-pill { display: inline-block; background: #dcfce7; color: #15803d; font-family: var(--font-ui); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; margin-top: 6px; }
+  .body-p { font-size: 15px; line-height: 1.75; color: #334155; font-weight: 400; margin-bottom: 14px; }
+  .body-p strong { font-weight: 700; color: var(--navy); }
+  .section-rule { border: none; border-top: 1px solid var(--gray-light); margin: 24px 0; }
+  .diagram-label { font-family: var(--font-ui); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: var(--gray-steel); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .diagram-label::after { content: &#x27;&#x27;; flex: 1; height: 1px; background: var(--gray-light); }
+  .demo-wrap { background: var(--navy-dark); border-radius: var(--radius); padding: 24px 24px 20px; box-shadow: var(--shadow-sm); }
+  .track-area { position: relative; height: 58px; margin-bottom: 22px; background: var(--navy); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--navy-light); }
+  .track-road { position: absolute; bottom: 14px; left: 0; right: 0; height: 2px; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 14px, transparent 14px, transparent 26px); }
+  .track-car { position: absolute; bottom: 15px; font-size: 24px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); transform: scaleX(-1); display: inline-block; }
+  .impact-wall { position: absolute; right: 0; top: 0; bottom: 0; width: 10px; background: repeating-linear-gradient(180deg, var(--orange) 0, var(--orange) 6px, var(--orange-dim) 6px, var(--orange-dim) 12px); }
+  .impact-flash { position: absolute; inset: 0; background: rgba(249,115,22,0); transition: background 0.08s; pointer-events: none; border-radius: var(--radius); }
+  .impact-flash.flash { background: rgba(249,115,22,0.3); }
+  .meter-rows { display: flex; flex-direction: column; gap: 12px; }
+  .meter-row { display: flex; align-items: center; gap: 12px; }
+  .meter-label { font-family: var(--font-ui); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--gray-mid); text-transform: uppercase; width: 60px; flex-shrink: 0; }
+  .meter-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.07); border-radius: 99px; overflow: hidden; }
+  .meter-bar-fill { height: 100%; border-radius: 99px; transition: width 0.1s ease-out; }
+  .meter-bar-fill.speed  { background: var(--success); }
+  .meter-bar-fill.energy { background: var(--orange); }
+  .meter-bar-fill.change { background: var(--blue); }
+  .meter-val { font-family: var(--font-ui); font-size: 11px; font-weight: 700; color: var(--gray-mid); width: 40px; text-align: right; flex-shrink: 0; }
+  .slider-row { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+  .slider-hint { font-family: var(--font-ui); font-size: 10px; font-weight: 700; color: var(--gray-steel); letter-spacing: 0.1em; text-transform: uppercase; flex-shrink: 0; }
+  input[type=range] { -webkit-appearance: none; flex: 1; height: 4px; background: rgba(255,255,255,0.12); border-radius: 99px; outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--orange); border: 2px solid var(--navy-dark); box-shadow: 0 0 0 3px rgba(249,115,22,0.35); cursor: grab; transition: transform var(--transition); }
+  input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
+  input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--orange); border: 2px solid var(--navy-dark); cursor: grab; }
+  .insight { font-family: var(--font-ui); font-size: 11px; font-weight: 600; line-height: 1.65; color: #93c5fd; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); border-left: 3px solid var(--blue); padding: 12px 16px; margin-top: 16px; border-radius: 0 var(--radius) var(--radius) 0; min-height: 44px; letter-spacing: 0.01em; transition: opacity var(--transition); }
+  .key-finding { margin-top: 24px; background: var(--navy-dark); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; gap: 20px; }
+  .key-finding-icon { width: 44px; height: 44px; background: var(--orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .key-finding-body { flex: 1; }
+  .key-finding-label { font-family: var(--font-ui); font-size: 9px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 4px; }
+  .key-finding-text { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: #fff; line-height: 1.3; }
+  .key-finding-science { font-family: var(--font-ui); font-size: 10px; font-weight: 600; color: var(--gray-steel); margin-top: 6px; letter-spacing: 0.03em; }
+  .key-finding-science span { font-weight: 700; color: var(--gray-mid); }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;doc&quot;&gt;
+  &lt;div class=&quot;classbar&quot;&gt;
+    &lt;div class=&quot;classbar-left&quot;&gt;
+      &lt;div class=&quot;company-logo&quot;&gt;IMPACT&lt;span&gt;MOTORS&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;classbar-badge&quot;&gt;Active Brief&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;accent-stripe&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;doc-inner&quot;&gt;
+    &lt;div class=&quot;doc-header&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;role-line&quot;&gt;Junior Crash Test Scientists&lt;/div&gt;
+        &lt;div class=&quot;doc-title&quot;&gt;Crash Science&lt;br&gt;Briefing&lt;/div&gt;
+        &lt;div class=&quot;doc-subtitle&quot;&gt;Energy, motion, and what happens at impact&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;doc-meta&quot;&gt;
+        &lt;div class=&quot;doc-ref&quot;&gt;
+          REF: CSB-5B-001&lt;br&gt;
+          SUBJECT: Kinetic Energy&lt;br&gt;
+          READ TIME: ~2 min
+        &lt;/div&gt;
+        &lt;div class=&quot;status-pill&quot;&gt;&amp;#x25CF; Active&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;body-p&quot;&gt;A moving car has energy because it is &lt;strong&gt;in motion&lt;/strong&gt;. During a crash, that energy does not disappear. It moves through the crash system and can cause changes.&lt;/p&gt;
+    &lt;p class=&quot;body-p&quot;&gt;When a car is moving &lt;strong&gt;faster before impact&lt;/strong&gt;, more energy is involved in the crash. That can help explain why some test runs showed more front-end change than others.&lt;/p&gt;
+    &lt;hr class=&quot;section-rule&quot;&gt;
+    &lt;div class=&quot;diagram-label&quot;&gt;Fig. 1 &amp;mdash; Interactive energy model&lt;/div&gt;
+    &lt;div class=&quot;demo-wrap&quot;&gt;
+      &lt;div class=&quot;track-area&quot; id=&quot;trackArea&quot;&gt;
+        &lt;div class=&quot;track-road&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;track-car&quot; id=&quot;car&quot;&gt;🚗&lt;/div&gt;
+        &lt;div class=&quot;impact-wall&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;impact-flash&quot; id=&quot;flash&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;meter-rows&quot;&gt;
+        &lt;div class=&quot;meter-row&quot;&gt;
+          &lt;span class=&quot;meter-label&quot;&gt;Speed&lt;/span&gt;
+          &lt;div class=&quot;meter-bar-track&quot;&gt;&lt;div class=&quot;meter-bar-fill speed&quot; id=&quot;barSpeed&quot; style=&quot;width:30%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;span class=&quot;meter-val&quot; id=&quot;valSpeed&quot;&gt;Med&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;meter-row&quot;&gt;
+          &lt;span class=&quot;meter-label&quot;&gt;Energy&lt;/span&gt;
+          &lt;div class=&quot;meter-bar-track&quot;&gt;&lt;div class=&quot;meter-bar-fill energy&quot; id=&quot;barEnergy&quot; style=&quot;width:9%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;span class=&quot;meter-val&quot; id=&quot;valEnergy&quot;&gt;Low&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;meter-row&quot;&gt;
+          &lt;span class=&quot;meter-label&quot;&gt;Change&lt;/span&gt;
+          &lt;div class=&quot;meter-bar-track&quot;&gt;&lt;div class=&quot;meter-bar-fill change&quot; id=&quot;barChange&quot; style=&quot;width:9%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;span class=&quot;meter-val&quot; id=&quot;valChange&quot;&gt;Min&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;slider-row&quot;&gt;
+        &lt;span class=&quot;slider-hint&quot;&gt;Slow&lt;/span&gt;
+        &lt;input type=&quot;range&quot; id=&quot;speedSlider&quot; min=&quot;5&quot; max=&quot;100&quot; value=&quot;30&quot; step=&quot;1&quot;&gt;
+        &lt;span class=&quot;slider-hint&quot;&gt;Fast&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;insight&quot; id=&quot;insightBox&quot;&gt;Drag the slider to change the car&#x27;s speed — watch how energy and potential change scale with it.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;key-finding&quot;&gt;
+      &lt;div class=&quot;key-finding-icon&quot;&gt;⚡&lt;/div&gt;
+      &lt;div class=&quot;key-finding-body&quot;&gt;
+        &lt;div class=&quot;key-finding-label&quot;&gt;Key Finding&lt;/div&gt;
+        &lt;div class=&quot;key-finding-text&quot;&gt;Faster motion means more energy is involved in the crash.&lt;/div&gt;
+        &lt;div class=&quot;key-finding-science&quot;&gt;Deeper science: &lt;span&gt;KE = ½ × mass × velocity²&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  var slider=document.getElementById(&#x27;speedSlider&#x27;),barSpeed=document.getElementById(&#x27;barSpeed&#x27;),barEnergy=document.getElementById(&#x27;barEnergy&#x27;),barChange=document.getElementById(&#x27;barChange&#x27;),valSpeed=document.getElementById(&#x27;valSpeed&#x27;),valEnergy=document.getElementById(&#x27;valEnergy&#x27;),valChange=document.getElementById(&#x27;valChange&#x27;),car=document.getElementById(&#x27;car&#x27;),flash=document.getElementById(&#x27;flash&#x27;),insight=document.getElementById(&#x27;insightBox&#x27;),track=document.getElementById(&#x27;trackArea&#x27;),animFrame=null,carPos=5,driving=false,lastSpeed=30;
+  function getSpeedLabel(s){return s&lt;25?&#x27;Slow&#x27;:s&lt;55?&#x27;Med&#x27;:s&lt;80?&#x27;Fast&#x27;:&#x27;High&#x27;;}
+  function getEnergyLabel(e){return e&lt;15?&#x27;Low&#x27;:e&lt;40?&#x27;Med&#x27;:e&lt;70?&#x27;High&#x27;:&#x27;Max&#x27;;}
+  function getChangeLabel(c){return c&lt;15?&#x27;Min&#x27;:c&lt;40?&#x27;Mod&#x27;:c&lt;70?&#x27;High&#x27;:&#x27;Major&#x27;;}
+  function getInsight(s){
+    if(s&lt;25)return &#x27;At low speed, relatively little energy enters the crash system. Changes to the car are minimal.&#x27;;
+    if(s&lt;55)return &#x27;At medium speed, more energy is involved than at low speed. More change to the car is likely.&#x27;;
+    if(s&lt;80)return &#x27;At high speed, the energy involved is large. This is where significant front-end change appears in test runs.&#x27;;
+    return &#x27;Maximum speed — energy is enormous. Even well-designed safety systems are under extreme stress at this level.&#x27;;
+  }
+  function update(){
+    var s=parseInt(slider.value);lastSpeed=s;
+    var energy=Math.round((s/100)*(s/100)*100),change=Math.round(energy*0.92);
+    barSpeed.style.width=s+&#x27;%&#x27;;barEnergy.style.width=energy+&#x27;%&#x27;;barChange.style.width=change+&#x27;%&#x27;;
+    valSpeed.textContent=getSpeedLabel(s);valEnergy.textContent=getEnergyLabel(energy);valChange.textContent=getChangeLabel(change);
+    insight.textContent=getInsight(s);startCar(s);
+  }
+  function startCar(speed){
+    if(animFrame)cancelAnimationFrame(animFrame);
+    carPos=5;car.style.left=carPos+&#x27;%&#x27;;car.textContent=&#x27;🚗&#x27;;driving=true;
+    var increment=(speed/100)*2.8+0.4;
+    function step(){
+      if(!driving)return;carPos+=increment;car.style.left=Math.min(carPos,86)+&#x27;%&#x27;;
+      if(carPos&gt;=86){
+        driving=false;car.textContent=&#x27;💥&#x27;;flash.classList.add(&#x27;flash&#x27;);
+        setTimeout(function(){flash.classList.remove(&#x27;flash&#x27;);},180);
+        setTimeout(function(){car.textContent=&#x27;🚗&#x27;;carPos=5;car.style.left=carPos+&#x27;%&#x27;;setTimeout(function(){startCar(lastSpeed);},900);},500);
+        return;
+      }
+      animFrame=requestAnimationFrame(step);
+    }
+    animFrame=requestAnimationFrame(step);
+  }
+  slider.addEventListener(&#x27;input&#x27;,function(){driving=false;if(animFrame)cancelAnimationFrame(animFrame);update();});
+  update();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"
+        style="width:75%; height:860px; border:none; border-radius:12px; display:block; margin: 20px auto;"
+        scrolling="no"
+        title="Crash Science Briefing — Interactive Energy Model">
+      </iframe>
+
+      <div class="narrative">
+        <div class="investigation-check">
+  <div class="investigation-check-label">Investigation Check</div>
+  <p>
+    Which crash likely involved the most energy? What evidence supports your thinking?
+  </p>
+</div>
+
+
+<p>
+    One important safety idea is this: <i>visible damage does not always mean the car failed</i>.
+  Some parts of a vehicle are designed to bend, crush, or change shape so they can absorb
+  energy and help protect passengers.
+</p>
+
+<p>
+  Next, your team will investigate where the energy went during the crash and how that affects passenger safety.
+</p>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s5b">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <strong>What did the Crash Science Briefing help you understand about why some test runs showed more change than others? Use evidence from the test runs.</strong>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s5b"
+                  placeholder="Write your explanation here…"
+                  oninput="saveJournal('s5b', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-5c')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 5C — What Are We Wondering?
+  =================================================== -->
+  <section id="section-5c" class="section">
+    <div class="section-header">
+      <div class="section-title">What Are We Wondering?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <p>Your team pauses to think about what you've discovered.</p>
+      </div>
+
+      <div class="dialogue-block">
+        "If motion is different, then the energy involved must be different too…"
+      </div>
+
+      <div class="dialogue-block">
+        "And that energy has to go somewhere during the crash."
+      </div>
+
+      <div class="narrative">
+        <p>Now you have a new question to investigate. <strong>Where does the energy go during a crash?</strong></p>
+      </div>
+
+      <div style="margin: 20px 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);">
+        <img src="images/Energy_wondering.png"
+             alt="Team wondering where the energy goes during a crash"
+             style="width: 100%; display: block; border-radius: var(--radius-lg);"
+             onerror="this.parentElement.style.display='none'" />
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-6')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 6 — Decision Point 2: Where Did the Energy Go?
+  =================================================== -->
+  <section id="section-6" class="section">
+    <div class="section-header">
+      <div class="section-title">Where Did the Energy Go?</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+<p>
+  Before the engineers can make the car safer, your team needs to explain what happens to energy during the crash, and your <strong>Junior Crash Test Scientist</strong> team now has evidence that <strong>energy plays a role</strong> in these crashes.
+</p>
+
+<p>
+  But you still need a way to <strong>analyze what is happening</strong> during the crash.
+</p>
+
+<p>
+  Your team goes to <strong>Molly</strong>, the Senior Safety Engineer, for support.
+</p>
+
+<p class="narrative-action">
+  She reviews your findings and nods.
+</p>
+
+<div class="dialogue-box">
+  “Good work. If energy is involved, we need to run an analysis.”
+</div>
+
+<p class="narrative-action">
+  She pulls up a system on her screen.
+</p>
+
+<div class="dialogue-box">
+  “Impact Motors has a Crash Test Analysis Tool you can use. But first, you’ll need to decide what <strong>variable</strong> you want the tool to analyze.” Molly says, "You’ll also need to be specific about the kind of <strong>evidence</strong> you want it to examine.”
+</div>
+
+<p>
+  Different choices will lead to different insights.
+</p>
+
+<h3 class="decision-prompt">
+  Where will you start your energy analysis?
+</h3>
+      </div>
+
+<div style="margin: 16px 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
+  <img src="images/Energy_AnalysisTool.png" alt="Energy Path Decision Context Visual"
+       style="width:100%; display:block; border-radius: var(--radius);"
+       onerror="this.parentElement.style.display='none'" />
+</div>
+
+      <hr class="section-rule">
+
+      <p style="font-family: var(--font-ui); font-size: 19px; color: var(--gray-light); text-align:center; margin-bottom: 6px;">
+        Where will you start your energy analysis?
+      </p>
+
+      <!-- Decision buttons — orange, routes to 7A or 7B -->
+      <div class="decision-row">
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp2', 'A', 'section-7a')">
+          Follow the Energy Into the Car<br>
+          <small style="font-weight:normal; font-size: 18px; opacity:0.85;">
+          Investigate how energy changes the car’s structure         
+          </small>
+        </button>
+        <button class="btn btn-decision"
+                onclick="makeDecision('dp2', 'B', 'section-7b')">
+          Follow the Energy Into the Surroundings<br>
+          <small style="font-weight:normal; font-size: 18px; opacity:0.85;">
+            Investigate how energy spreads into the surroundings (sound, heat, movement)
+          </small>
+        </button>
+      </div>
+
+      <!-- Back button only -->
+      <div class="nav-row" style="justify-content: flex-start;">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 7A — DP2 Path A: Into the Car — Deformation
+  =================================================== -->
+  <section id="section-7a" class="section">
+    <div class="section-header">
+      <div class="section-title">Follow the Energy Into the Car</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+<p>
+  You decide to follow the energy into the car.
+</p>
+
+<p>
+  Molly brings up the <strong>Crash Test Analysis Tool</strong>.
+</p>
+
+<div class="dialogue-block">
+  “This tool will let you compare what happens before and after a crash,” she explains.
+</div>
+
+<div class="dialogue-block">
+  “Make sure you’re clear about the <strong>variable</strong> you're analyzing, and the evidence you're looking for.”
+</div>
+
+<p>
+  You begin your analysis.
+</p>
+      </div>
+
+      <!-- ── SECTION 7A · DP2 PATH A INTERACTIVE ── -->
+      <div class="embed-7a" id="embed-7a">
+        <section class="ea-energy-analysis" aria-labelledby="ea7a-heading">
+
+          <h2 class="ea-energy-analysis__heading" id="ea7a-heading">
+            Crash Test Energy Analysis
+          </h2>
+
+          <div class="ea-energy-analysis__callout" role="note">
+            <strong>Variable Being Analyzed: Energy</strong>
+            This analysis looks for evidence that some crash energy moved into the car
+            and caused parts to change shape.
+          </div>
+
+          <p class="ea-run-prompt">Choose a crash test run to compare before and after impact:</p>
+
+          <div class="ea-energy-analysis__btn-group" role="group" aria-label="Select a test run — Path A">
+            <button class="ea-btn ea-btn--run" data-run="1" aria-pressed="false">Test Run 1</button>
+            <button class="ea-btn ea-btn--run" data-run="2" aria-pressed="false">Test Run 2</button>
+            <button class="ea-btn ea-btn--run" data-run="3" aria-pressed="false">Test Run 3</button>
+          </div>
+
+          <div id="ea7a-table-wrap" class="ea-energy-analysis__table-wrap is-hidden">
+            <table class="ea-energy-analysis__table" aria-label="Before and after impact comparison — Path A">
+              <thead>
+                <tr>
+                  <th scope="col">Before Impact</th>
+                  <th scope="col">After Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <img id="ea7a-img-before"
+                         src="images/Energy_no impact.png"
+                         alt="Car before impact – no deformation visible" />
+                  </td>
+                  <td>
+                    <img id="ea7a-img-after" src="" alt="" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button class="ea-btn ea-btn--analyse"
+                    id="ea7a-btn-analyse"
+                    aria-controls="ea7a-result">
+              Run Energy Analysis
+            </button>
+          </div>
+
+          <div id="ea7a-result" class="ea-energy-analysis__result is-hidden" aria-live="polite">
+            <img id="ea7a-img-analysis" src="" alt="" />
+            <p class="ea-energy-analysis__result-label" id="ea7a-label"></p>
+          </div>
+
+        </section>
+      </div><!-- /.embed-7a -->
+
+      <div class="narrative">
+<p>
+  You review the results from the analysis.
+</p>
+
+<p>
+  Look closely at what changed between the <strong>before</strong> and <strong>after</strong> images.
+</p>
+
+<p>
+  What evidence do you see that energy affected the car during the crash?
+</p>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s7a">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <em>What evidence do you see that energy moved into the car during the crash?  Use details from at least one test run.</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s7a"
+                  placeholder="Write your explanation here…"
+                  oninput="saveJournal('s7a', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation — converges to Section 8 -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-8')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 7B — DP2 Path B: Heat, Sound, and Movement
+  =================================================== -->
+  <section id="section-7b" class="section">
+    <div class="section-header">
+      <div class="section-title">Follow the Energy into the Surroundings</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+<p>You decide to follow how energy spreads into the surroundings during the crash.</p>
+<p>
+  Molly opens the <strong>Crash Test Analysis Tool</strong>.
+</p>
+
+<div class="dialogue-block">
+  “Energy doesn’t just stay in the car,” she says.
+</div>
+
+<div class="dialogue-block">
+  “Use the tool to analyze what happens around the crash, and look carefully at the evidence.”
+</div>
+
+<p>
+  You begin your analysis.
+</p>
+      </div>
+
+
+      <!-- ── SECTION 7B · DP2 PATH B INTERACTIVE ── -->
+      <div class="embed-7b" id="embed-7b">
+        <section class="ea-energy-analysis" aria-labelledby="ea7b-heading">
+
+          <h2 class="ea-energy-analysis__heading" id="ea7b-heading">
+            Crash Test Energy Analysis
+          </h2>
+
+          <div class="ea-energy-analysis__callout" role="note">
+            <strong>Variable Being Analyzed: Energy</strong>
+            This analysis looks for evidence that some crash energy moved into the surroundings
+            during the crash.
+          </div>
+
+          <p class="ea-run-prompt">Choose a crash test run to compare before and after impact:</p>
+
+          <div class="ea-energy-analysis__btn-group" role="group" aria-label="Select a test run — Path B">
+            <button class="ea-btn ea-btn--run" data-run="1" aria-pressed="false">Test Run 1</button>
+            <button class="ea-btn ea-btn--run" data-run="2" aria-pressed="false">Test Run 2</button>
+            <button class="ea-btn ea-btn--run" data-run="3" aria-pressed="false">Test Run 3</button>
+          </div>
+
+          <div id="ea7b-table-wrap" class="ea-energy-analysis__table-wrap is-hidden">
+            <table class="ea-energy-analysis__table" aria-label="Before and after impact comparison — Path B">
+              <thead>
+                <tr>
+                  <th scope="col">Before Impact</th>
+                  <th scope="col">After Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <img id="ea7b-img-before"
+                         src="images/Energy_no impact.png"
+                         alt="Car before impact – no deformation visible" />
+                  </td>
+                  <td>
+                    <img id="ea7b-img-after" src="" alt="" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button class="ea-btn ea-btn--analyse"
+                    id="ea7b-btn-analyse"
+                    aria-controls="ea7b-result">
+              Run Energy Analysis
+            </button>
+          </div>
+
+          <div id="ea7b-result" class="ea-energy-analysis__result is-hidden" aria-live="polite">
+            <img id="ea7b-img-analysis" src="" alt="" />
+            <p class="ea-energy-analysis__result-label" id="ea7b-label"></p>
+          </div>
+
+        </section>
+      </div><!-- /.embed-7b -->
+      
+            <!-- PLACEHOLDER: Overlay toggle interaction -->
+      <div class="narrative">
+<p>
+  You review the results from your analysis.
+</p>
+
+<p>
+  Look closely at what happens around the crash.
+</p>
+
+<p>
+  What evidence do you see that energy moved into the surroundings?
+</p>
+      </div>
+
+      <!-- Field Journal -->
+      <div class="field-journal">
+        <div class="journal-header">
+          <div class="journal-icon">📓</div>
+          <div class="journal-label">Field Journal</div>
+          <div class="journal-save-badge" id="saved-s7b">✔ Saved</div>
+        </div>
+        <div class="journal-prompt">
+          <em>What evidence do you see that energy spread into the surroundings during the crash? Use details from at least one test run.</em>
+        </div>
+        <textarea class="journal-textarea"
+                  id="journal-s7b"
+                  placeholder="List the energy forms you observed…"
+                  oninput="saveJournal('s7b', this.value)"></textarea>
+      </div>
+
+      <!-- Navigation — converges to Section 8 -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-8')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 8 — DP2 Convergence: Energy Did Not Disappear
+  =================================================== -->
+  <section id="section-8" class="section">
+    <div class="section-header convergence">
+      <div class="section-tag convergence">Section 9 · Convergence — DP2</div>
+      <div class="section-title">What Did We Discover About Energy?</div>
+    </div>
+    <div class="section-body convergence-body">
+
+      <div class="convergence-tag"></div>
+
+      <div class="narrative">
+        <p>Your <strong>Junior Crash Test Scientist</strong> team now shares what you discovered.</p>
+        <p>Some teams followed the energy into the car. Other teams followed how energy spread into the surroundings.</p>
+        <p>Now it's time to bring your evidence together.</p>
+      </div>
+
+      <!-- Side-by-side comparison -->
+      <div class="s9-comparison-grid">
+        <div class="s9-comparison-card">
+          <div class="s9-comparison-card-heading">Energy Into the Car</div>
+          <img src="images/Energy_TestRun2AnalysisA.png"
+               alt="Energy analysis showing evidence of energy moving into the car during Test Run 2."
+               onerror="this.style.opacity='0.3'" />
+        </div>
+        <div class="s9-comparison-card">
+          <div class="s9-comparison-card-heading">Energy Into the Surroundings</div>
+          <img src="images/Energy_TestRun2AnalysisB.png"
+               alt="Energy analysis showing evidence of energy moving into the surroundings during Test Run 2."
+               onerror="this.style.opacity='0.3'" />
+        </div>
+      </div>
+
+      <div class="narrative">
+        <p><strong>What patterns do you notice across both investigations?</strong></p>
+        <p>What do these results suggest about what happens to energy during a crash?</p>
+        <p><strong>How is energy transferred in each case?</strong></p>
+      </div>
+
+      <!-- Scaffold box -->
+      <div class="s9-scaffold-box" role="note" aria-label="Explanation scaffold">
+        <p><strong>Build your explanation:</strong></p>
+        <p>During a crash, energy is transferred into __________ and __________.</p>
+        <p>Evidence from the car shows __________.</p>
+        <p>Evidence from the surroundings shows __________.</p>
+        <p>The motion of the car matters because __________.</p>
+      </div>
+
+      <div class="narrative">
+        <p>The engineering team is depending on your explanation to understand what's happening during these crashes.</p>
+        <p>Next, you will turn your findings into a scientific brief for the engineers at Impact Motors.</p>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-9')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 9 — Sharing Your Scientific Insights
+  =================================================== -->
+  <section id="section-9" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 10 · Creation &amp; Communication</div>
+      <div class="section-title">Sharing Your Scientific Insights with the Engineering Team</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <p>Your investigation is almost complete.</p>
+        <p>You have analyzed crash test data, looked for patterns, and investigated where energy went during the crash.</p>
+        <p>Now the engineering team needs your scientific explanation before they make changes to the vehicle design.</p>
+      </div>
+
+      <p class="narrative-action">Molly opens a final report template on the screen.</p>
+
+      <div class="dialogue-block">
+        "The engineers do not need a guess," Molly says. "They need a clear scientific explanation supported by evidence."
+      </div>
+
+      <div class="dialogue-block">
+        "Use your findings to explain what is happening during the crash so the engineering team can make safer design decisions."
+      </div>
+
+      <!-- Brief Builder -->
+      <div class="s10-brief-builder" role="form" aria-label="Impact Motors Scientific Brief Builder">
+        <div class="s10-brief-builder-title">Impact Motors Scientific Brief Builder</div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-claim">1. Claim</label>
+          <p class="s10-brief-field-prompt">Where does the energy go during a crash?</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-claim"
+                    placeholder="Example: During a crash, energy is transferred into..."
+                    oninput="saveBriefField('claim', this.value)"
+                    aria-label="Claim: where does the energy go during a crash?"></textarea>
+        </div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-ev-car">2. Evidence from the Car</label>
+          <p class="s10-brief-field-prompt">What evidence shows that energy affected the car?</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-ev-car"
+                    placeholder="Use evidence from the car analysis, such as bending, crumpling, compression, or shape change."
+                    oninput="saveBriefField('evcar', this.value)"
+                    aria-label="Evidence from the car analysis"></textarea>
+        </div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-ev-surr">3. Evidence from the Surroundings</label>
+          <p class="s10-brief-field-prompt">What evidence shows that energy moved into the surroundings?</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-ev-surr"
+                    placeholder="Use evidence from the surroundings analysis, such as sound, heat, vibration, dust, or movement."
+                    oninput="saveBriefField('evsurr', this.value)"
+                    aria-label="Evidence from the surroundings analysis"></textarea>
+        </div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-explanation">4. Scientific Explanation</label>
+          <p class="s10-brief-field-prompt">Explain how the car's motion affects the amount of energy and how that energy is transferred during the crash.</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-explanation"
+                    placeholder="Connect motion, energy, and evidence from the crash system."
+                    oninput="saveBriefField('expl', this.value)"
+                    aria-label="Scientific explanation connecting motion and energy transfer"></textarea>
+        </div>
+
+        <button class="s10-create-btn"
+                id="brief-create-btn"
+                onclick="generateBrief()"
+                aria-controls="brief-output">
+          Create Brief
+        </button>
+      </div>
+
+      <!-- Generated Brief (hidden until Create Brief clicked) -->
+      <div class="s10-brief-output" id="brief-output" aria-live="polite" aria-label="Generated scientific brief">
+
+        <div class="s10-brief-header">
+          <div class="s10-brief-logo">Impact Motors</div>
+          <div class="s10-brief-doc-title">Crash Test Scientific Brief</div>
+        </div>
+        <div class="s10-brief-accent"></div>
+
+        <div class="s10-brief-body">
+
+          <div class="s10-brief-meta">
+            <strong>Prepared by:</strong> Junior Crash Test Scientist Team<br>
+            <strong>Purpose:</strong> To explain what is happening during the crash so the engineering team can make safer design decisions before more tests are run.
+          </div>
+
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Claim</div>
+            <div class="s10-brief-section-text" id="brief-out-claim"></div>
+          </div>
+
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Evidence from the Car</div>
+            <div class="s10-brief-section-text" id="brief-out-ev-car"></div>
+          </div>
+
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Evidence from the Surroundings</div>
+            <div class="s10-brief-section-text" id="brief-out-ev-surr"></div>
+          </div>
+
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Scientific Explanation</div>
+            <div class="s10-brief-section-text" id="brief-out-explanation"></div>
+          </div>
+
+        </div>
+
+        <div class="s10-brief-footer">
+          <strong style="color:var(--gray-light);">Final Message to the Engineering Team:</strong><br>
+          The crash test evidence shows that energy does not disappear during a crash. Understanding where and how energy is transferred can help engineers design safer vehicles.
+        </div>
+
+      </div><!-- /#brief-output -->
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-10')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 10 — Transfer & Application Part 2: Test a Safety Change
+  =================================================== -->
+  <section id="section-10" class="section">
+    <div class="section-header">
+      <div class="section-tag">Section 11 · Lesson Wrap-Up</div>
+      <div class="section-title">Mission Complete: Helping Impact Motors</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <p>The engineering team reviews your scientific brief.</p>
+        <p>Your work helped explain what was happening during the crash tests.</p>
+      </div>
+
+      <div class="dialogue-block">
+        "This is exactly the kind of evidence our engineers needed," Molly says.
+      </div>
+
+      <div class="dialogue-block">
+        "Now we can use your findings to think more carefully about how energy moves during a crash—and how future vehicle designs can better protect passengers."
+      </div>
+
+      <div class="narrative">
+        <p>As a <strong>Junior Crash Test Scientist</strong>, you did more than describe damage.</p>
+        <p>You analyzed data, identified patterns, investigated energy transfer, and communicated a scientific explanation to help solve a real engineering problem.</p>
+      </div>
+
+      <!-- Final Takeaway Box -->
+      <div class="s11-takeaway-box" role="note" aria-label="Final Takeaway">
+        <div class="s11-takeaway-label">⚡ Final Takeaway</div>
+        When objects move, they have energy. During a crash, that energy can be transferred into different parts of the system, including the car and the surroundings. Scientists and engineers use evidence about energy transfer to make safer design decisions.
+      </div>
+
+      <div class="narrative">
+        <p>Mission complete.</p>
+      </div>
+
+      <!-- Finish row -->
+      <div class="s11-finish-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-export" onclick="exportJournal()">
+          ⬇ Export My Field Journal
+        </button>
+        <span class="s11-complete-badge">✔ Lesson Complete</span>
+      </div>
+
+      <p style="font-family:var(--font-ui); font-size: 17px; color:var(--gray-steel); margin-top:14px;">
+        Your export will include all journal entries, your decisions, and a timestamp.
+        Your teacher may ask you to submit this file.
+      </p>
+
+    </div>
+  </section>
+
+
+</main><!-- /#app -->
+
+<!-- ============================================================
+     EXPORT JOURNAL MODAL
+============================================================ -->
+<div class="im-modal-overlay" id="export-modal" role="dialog" aria-modal="true" aria-labelledby="export-modal-title">
+  <div class="im-modal-box">
+    <div class="im-modal-title" id="export-modal-title">Export Your Field Journal</div>
+    <div class="im-modal-body">
+      Type your name or identifier below.<br>
+      <strong>ImpactMotorsJournal</strong> will be added automatically to the end of the filename.
+    </div>
+    <label class="im-modal-label" for="export-name-input">Your name or ID (optional):</label>
+    <input class="im-modal-input" type="text" id="export-name-input" placeholder="e.g. Toon"
+           oninput="exportModalPreview()" aria-label="Your name or ID for the filename" />
+    <div class="im-modal-preview">
+      Filename: <span id="export-filename-preview">ImpactMotorsJournal.txt</span>
+    </div>
+    <div class="im-modal-btns">
+      <button class="btn-cancel" onclick="exportModalClose()">Cancel</button>
+      <button class="btn-export-go" onclick="exportModalConfirm()">Export</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     RESTART CONFIRM MODAL
+============================================================ -->
+<div class="im-modal-overlay" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+  <div class="im-confirm-box">
+    <div class="im-modal-title" id="confirm-modal-title">⚠ Restart Lesson?</div>
+    <div class="im-modal-body">
+      This will permanently clear all your journal entries, decisions, brief responses, and save code.<br><br>
+      <strong>This cannot be undone.</strong>
+    </div>
+    <div class="im-modal-btns">
+      <button class="btn-cancel" onclick="confirmModalClose()">Cancel</button>
+      <button class="btn-confirm-yes" onclick="confirmModalYes()">Yes, Restart</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /*
+  ==============================================================
+    SINS LESSON NAVIGATION & DATA SYSTEM
+    
+    navigationHistory  — stack of section IDs visited, used
+                         by goBack() to return correctly even
+                         after branching.
+    decisions          — object tracking DP1 and DP2 choices.
+    journalData        — object keyed by section shorthand,
+                         mirrors localStorage.
+    
+    Total sections: 12 logical sections.
+    Section numbering for progress: 1–12 in display order,
+    but 4A/4B and 7A/7B share a "slot" in the linear count.
+  ==============================================================
+  */
+
+  // ── Progress map: section ID → {displayNum, title} ──────────
+  const SECTION_META = {
+    'section-0':  { num: 0,  title: 'Mission Briefing' },
+    'section-1':  { num: 1,  title: 'Investigation Brief' },
+    'section-2':  { num: 2,  title: 'Welcome to Impact Motors' },
+    'section-3':  { num: 3,  title: 'Decision Point 1' },
+    'section-4a': { num: 4,  title: 'Path A — Motion' },
+    'section-4b': { num: 4,  title: 'Path B — Damage' },
+    'section-5a': { num: 5,  title: 'Convergence 1A — What Did We Notice?' },
+    'section-5b': { num: 5,  title: 'Convergence 1B — What Does It Mean?' },
+    'section-5c': { num: 6,  title: 'What Are We Wondering?' },
+    'section-6':  { num: 7,  title: 'Decision Point 2' },
+    'section-7a': { num: 8,  title: 'Path A — Deformation' },
+    'section-7b': { num: 8,  title: 'Path B — Surroundings' },
+    'section-8':  { num: 9,  title: 'What Did We Discover About Energy?' },
+    'section-9':  { num: 10, title: 'Sharing Scientific Insights' },
+    'section-10': { num: 11, title: 'Mission Complete' },
+  };
+  const TOTAL_SECTIONS = 11;
+
+  // ── State ────────────────────────────────────────────────────
+  let currentSection = 'section-0';
+  let navigationHistory = [];  // stack of previously-visited section IDs
+  
+  // decisions: keyed by 'dp1' and 'dp2', value is 'A' or 'B'
+  let decisions = {};
+
+  // journalData: keyed by short section key (e.g. 's2', 's4a')
+  let journalData = {};
+
+
+  // ── Initialise on page load ──────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    timeTrackingInit();
+    loadFromStorage();
+    restoreJournalFields();
+    restoreBriefFields();
+    resumeCodeInit();
+    ttsInit();
+
+    // Restore to the last active section (or section-0 if none saved)
+    const restoreTarget = (typeof savedCurrentSection === 'string' && savedCurrentSection)
+      ? savedCurrentSection : 'section-0';
+    showSection(restoreTarget);
+  });
+
+
+  // ── Navigation ───────────────────────────────────────────────
+
+  /**
+   * Navigate to a new section, pushing current onto the history stack.
+   * @param {string} sectionId  - the id of the target section element
+   */
+  function navigateTo(sectionId) {
+    if (!document.getElementById(sectionId)) {
+      console.warn('Section not found:', sectionId);
+      return;
+    }
+    // Push current onto history stack before leaving
+    navigationHistory.push(currentSection);
+    showSection(sectionId);
+  }
+
+  /**
+   * Go back to the previously visited section (stack-based, works after branching).
+   */
+  function goBack() {
+    if (navigationHistory.length === 0) return; // already at start
+    const previous = navigationHistory.pop();
+    showSection(previous);
+  }
+
+  /**
+   * Record a decision-point choice and navigate to the chosen branch.
+   * @param {string} dpKey      - 'dp1' or 'dp2'
+   * @param {string} choice     - 'A' or 'B'
+   * @param {string} sectionId  - target section to navigate to
+   */
+  function makeDecision(dpKey, choice, sectionId) {
+    decisions[dpKey] = choice;
+    saveToStorage();
+    navigateTo(sectionId);
+  }
+
+  /**
+   * Display a section and hide all others. Updates progress UI.
+   * @param {string} sectionId
+   */
+  function showSection(sectionId) {
+    ttsStop(); // Stop any active speech when changing pages
+    timeTrackingLeave(); // Record time on previous section
+
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+
+    // Show target
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.classList.add('active');
+      currentSection = sectionId;
+      updateProgress(sectionId);
+      timeTrackingEnter(sectionId);
+      saveToStorage();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  /**
+   * Update the progress bar and label in the masthead.
+   * @param {string} sectionId
+   */
+  function updateProgress(sectionId) {
+    const meta = SECTION_META[sectionId] || { num: 0, title: '' };
+    const isLanding = (sectionId === 'section-0');
+
+    // Toggle progress bar, util buttons, mission path, and resume panel visibility
+    document.getElementById('progress-wrap').style.display  = isLanding ? 'none' : '';
+    document.getElementById('util-buttons').style.display   = isLanding ? 'none' : '';
+    document.getElementById('mission-path').style.display   = isLanding ? 'none' : '';
+    const resumePanel = document.getElementById('resume-panel');
+    if (resumePanel) resumePanel.style.display = isLanding ? 'none' : 'flex';
+
+    if (!isLanding) {
+      const pct = Math.round((meta.num / TOTAL_SECTIONS) * 100);
+      document.getElementById('progress-label').textContent =
+        `Section ${meta.num} of ${TOTAL_SECTIONS} — ${meta.title}`;
+      document.getElementById('progress-bar-fill').style.width = pct + '%';
+    }
+
+    // Update mission path decision labels whenever they change
+    const dp1Labels = { A: 'Path A — Motion', B: 'Path B — Damage' };
+    const dp2Labels = { A: 'Path A — Into the Car', B: 'Path B — Surroundings' };
+    document.getElementById('mp-dp1-val').textContent =
+      decisions.dp1 ? dp1Labels[decisions.dp1] : 'Awaiting your choice…';
+    document.getElementById('mp-dp2-val').textContent =
+      decisions.dp2 ? dp2Labels[decisions.dp2] : 'Awaiting your choice…';
+
+    // Mark completed steps
+    document.getElementById('mp-dp1').classList.toggle('mp-done', !!decisions.dp1);
+    document.getElementById('mp-dp2').classList.toggle('mp-done', !!decisions.dp2);
+  }
+
+
+  // ── Field Journal ─────────────────────────────────────────────
+
+  /**
+   * Save a journal entry to both in-memory state and localStorage.
+   * Also shows the "Saved" badge briefly.
+   * @param {string} key    - section key, e.g. 's2', 's4a'
+   * @param {string} value  - textarea content
+   */
+  function saveJournal(key, value) {
+    journalData[key] = value;
+    saveToStorage();
+    // Flash the saved badge for this section
+    const badge = document.getElementById('saved-' + key);
+    if (badge) {
+      badge.classList.add('visible');
+      clearTimeout(badge._timeout);
+      badge._timeout = setTimeout(() => badge.classList.remove('visible'), 2000);
+    }
+  }
+
+  /**
+   * Restore textarea values from journalData (called on load).
+   */
+  function restoreJournalFields() {
+    Object.keys(journalData).forEach(key => {
+      const el = document.getElementById('journal-' + key);
+      if (el) el.value = journalData[key] || '';
+    });
+  }
+
+
+  // ── localStorage persistence ──────────────────────────────────
+
+  const STORAGE_KEY = 'sins_impact_motors';
+
+  function saveToStorage() {
+    try {
+      const payload = {
+        decisions,
+        journalData,
+        currentSection,
+        navigationHistory,
+        sectionTimings,
+        resumeCode,
+        csTestLog,
+        csObservations,
+        dp2aSelectedRun,
+        dp2aAnalysisRun,
+        dp2bSelectedRun,
+        dp2bAnalysisRun,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      // Also snapshot under the resume code key for cross-session use
+      if (resumeCode) {
+        localStorage.setItem('sins_im_snap_' + resumeCode, JSON.stringify(payload));
+      }
+    } catch(e) {
+      console.warn('localStorage save failed:', e);
+    }
+  }
+
+  // Track the section to restore on load
+  let savedCurrentSection = null;
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const payload = JSON.parse(raw);
+      if (payload.decisions)          decisions          = payload.decisions;
+      if (payload.journalData)        journalData        = payload.journalData;
+      if (payload.currentSection)     savedCurrentSection = payload.currentSection;
+      if (payload.navigationHistory)  navigationHistory  = payload.navigationHistory;
+      if (payload.sectionTimings)     sectionTimings     = payload.sectionTimings;
+      if (payload.resumeCode)         resumeCode         = payload.resumeCode;
+      if (payload.csTestLog)          csTestLog          = payload.csTestLog;
+      if (payload.csObservations)     csObservations     = payload.csObservations;
+      if (payload.dp2aSelectedRun !== undefined) dp2aSelectedRun = payload.dp2aSelectedRun;
+      if (payload.dp2aAnalysisRun !== undefined) dp2aAnalysisRun = payload.dp2aAnalysisRun;
+      if (payload.dp2bSelectedRun !== undefined) dp2bSelectedRun = payload.dp2bSelectedRun;
+      if (payload.dp2bAnalysisRun !== undefined) dp2bAnalysisRun = payload.dp2bAnalysisRun;
+    } catch(e) {
+      console.warn('localStorage load failed:', e);
+    }
+  }
+
+
+  // ── Export Journal ────────────────────────────────────────────
+
+  /**
+   * Build and download a plain-text export of the student's
+   * full Field Journal, decisions made, and a timestamp.
+   */
+  // ── Export Modal ─────────────────────────────────────────────
+
+  function exportModalOpen() {
+    document.getElementById('export-name-input').value = '';
+    document.getElementById('export-filename-preview').textContent = 'ImpactMotorsJournal.txt';
+    document.getElementById('export-modal').classList.add('open');
+    setTimeout(() => document.getElementById('export-name-input').focus(), 100);
+  }
+
+  function exportModalClose() {
+    document.getElementById('export-modal').classList.remove('open');
+  }
+
+  function exportModalPreview() {
+    const name = document.getElementById('export-name-input').value.trim();
+    const preview = name ? name + 'ImpactMotorsJournal.txt' : 'ImpactMotorsJournal.txt';
+    document.getElementById('export-filename-preview').textContent = preview;
+  }
+
+  function exportModalConfirm() {
+    const name = document.getElementById('export-name-input').value.trim();
+    exportModalClose();
+    doExportJournal(name);
+  }
+
+  function buildExportText(studentId) {
+    const now       = new Date();
+    const timestamp = now.toLocaleString();
+    const L         = [];
+    const line      = s => L.push(s);
+    const blank     = ()  => L.push('');
+    const rule      = ()  => L.push('======================================================');
+    const dash      = ()  => L.push('------------------------------------------------------');
+
+    rule(); line('  Impact Motors: Crash Investigation');
+    line('  Field Journal Export');
+    line('  Generated: ' + timestamp); rule(); blank();
+
+    // Student ID
+    dash(); line('  STUDENT IDENTIFIER'); dash();
+    line('Name / ID: ' + (studentId || 'Not provided')); blank();
+
+    // Time tracking
+    dash(); line('  TIME TRACKING'); dash();
+    const totalSec = Object.values(sectionTimings).reduce((a,b)=>a+b,0);
+    line('Total time in lesson: ' + fmtTime(totalSec));
+    blank();
+    const sectionNames = {
+      'section-0': 'Landing Page', 'section-1': 'Start Investigation',
+      'section-2': 'Welcome to Impact Motors', 'section-3': 'Decision Point 1',
+      'section-4a': 'Path A — What Was Happening Before the Crash?',
+      'section-4b': 'Path B — What Changed During the Crash?',
+      'section-5a': 'Convergence — What Did We Notice?',
+      'section-5b': 'Convergence — What Does It Mean?',
+      'section-5c': 'What Are We Wondering?',
+      'section-6': 'Decision Point 2 — Where Did the Energy Go?',
+      'section-7a': 'Path A — Follow the Energy Into the Car',
+      'section-7b': 'Path B — Follow the Energy Into the Surroundings',
+      'section-8': 'Convergence — What Did We Discover About Energy?',
+      'section-9': 'Sharing Scientific Insights with the Engineering Team',
+      'section-10': 'Mission Complete',
+    };
+    Object.entries(sectionTimings).forEach(([id, secs]) => {
+      if (secs > 0) line('  ' + (sectionNames[id] || id) + ': ' + fmtTime(secs));
+    });
+    blank();
+
+    // Decision choices
+    dash(); line('  MISSION PATH — DECISION CHOICES'); dash();
+    line('Decision Point 1 — Where Will You Begin?');
+    if (decisions.dp1 === 'A') line('  ✓ What Was Happening Before the Crash? (Motion path)');
+    else if (decisions.dp1 === 'B') line('  ✓ What Changed During the Crash? (Damage path)');
+    else line('  (not yet chosen)');
+    blank();
+    line('Decision Point 2 — Where Did the Energy Go?');
+    if (decisions.dp2 === 'A') line('  ✓ Follow the Energy Into the Car');
+    else if (decisions.dp2 === 'B') line('  ✓ Follow the Energy Into the Surroundings');
+    else line('  (not yet chosen)');
+    blank();
+
+    // Field journals with prompts
+    dash(); line('  FIELD JOURNAL RESPONSES'); dash(); blank();
+    const journals = [
+      { key: 's4a', section: 'Section 4A — Path A: Motion', prompt: 'What did you notice about how the car moved in each test run? How did the motion differ between the three test runs? What patterns do you notice?' },
+      { key: 's4b', section: 'Section 4B — Path B: Damage', prompt: 'What changes do you observe during each crash? How do the changes differ between the test runs? What patterns do you notice about where the damage occurs?' },
+      { key: 's5a', section: 'Section 5A — What Did We Notice?', prompt: 'What patterns do you notice across the test runs? Use evidence from at least two test runs.' },
+      { key: 's5b', section: 'Section 5B — What Does It Mean?', prompt: 'What did the Crash Science Briefing help you understand about why some test runs showed more change than others? Use evidence from the test runs.' },
+      { key: 's7a', section: 'Section 7A — Path A: Into the Car', prompt: 'What evidence do you see that energy moved into the car during the crash? Use details from at least one test run.' },
+      { key: 's7b', section: 'Section 7B — Path B: Into the Surroundings', prompt: 'What evidence do you see that energy spread into the surroundings during the crash? Use details from at least one test run.' },
+    ];
+    journals.forEach(({key, section, prompt}) => {
+      line('[ ' + section + ' ]');
+      line('Prompt: ' + prompt);
+      const val = journalData[key];
+      line('Response: ' + (val && val.trim() ? val.trim() : '[No response]'));
+      blank();
+    });
+
+    // DP1 Path A test data log
+    dash(); line('  DP1 PATH A — TEST DATA LOG (Motion Analysis)'); dash();
+    [1,2,3].forEach(n => {
+      line('Test Run ' + n + ':');
+      line('  Status: ' + (csTestLog[n] ? 'Replayed at ' + csTestLog[n] : 'Not yet replayed'));
+      const obs = csObservations[n];
+      line('  Observation: ' + (obs && obs.trim() ? obs.trim() : '[No observation recorded]'));
+    });
+    blank();
+
+    // DP2 Energy Analysis interactions
+    dash(); line('  DP2 ENERGY ANALYSIS INTERACTIONS'); dash();
+    line('Path A (Into the Car):');
+    line('  Test run selected: ' + (dp2aSelectedRun ? 'Test Run ' + dp2aSelectedRun : 'None'));
+    line('  Run Energy Analysis clicked: ' + (dp2aAnalysisRun ? 'Yes' : 'No'));
+    blank();
+    line('Path B (Into the Surroundings):');
+    line('  Test run selected: ' + (dp2bSelectedRun ? 'Test Run ' + dp2bSelectedRun : 'None'));
+    line('  Run Energy Analysis clicked: ' + (dp2bAnalysisRun ? 'Yes' : 'No'));
+    blank();
+
+    // Scientific Brief
+    dash(); line('  SCIENTIFIC BRIEF BUILDER'); dash(); blank();
+    const bFields = [
+      { key: 'brief_claim',  label: 'Claim', prompt: 'Where does the energy go during a crash?' },
+      { key: 'brief_evcar',  label: 'Evidence from the Car', prompt: 'What evidence shows that energy affected the car?' },
+      { key: 'brief_evsurr', label: 'Evidence from the Surroundings', prompt: 'What evidence shows that energy moved into the surroundings?' },
+      { key: 'brief_expl',   label: 'Scientific Explanation', prompt: 'How does motion affect energy transfer during the crash?' },
+    ];
+    bFields.forEach(({key, label, prompt}) => {
+      line(label + ':');
+      line('  Prompt: ' + prompt);
+      const val = journalData[key];
+      line('  Response: ' + (val && val.trim() ? val.trim() : '[No response]'));
+      blank();
+    });
+
+    // Generated brief
+    dash(); line('  COMPLETED SCIENTIFIC BRIEF'); dash(); blank();
+    if (journalData['brief_generated']) {
+      line('IMPACT MOTORS');
+      line('Crash Test Scientific Brief');
+      blank();
+      line('Prepared by: Junior Crash Test Scientist Team');
+      blank();
+      line('Claim:');
+      line(journalData['brief_claim'] || '(not completed)'); blank();
+      line('Evidence from the Car:');
+      line(journalData['brief_evcar'] || '(not completed)'); blank();
+      line('Evidence from the Surroundings:');
+      line(journalData['brief_evsurr'] || '(not completed)'); blank();
+      line('Scientific Explanation:');
+      line(journalData['brief_expl'] || '(not completed)'); blank();
+      line('Final Message to the Engineering Team:');
+      line('The crash test evidence shows that energy does not disappear during a crash.');
+      line('Understanding where and how energy is transferred can help engineers design safer vehicles.');
+    } else {
+      line('[Scientific brief not created yet]');
+    }
+    blank();
+
+    rule(); line('  END OF FIELD JOURNAL'); rule();
+    return L.join('\n');
+  }
+
+  function doExportJournal(studentId) {
+    const text     = buildExportText(studentId);
+    const name     = (studentId || '').trim();
+    const filename = name ? name + 'ImpactMotorsJournal.txt' : 'ImpactMotorsJournal.txt';
+    const blob     = new Blob([text], { type: 'text/plain; charset=utf-8' });
+    const url      = URL.createObjectURL(blob);
+    const a        = document.createElement('a');
+    a.href         = url;
+    a.download     = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Keep legacy name so any old inline onclick="exportJournal()" still works
+  function exportJournal() { exportModalOpen(); }
+
+
+  // ── Restart Lesson ───────────────────────────────────────────
+
+  /**
+   * Clear all stored progress and return to Section 0.
+   */
+  // ── Restart Confirm Modal ────────────────────────────────────
+
+  function confirmModalOpen() {
+    document.getElementById('confirm-modal').classList.add('open');
+  }
+
+  function confirmModalClose() {
+    document.getElementById('confirm-modal').classList.remove('open');
+  }
+
+  function confirmModalYes() {
+    confirmModalClose();
+    doRestartLesson();
+  }
+
+  function doRestartLesson() {
+    ttsStop();
+    // Clear all localStorage keys for this lesson
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    // Clear any resume code snapshots (only the active one)
+    if (resumeCode) {
+      try { localStorage.removeItem('sins_im_snap_' + resumeCode); } catch(e) {}
+    }
+    // Clear carsim storage
+    try { localStorage.removeItem(CS_LS_LOG_KEY); } catch(e) {}
+    try { localStorage.removeItem(CS_LS_OBSERVATIONS_KEY); } catch(e) {}
+
+    // Reset all in-memory state
+    decisions         = {};
+    journalData       = {};
+    navigationHistory = [];
+    sectionTimings    = {};
+    resumeCode        = null;
+    csTestLog         = { 1: null, 2: null, 3: null };
+    csObservations    = { 1: '', 2: '', 3: '' };
+    dp2aSelectedRun   = null;
+    dp2aAnalysisRun   = false;
+    dp2bSelectedRun   = null;
+    dp2bAnalysisRun   = false;
+    savedCurrentSection = null;
+
+    // Clear all textareas and brief fields
+    document.querySelectorAll('.journal-textarea, .s10-brief-textarea').forEach(el => el.value = '');
+    // Clear carsim observation textareas (dynamically rendered)
+    document.querySelectorAll('.cs-obs-textarea').forEach(el => el.value = '');
+    const briefOutput = document.getElementById('brief-output');
+    if (briefOutput) briefOutput.classList.remove('visible');
+
+    csResetCarToStart();
+    csRenderDataLog();
+    navigateTo('section-0');
+  }
+
+  // Keep old name working for any stray references
+  function restartLesson() { confirmModalOpen(); }
+
+
+  // ── Objectives Accordion ──────────────────────────────────────
+
+  /**
+   * Toggle the Learning Objectives accordion on Section 0.
+   * @param {HTMLElement} btn - the toggle button
+   */
+  function toggleObjectives(btn) {
+    const body     = btn.nextElementSibling;
+    const arrow    = btn.querySelector('.s0-acc-arrow');
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    body.hidden    = expanded;
+    arrow.textContent = expanded ? '\u25BC' : '\u25B2';
+  }
+
+  // ── CARSIM — Section 4A interactive ──────────────────────────
+
+  const CAR_START_X      = 12;
+  const CAR_STOP_X       = 66;
+  const FRAME_RATE_MS    = 16;
+  const TEST_1_BASE_SPEED = 0.25;
+
+  const TEST_SPEEDS = {
+    1: TEST_1_BASE_SPEED,
+    2: TEST_1_BASE_SPEED * (9 / 3),  // HIGH — fastest
+    3: TEST_1_BASE_SPEED * (5 / 3)   // MEDIUM — middle
+  };
+
+  const CS_STORAGE_PREFIX      = 'sins_dp1_pathA_';
+  const CS_LS_LOG_KEY          = CS_STORAGE_PREFIX + 'testLog';
+  const CS_LS_OBSERVATIONS_KEY = CS_STORAGE_PREFIX + 'observations';
+
+  let csAnimationTimer = null;
+  let csIsAnimating    = false;
+  let csCurrentCarX    = CAR_START_X;
+  let csTestLog        = { 1: null, 2: null, 3: null };
+  let csObservations   = { 1: '', 2: '', 3: '' };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    csLoadPersistedData();
+    csResetCarToStart();
+    csRenderDataLog();
+  });
+
+  function runTest(testNumber) {
+    if (csIsAnimating) return;
+    csSetButtonsDisabled(true);
+    const btn = document.getElementById('btnTest' + testNumber);
+    btn.classList.add('running');
+    btn.textContent = '';
+    const icon = document.createElement('span');
+    icon.className = 'cs-btn-icon';
+    icon.textContent = '⏵';
+    btn.appendChild(icon);
+    btn.appendChild(document.createTextNode(` Running Test ${testNumber}\u2026`));
+    csResetCarToStart();
+    setTimeout(() => { csAnimateCar(testNumber); }, 400);
+  }
+
+  function csAnimateCar(testNumber) {
+    csIsAnimating = true;
+    const speedPerFrame = TEST_SPEEDS[testNumber];
+    const car = document.getElementById('carImage');
+    csAnimationTimer = setInterval(() => {
+      csCurrentCarX += speedPerFrame;
+      if (csCurrentCarX >= CAR_STOP_X - 1) {
+        csCurrentCarX = CAR_STOP_X;
+        car.style.left = csCurrentCarX + '%';
+        csFinishTest(testNumber);
+        return;
+      }
+      car.style.left = csCurrentCarX + '%';
+    }, FRAME_RATE_MS);
+  }
+
+  function csFinishTest(testNumber) {
+    clearInterval(csAnimationTimer);
+    csIsAnimating = false;
+    const now = new Date();
+    csTestLog[testNumber] = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    csSavePersistedData();
+    csRenderDataLog();
+    csSetButtonsDisabled(false);
+    csResetButtonLabel(testNumber);
+  }
+
+  function csResetCarToStart() {
+    clearInterval(csAnimationTimer);
+    csIsAnimating = false;
+    csCurrentCarX = CAR_START_X;
+    const car = document.getElementById('carImage');
+    if (car) car.style.left = CAR_START_X + '%';
+  }
+
+  function csSetButtonsDisabled(disabled) {
+    [1, 2, 3].forEach(n => {
+      const btn = document.getElementById('btnTest' + n);
+      if (btn) btn.disabled = disabled;
+    });
+  }
+
+  function csResetButtonLabel(testNumber) {
+    const btn = document.getElementById('btnTest' + testNumber);
+    if (!btn) return;
+    btn.classList.remove('running');
+    btn.innerHTML = `<span class="cs-btn-icon">▶</span> Replay Test Run ${testNumber}`;
+  }
+
+  function csRenderDataLog() {
+    const tbody = document.getElementById('dataLogBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    [1, 2, 3].forEach(n => {
+      const ran     = csTestLog[n] !== null;
+      const timeStr = csTestLog[n] || '—';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-family:var(--font-head);font-size:14px;color:var(--off-white);">Test Run ${n}</td>
+        <td>
+          <span class="cs-log-status">
+            <span class="cs-log-dot ${ran ? 'done' : ''}"></span>
+            <span style="color:var(--off-white);font-size:12px;">${ran ? 'Replayed' : 'Not yet run'}</span>
+          </span>
+        </td>
+        <td>
+          <textarea class="cs-obs-textarea"
+            placeholder="Record an observation..."
+            aria-label="Observation for Test Run ${n}"
+            oninput="csSaveObservation(${n}, this.value)"
+          ></textarea>
+        </td>
+        <td><span class="cs-log-time">${timeStr}</span></td>
+      `;
+      tbody.appendChild(tr);
+      tr.querySelector('textarea').value = csObservations[n] || '';
+    });
+  }
+
+  function csSaveObservation(n, value) {
+    csObservations[n] = value;
+    try { localStorage.setItem(CS_LS_OBSERVATIONS_KEY, JSON.stringify(csObservations)); } catch(e) {}
+  }
+
+  function csSavePersistedData() {
+    try { localStorage.setItem(CS_LS_LOG_KEY, JSON.stringify(csTestLog)); } catch(e) {}
+    try { localStorage.setItem(CS_LS_OBSERVATIONS_KEY, JSON.stringify(csObservations)); } catch(e) {}
+  }
+
+  function csLoadPersistedData() {
+    try {
+      const savedLog = localStorage.getItem(CS_LS_LOG_KEY);
+      if (savedLog) {
+        const parsed = JSON.parse(savedLog);
+        if (parsed && typeof parsed === 'object') {
+          [1,2,3].forEach(n => { if (parsed[n] !== undefined) csTestLog[n] = parsed[n]; });
+        }
+      }
+    } catch(e) {}
+    try {
+      const savedObs = localStorage.getItem(CS_LS_OBSERVATIONS_KEY);
+      if (savedObs) {
+        const parsed = JSON.parse(savedObs);
+        if (parsed && typeof parsed === 'object') {
+          [1,2,3].forEach(n => { if (parsed[n] !== undefined) csObservations[n] = parsed[n]; });
+        }
+      }
+    } catch(e) {}
+  }
+
+
+  // ── DP1PB — Section 4B interactive ──────────────────────────
+
+  const PB_STORAGE_KEY = 'sins_dp1_pathB_journal';
+  const PB_CARDS       = [1, 2, 3];
+  const pbCardState    = { 1: 'before', 2: 'before', 3: 'before' };
+
+  let pbPortal        = null;
+  let pbActiveHotspot = null;
+
+  function getPbPortal() {
+    if (!pbPortal) pbPortal = document.getElementById('hotspot-portal');
+    return pbPortal;
+  }
+
+  function showPortal(btn) {
+    const title  = btn.dataset.title || '';
+    const text   = btn.dataset.text  || '';
+    getPbPortal().innerHTML = `<span class="tip-title">${title}</span>${text}`;
+    const TIP_W = window.innerWidth <= 680 ? 190 : 220;
+    const GAP   = 12;
+    const PAD   = 10;
+    getPbPortal().style.cssText = `display:block;visibility:hidden;position:fixed;left:-9999px;top:0;width:${TIP_W}px;`;
+    const tipH = getPbPortal().offsetHeight;
+    const btnR = btn.getBoundingClientRect();
+    const vpW  = window.innerWidth;
+    const vpH  = window.innerHeight;
+    const btnCX = btnR.left + btnR.width / 2;
+    let left    = btnCX - TIP_W / 2;
+    left = Math.max(PAD, Math.min(left, vpW - TIP_W - PAD));
+    const rawCaret = btnCX - left;
+    const caretX   = Math.max(14, Math.min(rawCaret, TIP_W - 14));
+    let top, caretClass;
+    if (btnR.top - GAP >= tipH + PAD) {
+      top = btnR.top - tipH - GAP; caretClass = 'caret-down';
+    } else {
+      top = btnR.bottom + GAP; caretClass = 'caret-up';
+    }
+    top = Math.max(PAD, Math.min(top, vpH - tipH - PAD));
+    getPbPortal().style.cssText = `display:block;visibility:visible;position:fixed;left:${left}px;top:${top}px;width:${TIP_W}px;--caret-x:${caretX}px;`;
+    getPbPortal().className = `visible ${caretClass}`;
+  }
+
+  function hidePortal() {
+    getPbPortal().className     = '';
+    getPbPortal().style.display = 'none';
+    if (pbActiveHotspot) {
+      pbActiveHotspot.classList.remove('open');
+      pbActiveHotspot.setAttribute('aria-expanded', 'false');
+      pbActiveHotspot = null;
+    }
+  }
+
+  function toggleHotspot(btn) {
+    if (pbActiveHotspot === btn) { hidePortal(); return; }
+    if (pbActiveHotspot) {
+      pbActiveHotspot.classList.remove('open');
+      pbActiveHotspot.setAttribute('aria-expanded', 'false');
+    }
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    pbActiveHotspot = btn;
+    showPortal(btn);
+  }
+
+  let pbHoverTimeout = null;
+
+  function hoverHotspot(btn) {
+    // Only show on hover if no hotspot is currently clicked open
+    if (pbActiveHotspot) return;
+    clearTimeout(pbHoverTimeout);
+    showPortal(btn);
+  }
+
+  function leaveHotspot(btn) {
+    // Hide hover tooltip only if no hotspot is clicked open
+    if (pbActiveHotspot) return;
+    pbHoverTimeout = setTimeout(() => {
+      if (!pbActiveHotspot) hidePortal();
+    }, 120);
+  }
+
+  function closeAllHotspots(cardNum) {
+    const layer = document.getElementById(`hotspots-${cardNum}`);
+    if (!layer) return;
+    layer.querySelectorAll('.pb-hotspot').forEach(h => {
+      h.classList.remove('open');
+      h.setAttribute('aria-expanded', 'false');
+    });
+    if (pbActiveHotspot && String(pbActiveHotspot.dataset.card) === String(cardNum)) hidePortal();
+  }
+
+  document.addEventListener('click', function(e) {
+    if (pbActiveHotspot && !e.target.closest('.pb-hotspot')) hidePortal();
+  });
+
+  function pbRepositionIfOpen() { if (pbActiveHotspot) showPortal(pbActiveHotspot); }
+  window.addEventListener('resize', pbRepositionIfOpen);
+  window.addEventListener('scroll', pbRepositionIfOpen, { passive: true });
+
+  function setToggle(cardNum, state) {
+    pbCardState[cardNum] = state;
+    const beforeImg = document.getElementById(`img-${cardNum}-before`);
+    const afterImg  = document.getElementById(`img-${cardNum}-after`);
+    const imgWrap   = document.getElementById(`imgWrap-${cardNum}`);
+    const footer    = document.getElementById(`footer-${cardNum}`);
+    document.querySelectorAll(`#card-${cardNum} .pb-toggle-pill [data-state]`).forEach(btn => {
+      const isActive = btn.dataset.state === state;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+    });
+    if (state === 'after') {
+      if (beforeImg) beforeImg.classList.add('hidden');
+      if (afterImg)  afterImg.classList.remove('hidden');
+      if (imgWrap)   imgWrap.classList.add('is-after');
+      if (footer)  { footer.textContent = 'Tap each orange circle to inspect the impact area.'; footer.classList.add('prompt-active'); }
+    } else {
+      if (afterImg)  afterImg.classList.add('hidden');
+      if (beforeImg) beforeImg.classList.remove('hidden');
+      if (imgWrap)   imgWrap.classList.remove('is-after');
+      if (footer)  { footer.innerHTML = 'Toggle to <strong>After Impact</strong> and tap the orange circles to investigate.'; footer.classList.remove('prompt-active'); }
+      closeAllHotspots(cardNum);
+    }
+  }
+
+  function pbOnImgLoad(cardNum, state) {
+    const ph = document.getElementById(`placeholder-${cardNum}-${state}`);
+    if (ph) ph.style.display = 'none';
+  }
+
+  function pbOnImgError(cardNum, state) {
+    const img = document.getElementById(`img-${cardNum}-${state}`);
+    const ph  = document.getElementById(`placeholder-${cardNum}-${state}`);
+    if (img) img.style.display = 'none';
+    if (ph) {
+      ph.style.display = 'flex';
+      const label = ph.querySelector('span');
+      if (label && img) label.textContent = `Image not found: ${img.src.split('/').pop()}`;
+    }
+  }
+
+
+  // ── Section 9 — Scientific Brief Builder ─────────────────────
+
+  // Persist brief field values alongside journal data
+  function saveBriefField(key, value) {
+    journalData['brief_' + key] = value;
+    saveToStorage();
+  }
+
+  function restoreBriefFields() {
+    const fields = { claim: 'brief-claim', evcar: 'brief-ev-car', evsurr: 'brief-ev-surr', expl: 'brief-explanation' };
+    Object.entries(fields).forEach(([key, id]) => {
+      const el = document.getElementById(id);
+      if (el && journalData['brief_' + key]) el.value = journalData['brief_' + key];
+    });
+    // Re-generate brief if it was previously created
+    if (journalData['brief_generated']) {
+      generateBrief();
+    }
+  }
+
+  function generateBrief() {
+    const fallback = '(not yet completed)';
+    const claim    = (document.getElementById('brief-claim')       || {}).value || '';
+    const evCar    = (document.getElementById('brief-ev-car')      || {}).value || '';
+    const evSurr   = (document.getElementById('brief-ev-surr')     || {}).value || '';
+    const expl     = (document.getElementById('brief-explanation') || {}).value || '';
+
+    const setOut = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val.trim() || fallback;
+    };
+
+    setOut('brief-out-claim',       claim);
+    setOut('brief-out-ev-car',      evCar);
+    setOut('brief-out-ev-surr',     evSurr);
+    setOut('brief-out-explanation', expl);
+
+    const output = document.getElementById('brief-output');
+    if (output) {
+      output.classList.add('visible');
+      output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Mark brief as generated so export and restore can include it
+    journalData['brief_generated'] = true;
+    saveToStorage();
+  }
+
+
+
+
+
+  // ── DP2 Path A — Section 7A Energy Analysis Interactive ───────
+
+  (function () {
+    'use strict';
+
+    const container7a = document.getElementById('embed-7a');
+    if (!container7a) return;
+
+    const afterImages7a = {
+      1: { src: 'images/Energy_TestRun1.png', alt: 'Car after impact in Test Run 1 – showing deformation from crash energy' },
+      2: { src: 'images/Energy_TestRun2.png', alt: 'Car after impact in Test Run 2 – showing deformation from crash energy' },
+      3: { src: 'images/Energy_TestRun3.png', alt: 'Car after impact in Test Run 3 – showing deformation from crash energy' }
+    };
+    const analysisImages7a = {
+      1: { src: 'images/Energy_TestRun1AnalysisA.png', alt: 'Energy analysis diagram for Test Run 1 – Path A findings' },
+      2: { src: 'images/Energy_TestRun2AnalysisA.png', alt: 'Energy analysis diagram for Test Run 2 – Path A findings' },
+      3: { src: 'images/Energy_TestRun3AnalysisA.png', alt: 'Energy analysis diagram for Test Run 3 – Path A findings' }
+    };
+
+    const runBtns7a   = container7a.querySelectorAll('.ea-btn--run');
+    const tableWrap7a = document.getElementById('ea7a-table-wrap');
+    const imgAfter7a  = document.getElementById('ea7a-img-after');
+    const result7a    = document.getElementById('ea7a-result');
+    const imgAna7a    = document.getElementById('ea7a-img-analysis');
+    const label7a     = document.getElementById('ea7a-label');
+    const btnAna7a    = document.getElementById('ea7a-btn-analyse');
+    let selectedRun7a = null;
+
+    function hideAnalysis7a() {
+      result7a.classList.add('is-hidden');
+      imgAna7a.src = '';
+      imgAna7a.alt = '';
+      label7a.textContent = '';
+    }
+
+    runBtns7a.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const run = parseInt(btn.dataset.run, 10);
+        runBtns7a.forEach(function (b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+        selectedRun7a = run;
+        dp2aSelectedRun = run; // expose for export/save
+        imgAfter7a.src = afterImages7a[run].src;
+        imgAfter7a.alt = afterImages7a[run].alt;
+        tableWrap7a.classList.remove('is-hidden');
+        hideAnalysis7a();
+        dp2aAnalysisRun = false;
+        saveToStorage();
+      });
+    });
+
+    btnAna7a.addEventListener('click', function () {
+      if (!selectedRun7a) return;
+      imgAna7a.src = analysisImages7a[selectedRun7a].src;
+      imgAna7a.alt = analysisImages7a[selectedRun7a].alt;
+      label7a.textContent = 'Energy Analysis – Test Run ' + selectedRun7a + ' (Path A)';
+      result7a.classList.remove('is-hidden');
+      dp2aAnalysisRun = true;
+      saveToStorage();
+    });
+
+  }());
+
+
+  // ── DP2 Path B — Section 7B Energy Analysis Interactive ───────
+
+  (function () {
+    'use strict';
+
+    const container7b = document.getElementById('embed-7b');
+    if (!container7b) return;
+
+    const afterImages7b = {
+      1: { src: 'images/Energy_TestRun1.png', alt: 'Car after impact in Test Run 1 – showing energy in surroundings' },
+      2: { src: 'images/Energy_TestRun2.png', alt: 'Car after impact in Test Run 2 – showing energy in surroundings' },
+      3: { src: 'images/Energy_TestRun3.png', alt: 'Car after impact in Test Run 3 – showing energy in surroundings' }
+    };
+    const analysisImages7b = {
+      1: { src: 'images/Energy_TestRun1AnalysisB.png', alt: 'Energy analysis diagram for Test Run 1 – Path B findings' },
+      2: { src: 'images/Energy_TestRun2AnalysisB.png', alt: 'Energy analysis diagram for Test Run 2 – Path B findings' },
+      3: { src: 'images/Energy_TestRun3AnalysisB.png', alt: 'Energy analysis diagram for Test Run 3 – Path B findings' }
+    };
+
+    const runBtns7b   = container7b.querySelectorAll('.ea-btn--run');
+    const tableWrap7b = document.getElementById('ea7b-table-wrap');
+    const imgAfter7b  = document.getElementById('ea7b-img-after');
+    const result7b    = document.getElementById('ea7b-result');
+    const imgAna7b    = document.getElementById('ea7b-img-analysis');
+    const label7b     = document.getElementById('ea7b-label');
+    const btnAna7b    = document.getElementById('ea7b-btn-analyse');
+    let selectedRun7b = null;
+
+    function hideAnalysis7b() {
+      result7b.classList.add('is-hidden');
+      imgAna7b.src = '';
+      imgAna7b.alt = '';
+      label7b.textContent = '';
+    }
+
+    runBtns7b.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const run = parseInt(btn.dataset.run, 10);
+        runBtns7b.forEach(function (b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+        selectedRun7b = run;
+        dp2bSelectedRun = run; // expose for export/save
+        imgAfter7b.src = afterImages7b[run].src;
+        imgAfter7b.alt = afterImages7b[run].alt;
+        tableWrap7b.classList.remove('is-hidden');
+        hideAnalysis7b();
+        dp2bAnalysisRun = false;
+        saveToStorage();
+      });
+    });
+
+    btnAna7b.addEventListener('click', function () {
+      if (!selectedRun7b) return;
+      imgAna7b.src = analysisImages7b[selectedRun7b].src;
+      imgAna7b.alt = analysisImages7b[selectedRun7b].alt;
+      label7b.textContent = 'Energy Analysis – Test Run ' + selectedRun7b + ' (Path B)';
+      result7b.classList.remove('is-hidden');
+      dp2bAnalysisRun = true;
+      saveToStorage();
+    });
+
+  }());
+
+
+
+  // ============================================================
+  // RESUME CODE SYSTEM
+  // ============================================================
+
+  let resumeCode = null; // 6-char alphanumeric code for current session
+
+  function resumeCodeGenerate() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no ambiguous chars
+    let code = '';
+    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
+
+  function resumeCodeInit() {
+    // Generate a code if we don't have one yet
+    if (!resumeCode) {
+      resumeCode = resumeCodeGenerate();
+      saveToStorage();
+    }
+    const display = document.getElementById('rp-code-display');
+    if (display) display.textContent = resumeCode;
+  }
+
+  function resumeCodeLoad() {
+    const input = document.getElementById('resume-code-input');
+    if (!input) return;
+    const code = input.value.trim().toUpperCase();
+    if (code.length < 4) {
+      alert('Please enter your full save code (at least 4 characters).');
+      return;
+    }
+    const raw = localStorage.getItem('sins_im_snap_' + code);
+    if (!raw) {
+      alert('No saved progress found for code "' + code + '". Make sure you are on the same device and browser where you saved.');
+      return;
+    }
+    try {
+      const payload = JSON.parse(raw);
+      // Load all state from snapshot
+      if (payload.decisions)          decisions          = payload.decisions;
+      if (payload.journalData)        journalData        = payload.journalData;
+      if (payload.currentSection)     savedCurrentSection = payload.currentSection;
+      if (payload.navigationHistory)  navigationHistory  = payload.navigationHistory;
+      if (payload.sectionTimings)     sectionTimings     = payload.sectionTimings;
+      if (payload.resumeCode)         resumeCode         = payload.resumeCode;
+      if (payload.csTestLog)          csTestLog          = payload.csTestLog;
+      if (payload.csObservations)     csObservations     = payload.csObservations;
+      if (payload.dp2aSelectedRun !== undefined) dp2aSelectedRun = payload.dp2aSelectedRun;
+      if (payload.dp2aAnalysisRun !== undefined) dp2aAnalysisRun = payload.dp2aAnalysisRun;
+      if (payload.dp2bSelectedRun !== undefined) dp2bSelectedRun = payload.dp2bSelectedRun;
+      if (payload.dp2bAnalysisRun !== undefined) dp2bAnalysisRun = payload.dp2bAnalysisRun;
+      localStorage.setItem(STORAGE_KEY, raw);
+      restoreJournalFields();
+      restoreBriefFields();
+      csRenderDataLog();
+      const disp = document.getElementById('rp-code-display');
+      if (disp) disp.textContent = resumeCode || code;
+      input.value = '';
+      showSection(savedCurrentSection || 'section-1');
+    } catch(e) {
+      alert('There was a problem loading that code. Please try again.');
+    }
+  }
+
+
+  // ============================================================
+  // TIME TRACKING
+  // ============================================================
+
+  let sectionTimings    = {};  // sectionId → total seconds spent
+  let sectionStartTime  = null; // Date.now() when current section started
+
+  function timeTrackingInit() {
+    sectionStartTime = Date.now();
+  }
+
+  function timeTrackingEnter(sectionId) {
+    sectionStartTime = Date.now();
+  }
+
+  function timeTrackingLeave() {
+    if (!currentSection || sectionStartTime === null) return;
+    const elapsed = Math.floor((Date.now() - sectionStartTime) / 1000);
+    sectionTimings[currentSection] = (sectionTimings[currentSection] || 0) + elapsed;
+    sectionStartTime = Date.now();
+  }
+
+  function fmtTime(totalSeconds) {
+    if (totalSeconds < 60) return totalSeconds + ' sec';
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return m + ' min' + (s ? ' ' + s + ' sec' : '');
+  }
+
+
+  // ============================================================
+  // DP2 INTERACTIVE STATE — module-level so save/restore can access
+  // ============================================================
+  let dp2aSelectedRun   = null;
+  let dp2aAnalysisRun   = false;
+  let dp2bSelectedRun   = null;
+  let dp2bAnalysisRun   = false;
+
+
+  // ============================================================
+  // TEXT-TO-SPEECH (TTS)
+  // ============================================================
+
+  let ttsUtterance = null;
+  let ttsActiveSectionId = null;
+  const TTS_SELECTORS = [
+    '.section-header .section-title',
+    '.section-header .section-tag',
+    '.narrative p',
+    '.dialogue-block',
+    '.narrative-action',
+    '.s9-scaffold-box',
+    '.s11-takeaway-box',
+    '.pb-instruction-banner span:last-child',
+    '.ea-energy-analysis__callout',
+    '.investigation-check p',
+  ];
+  const TTS_EXCLUDE = [
+    '.field-journal', '.journal-textarea', '.s10-brief-output',
+    '.nav-row', '.export-row', '.s11-finish-row',
+    'button', 'textarea', 'input', '.placeholder',
+  ];
+
+  function ttsInit() {
+    // Inject Listen buttons into each section body
+    document.querySelectorAll('.section').forEach(sec => {
+      if (sec.id === 'section-0') return; // skip landing page
+      const body = sec.querySelector('.section-body');
+      if (!body) return;
+      const btn = document.createElement('button');
+      btn.className   = 'tts-listen-btn';
+      btn.dataset.sid = sec.id;
+      btn.setAttribute('aria-label', 'Listen to this page');
+      btn.innerHTML   = '<span class="tts-icon">🔊</span> Listen';
+      btn.addEventListener('click', () => ttsToggle(sec.id, btn));
+      body.insertBefore(btn, body.firstChild);
+    });
+  }
+
+  function ttsToggle(sectionId, btn) {
+    if (!('speechSynthesis' in window)) {
+      alert('Text-to-speech is not supported in this browser.');
+      return;
+    }
+    if (ttsActiveSectionId === sectionId && window.speechSynthesis.speaking) {
+      ttsStop();
+      return;
+    }
+    ttsStop();
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+
+    const text = ttsExtractText(section);
+    if (!text.trim()) return;
+
+    ttsUtterance = new SpeechSynthesisUtterance(text);
+    ttsUtterance.rate  = 0.95;
+    ttsUtterance.pitch = 1.0;
+    ttsUtterance.onend = () => { ttsActiveSectionId = null; ttsResetBtn(sectionId); };
+    ttsUtterance.onerror = () => { ttsActiveSectionId = null; ttsResetBtn(sectionId); };
+
+    ttsActiveSectionId = sectionId;
+    if (btn) { btn.innerHTML = '<span class="tts-icon">⏹</span> Stop'; btn.classList.add('tts-active'); }
+    window.speechSynthesis.speak(ttsUtterance);
+  }
+
+  function ttsStop() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    if (ttsActiveSectionId) ttsResetBtn(ttsActiveSectionId);
+    ttsActiveSectionId = null;
+    ttsUtterance = null;
+  }
+
+  function ttsResetBtn(sectionId) {
+    const sec = document.getElementById(sectionId);
+    if (!sec) return;
+    const btn = sec.querySelector('.tts-listen-btn');
+    if (btn) { btn.innerHTML = '<span class="tts-icon">🔊</span> Listen'; btn.classList.remove('tts-active'); }
+  }
+
+  function ttsExtractText(section) {
+    const clone = section.cloneNode(true);
+    // Remove excluded elements from clone
+    const excludeSel = TTS_EXCLUDE.join(', ');
+    clone.querySelectorAll(excludeSel).forEach(el => el.remove());
+    // Also remove TTS button itself, hotspot layers, iframe, and hidden elements
+    clone.querySelectorAll('.tts-listen-btn, .pb-hotspot-layer, iframe, [hidden], .is-hidden, .embed-4a, .embed-4b, .embed-7a, .embed-7b, #brief-output, .s10-brief-output').forEach(el => el.remove());
+
+    const parts = [];
+    TTS_SELECTORS.forEach(sel => {
+      clone.querySelectorAll(sel).forEach(el => {
+        const t = el.textContent.trim();
+        if (t) parts.push(t);
+      });
+    });
+    // Deduplicate adjacent duplicates
+    const unique = parts.filter((p, i) => p !== parts[i - 1]);
+    return unique.join('. ');
+  }
+
+
+</script>
+
+<!-- Hotspot portal for section 4B (DP1PB) -->
+<div id="hotspot-portal" role="tooltip" aria-live="polite"></div>
+
+</body>
+</html>
