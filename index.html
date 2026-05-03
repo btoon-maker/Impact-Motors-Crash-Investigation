@@ -1769,6 +1769,296 @@
       .embed-7a .ea-btn--run,
       .embed-7b .ea-btn--run { font-size: 15px; padding: 9px 14px; }
     }
+
+    /* =============================================
+       SECTION 9 — Convergence DP2 Comparison Cards
+    ============================================= */
+    .s9-comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    @media (max-width: 600px) {
+      .s9-comparison-grid { grid-template-columns: 1fr; }
+    }
+
+    .s9-comparison-card {
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .s9-comparison-card-heading {
+      background: var(--navy-dark);
+      padding: 12px 16px;
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      border-bottom: 2px solid rgba(249,115,22,0.3);
+    }
+
+    .s9-comparison-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Scaffold box */
+    .s9-scaffold-box {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 20px 24px;
+      margin: 24px 0;
+      font-size: 20px;
+      line-height: 1.9;
+      color: var(--off-white);
+    }
+
+    .s9-scaffold-box p { margin-bottom: 10px; }
+    .s9-scaffold-box p:last-child { margin-bottom: 0; }
+
+    /* =============================================
+       SECTION 10 — Scientific Brief Builder
+    ============================================= */
+    .s10-brief-builder {
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin: 24px 0;
+    }
+
+    .s10-brief-builder-title {
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(249,115,22,0.25);
+    }
+
+    .s10-brief-field {
+      margin-bottom: 22px;
+    }
+
+    .s10-brief-field-label {
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--off-white);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .s10-brief-field-prompt {
+      font-size: 17px;
+      color: var(--gray-steel);
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .s10-brief-textarea {
+      width: 100%;
+      min-height: 90px;
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 19px;
+      color: var(--navy);
+      background: #fff;
+      border: 2px solid var(--gray-light);
+      border-radius: 6px;
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .s10-brief-textarea:focus { border-color: var(--blue); }
+
+    .s10-create-btn {
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--font-ui);
+      font-size: 19px;
+      font-weight: bold;
+      padding: 14px 36px;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 18px rgba(249,115,22,0.35);
+      transition: background var(--transition), box-shadow var(--transition);
+      display: block;
+      margin-top: 8px;
+    }
+
+    .s10-create-btn:hover { background: var(--orange-dim); box-shadow: 0 6px 24px rgba(249,115,22,0.45); }
+    .s10-create-btn:active { transform: scale(0.97); }
+
+    /* Generated Brief */
+    .s10-brief-output {
+      display: none;
+      margin-top: 32px;
+      background: var(--off-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      color: #1a1a2e;
+    }
+
+    .s10-brief-output.visible { display: block; animation: fadeIn 0.35s ease; }
+
+    .s10-brief-header {
+      background: var(--navy-dark);
+      padding: 20px 28px;
+      text-align: center;
+    }
+
+    .s10-brief-logo {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .s10-brief-doc-title {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--off-white);
+      line-height: 1.3;
+    }
+
+    .s10-brief-accent {
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--blue));
+    }
+
+    .s10-brief-body {
+      padding: 28px 32px;
+      background: var(--off-white);
+    }
+
+    .s10-brief-meta {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: #555;
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--gray-light);
+      line-height: 1.8;
+    }
+
+    .s10-brief-meta strong { color: var(--navy); }
+
+    .s10-brief-section {
+      margin-bottom: 22px;
+    }
+
+    .s10-brief-section-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .s10-brief-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-light);
+    }
+
+    .s10-brief-section-text {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+      color: #2d2d2d;
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 14px 18px;
+      border-left: 3px solid var(--orange);
+      min-height: 48px;
+      white-space: pre-wrap;
+    }
+
+    .s10-brief-footer {
+      background: var(--navy);
+      padding: 16px 28px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--gray-mid);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    /* =============================================
+       SECTION 11 — Final Wrap-Up
+    ============================================= */
+    .s11-takeaway-box {
+      background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(59,130,246,0.08));
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      margin: 24px 0;
+      font-size: 20px;
+      line-height: 1.75;
+      color: var(--off-white);
+    }
+
+    .s11-takeaway-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .s11-finish-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .s11-complete-badge {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      color: var(--success);
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+      .s10-brief-builder { padding: 18px 16px; }
+      .s10-brief-body    { padding: 18px 16px; }
+      .s10-brief-header  { padding: 16px; }
+      .s11-finish-row    { flex-direction: column; }
+      .s11-finish-row .btn { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -3059,63 +3349,52 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   <section id="section-8" class="section">
     <div class="section-header convergence">
       <div class="section-tag convergence">Section 9 · Convergence — DP2</div>
-      <div class="section-title">Energy Did Not Disappear</div>
+      <div class="section-title">What Did We Discover About Energy?</div>
     </div>
     <div class="section-body convergence-body">
 
       <div class="convergence-tag"></div>
 
       <div class="narrative">
-        <!-- PLACEHOLDER: Convergence 2 narrative -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Convergence 2 Narrative</div>
-          <div class="placeholder-desc">
-            Bring together both paths: energy went INTO the car (deformation) AND
-            INTO the surroundings (heat, sound, movement). The total energy is
-            conserved — it transferred and transformed, but it did not disappear.
-            Introduce or reinforce the conservation of energy concept at the 5th
-            grade level (no formulas needed — narrative and visual).
-          </div>
+        <p>Your <strong>Junior Crash Test Scientist</strong> team now shares what you discovered.</p>
+        <p>Some teams followed the energy into the car. Other teams followed how energy spread into the surroundings.</p>
+        <p>Now it's time to bring your evidence together.</p>
+      </div>
+
+      <!-- Side-by-side comparison -->
+      <div class="s9-comparison-grid">
+        <div class="s9-comparison-card">
+          <div class="s9-comparison-card-heading">Energy Into the Car</div>
+          <img src="images/Energy_TestRun2AnalysisA.png"
+               alt="Energy analysis showing evidence of energy moving into the car during Test Run 2."
+               onerror="this.style.opacity='0.3'" />
+        </div>
+        <div class="s9-comparison-card">
+          <div class="s9-comparison-card-heading">Energy Into the Surroundings</div>
+          <img src="images/Energy_TestRun2AnalysisB.png"
+               alt="Energy analysis showing evidence of energy moving into the surroundings during Test Run 2."
+               onerror="this.style.opacity='0.3'" />
         </div>
       </div>
 
-      <!-- PLACEHOLDER: Energy accounting / synthesis visualization -->
-      <div class="img-placeholder" style="min-height: 180px;">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-          <path d="M2 17l10 5 10-5"/>
-          <path d="M2 12l10 5 10-5"/>
-        </svg>
-        <span>Placeholder — Energy Balance / Sankey Diagram or Before-After Model</span>
+      <div class="narrative">
+        <p><strong>What patterns do you notice across both investigations?</strong></p>
+        <p>What do these results suggest about what happens to energy during a crash?</p>
+        <p><strong>How is energy transferred in each case?</strong></p>
       </div>
 
-      <!-- PLACEHOLDER: Synthesis interaction -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Synthesis Interaction</div>
-        <div class="placeholder-desc">
-          Students from both paths combine their findings. Could be a shared
-          energy accounting diagram, a digital whiteboard annotation, or a
-          fill-in energy balance table: "Kinetic energy → [ ] + [ ] + [ ]"
-        </div>
+      <!-- Scaffold box -->
+      <div class="s9-scaffold-box" role="note" aria-label="Explanation scaffold">
+        <p><strong>Build your explanation:</strong></p>
+        <p>During a crash, energy is transferred into __________ and __________.</p>
+        <p>Evidence from the car shows __________.</p>
+        <p>Evidence from the surroundings shows __________.</p>
+        <p>The motion of the car matters because __________.</p>
       </div>
 
-      <!-- Field Journal -->
-      <div class="field-journal">
-        <div class="journal-header">
-          <div class="journal-icon">📓</div>
-          <div class="journal-label">Field Journal — Convergence 2</div>
-          <div class="journal-save-badge" id="saved-s8">✔ Saved</div>
-        </div>
-        <div class="journal-prompt">
-          [Placeholder — Convergence 2 Journal Prompt]<br>
-          <em>Example: "Scientists say energy is never created or destroyed.
-          Based on what you investigated, explain what happened to the car's
-          energy in your own words."</em>
-        </div>
-        <textarea class="journal-textarea"
-                  id="journal-s8"
-                  placeholder="Explain what happened to the energy…"
-                  oninput="saveJournal('s8', this.value)"></textarea>
+      <div class="narrative">
+        <p>The engineering team is depending on your explanation to understand what's happening during these crashes.</p>
+        <p>Next, you will turn your findings into a scientific brief for the engineers at Impact Motors.</p>
       </div>
 
       <!-- Navigation -->
@@ -3129,82 +3408,127 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
 
   <!-- ===================================================
-       SECTION 9 — Transfer & Application Part 1: Build the Energy Model
+       SECTION 9 — Sharing Your Scientific Insights
   =================================================== -->
   <section id="section-9" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 10 · Transfer &amp; Application — Part 1</div>
-      <div class="section-title">Build the Energy Model</div>
+      <div class="section-tag">Section 10 · Creation &amp; Communication</div>
+      <div class="section-title">Sharing Your Scientific Insights with the Engineering Team</div>
     </div>
     <div class="section-body">
 
       <div class="narrative">
-        <!-- PLACEHOLDER: Model builder intro -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Energy Model Builder Intro</div>
-          <div class="placeholder-desc">
-            Explain that students will now build a scientific model showing
-            what happens to energy Before, During, and After the crash.
-            This is their opportunity to organize and represent everything
-            they've investigated. Refer to any modeling vocabulary introduced earlier.
+        <p>Your investigation is almost complete.</p>
+        <p>You have analyzed crash test data, looked for patterns, and investigated where energy went during the crash.</p>
+        <p>Now the engineering team needs your scientific explanation before they make changes to the vehicle design.</p>
+      </div>
+
+      <p class="narrative-action">Molly opens a final report template on the screen.</p>
+
+      <div class="dialogue-block">
+        "The engineers do not need a guess," Molly says. "They need a clear scientific explanation supported by evidence."
+      </div>
+
+      <div class="dialogue-block">
+        "Use your findings to explain what is happening during the crash so the engineering team can make safer design decisions."
+      </div>
+
+      <!-- Brief Builder -->
+      <div class="s10-brief-builder" role="form" aria-label="Impact Motors Scientific Brief Builder">
+        <div class="s10-brief-builder-title">Impact Motors Scientific Brief Builder</div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-claim">1. Claim</label>
+          <p class="s10-brief-field-prompt">Where does the energy go during a crash?</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-claim"
+                    placeholder="Example: During a crash, energy is transferred into..."
+                    oninput="saveBriefField('claim', this.value)"
+                    aria-label="Claim: where does the energy go during a crash?"></textarea>
+        </div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-ev-car">2. Evidence from the Car</label>
+          <p class="s10-brief-field-prompt">What evidence shows that energy affected the car?</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-ev-car"
+                    placeholder="Use evidence from the car analysis, such as bending, crumpling, compression, or shape change."
+                    oninput="saveBriefField('evcar', this.value)"
+                    aria-label="Evidence from the car analysis"></textarea>
+        </div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-ev-surr">3. Evidence from the Surroundings</label>
+          <p class="s10-brief-field-prompt">What evidence shows that energy moved into the surroundings?</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-ev-surr"
+                    placeholder="Use evidence from the surroundings analysis, such as sound, heat, vibration, dust, or movement."
+                    oninput="saveBriefField('evsurr', this.value)"
+                    aria-label="Evidence from the surroundings analysis"></textarea>
+        </div>
+
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-explanation">4. Scientific Explanation</label>
+          <p class="s10-brief-field-prompt">Explain how the car's motion affects the amount of energy and how that energy is transferred during the crash.</p>
+          <textarea class="s10-brief-textarea"
+                    id="brief-explanation"
+                    placeholder="Connect motion, energy, and evidence from the crash system."
+                    oninput="saveBriefField('expl', this.value)"
+                    aria-label="Scientific explanation connecting motion and energy transfer"></textarea>
+        </div>
+
+        <button class="s10-create-btn"
+                id="brief-create-btn"
+                onclick="generateBrief()"
+                aria-controls="brief-output">
+          Create Brief
+        </button>
+      </div>
+
+      <!-- Generated Brief (hidden until Create Brief clicked) -->
+      <div class="s10-brief-output" id="brief-output" aria-live="polite" aria-label="Generated scientific brief">
+
+        <div class="s10-brief-header">
+          <div class="s10-brief-logo">Impact Motors</div>
+          <div class="s10-brief-doc-title">Crash Test Scientific Brief</div>
+        </div>
+        <div class="s10-brief-accent"></div>
+
+        <div class="s10-brief-body">
+
+          <div class="s10-brief-meta">
+            <strong>Prepared by:</strong> Junior Crash Test Scientist Team<br>
+            <strong>Purpose:</strong> To explain what is happening during the crash so the engineering team can make safer design decisions before more tests are run.
           </div>
-        </div>
-      </div>
 
-      <!-- PLACEHOLDER: Before / During / After Model Builder -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Before / During / After Model Builder</div>
-        <div class="placeholder-desc">
-          Replace with an interactive model builder. Students drag energy labels
-          or draw arrows to show how energy moves through the three stages.
-          Could be a three-column layout, a flowchart builder, or an annotated
-          diagram editor. Include clear column headers: BEFORE | DURING | AFTER.
-        </div>
-      </div>
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Claim</div>
+            <div class="s10-brief-section-text" id="brief-out-claim"></div>
+          </div>
 
-      <!-- Three-column placeholder visual -->
-      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0;">
-        <div class="img-placeholder" style="min-height: 120px; flex-direction:column; border-color: var(--orange);">
-          <span style="color:var(--orange); font-weight:bold;">BEFORE</span>
-          <span style="font-size: 17px; color:var(--gray-steel); text-align:center;">Kinetic Energy<br>[Add Components]</span>
-        </div>
-        <div class="img-placeholder" style="min-height: 120px; flex-direction:column;">
-          <span style="font-weight:bold;">DURING</span>
-          <span style="font-size: 17px; color:var(--gray-steel); text-align:center;">Transfer<br>[Add Components]</span>
-        </div>
-        <div class="img-placeholder" style="min-height: 120px; flex-direction:column; border-color: var(--blue);">
-          <span style="color:var(--blue); font-weight:bold;">AFTER</span>
-          <span style="font-size: 17px; color:var(--gray-steel); text-align:center;">Multiple Forms<br>[Add Components]</span>
-        </div>
-      </div>
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Evidence from the Car</div>
+            <div class="s10-brief-section-text" id="brief-out-ev-car"></div>
+          </div>
 
-      <!-- PLACEHOLDER: Interaction scaffolding -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Interaction Scaffolding</div>
-        <div class="placeholder-desc">
-          Provide guiding questions or a word bank for students who need
-          support completing their model. Example: "What type of energy did
-          the car have before the crash? Where did it go?"
-        </div>
-      </div>
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Evidence from the Surroundings</div>
+            <div class="s10-brief-section-text" id="brief-out-ev-surr"></div>
+          </div>
 
-      <!-- Field Journal -->
-      <div class="field-journal">
-        <div class="journal-header">
-          <div class="journal-icon">📓</div>
-          <div class="journal-label">Field Journal — Energy Model</div>
-          <div class="journal-save-badge" id="saved-s9">✔ Saved</div>
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Scientific Explanation</div>
+            <div class="s10-brief-section-text" id="brief-out-explanation"></div>
+          </div>
+
         </div>
-        <div class="journal-prompt">
-          [Placeholder — Section 9 Journal Prompt]<br>
-          <em>Example: "Describe your energy model in words. Where did the energy
-          start? Where did it end up? Did any energy disappear?"</em>
+
+        <div class="s10-brief-footer">
+          <strong style="color:var(--gray-light);">Final Message to the Engineering Team:</strong><br>
+          The crash test evidence shows that energy does not disappear during a crash. Understanding where and how energy is transferred can help engineers design safer vehicles.
         </div>
-        <textarea class="journal-textarea"
-                  id="journal-s9"
-                  placeholder="Describe your energy model here…"
-                  oninput="saveJournal('s9', this.value)"></textarea>
-      </div>
+
+      </div><!-- /#brief-output -->
 
       <!-- Navigation -->
       <div class="nav-row">
@@ -3221,237 +3545,49 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   =================================================== -->
   <section id="section-10" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 11 · Transfer &amp; Application — Part 2</div>
-      <div class="section-title">Test a Safety Change</div>
+      <div class="section-tag">Section 11 · Lesson Wrap-Up</div>
+      <div class="section-title">Mission Complete: Helping Impact Motors</div>
     </div>
     <div class="section-body">
 
       <div class="narrative">
-        <!-- PLACEHOLDER: Safety change intro -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Safety Change Intro</div>
-          <div class="placeholder-desc">
-            Explain that engineers don't just study crashes — they use what they
-            learn to make cars safer. Students will now choose one safety change
-            to investigate and compare the original crash test result with the
-            revised (safer) design. Provide 2–4 options to choose from.
-          </div>
-        </div>
+        <p>The engineering team reviews your scientific brief.</p>
+        <p>Your work helped explain what was happening during the crash tests.</p>
       </div>
 
-      <!-- PLACEHOLDER: Safety change selector -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Safety Change Selector</div>
-        <div class="placeholder-desc">
-          Replace with a selector or card grid showing 2–4 safety modifications
-          students can choose from (e.g., added crumple zone, side airbag,
-          reinforced door beam, energy-absorbing bumper). Each should clearly
-          show what changed and why.
-        </div>
+      <div class="dialogue-block">
+        "This is exactly the kind of evidence our engineers needed," Molly says.
       </div>
 
-      <!-- PLACEHOLDER: Original vs Revised comparison -->
-      <div class="placeholder">
-        <div class="placeholder-label">🖼 Placeholder — Original vs. Revised Test Comparison</div>
-        <div class="placeholder-desc">
-          Replace with a side-by-side comparison tool. Students see the original
-          crash result alongside the revised crash result for their chosen
-          safety change. Could include data tables, image comparisons, or
-          animated overlays.
-        </div>
+      <div class="dialogue-block">
+        "Now we can use your findings to think more carefully about how energy moves during a crash—and how future vehicle designs can better protect passengers."
       </div>
-
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin: 16px 0;">
-        <div class="img-placeholder" style="min-height:150px; border-color:var(--gray-steel);">
-          <span>Original Test</span>
-        </div>
-        <div class="img-placeholder" style="min-height:150px; border-color:var(--blue);">
-          <span>Revised Test (+ Safety Change)</span>
-        </div>
-      </div>
-
-      <!-- PLACEHOLDER: Data / evidence interaction -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Evidence Interaction</div>
-        <div class="placeholder-desc">
-          Add a data table or measurement tool where students record specific
-          changes (e.g., deformation distance, impact force) between original
-          and revised designs. Could include slider comparisons or bar chart builders.
-        </div>
-      </div>
-
-      <!-- Field Journal -->
-      <div class="field-journal">
-        <div class="journal-header">
-          <div class="journal-icon">📓</div>
-          <div class="journal-label">Field Journal — Safety Test</div>
-          <div class="journal-save-badge" id="saved-s10">✔ Saved</div>
-        </div>
-        <div class="journal-prompt">
-          [Placeholder — Section 10 Journal Prompt]<br>
-          <em>Example: "Which safety change did you test? What evidence shows
-          that it made the car safer? How does it change where the energy goes?"</em>
-        </div>
-        <textarea class="journal-textarea"
-                  id="journal-s10"
-                  placeholder="Describe your safety test findings…"
-                  oninput="saveJournal('s10', this.value)"></textarea>
-      </div>
-
-      <!-- Navigation -->
-      <div class="nav-row">
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
-        <button class="btn btn-continue" onclick="navigateTo('section-11')">Continue →</button>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ===================================================
-       SECTION 11 — Creation & Communication: Submit Explanation
-  =================================================== -->
-  <section id="section-11" class="section">
-    <div class="section-header">
-      <div class="section-tag">Section 12 · Creation &amp; Communication</div>
-      <div class="section-title">Submit Your Scientific Explanation</div>
-    </div>
-    <div class="section-body">
 
       <div class="narrative">
-        <!-- PLACEHOLDER: Explanation task framing -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Final Explanation Framing</div>
-          <div class="placeholder-desc">
-            Explain what students are being asked to submit: a complete scientific
-            explanation that includes their energy model, the evidence they collected,
-            and a safety recommendation. Clarify the audience (the engineering team
-            at Impact Motors) and purpose (improving vehicle safety).
-          </div>
-        </div>
+        <p>As a <strong>Junior Crash Test Scientist</strong>, you did more than describe damage.</p>
+        <p>You analyzed data, identified patterns, investigated energy transfer, and communicated a scientific explanation to help solve a real engineering problem.</p>
       </div>
 
-      <!-- PLACEHOLDER: Final model submission area -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Final Model Submission</div>
-        <div class="placeholder-desc">
-          Replace with the student's completed energy model from Section 9
-          (could auto-populate or allow them to revise it here). This becomes
-          part of their final submission.
-        </div>
+      <!-- Final Takeaway Box -->
+      <div class="s11-takeaway-box" role="note" aria-label="Final Takeaway">
+        <div class="s11-takeaway-label">⚡ Final Takeaway</div>
+        When objects move, they have energy. During a crash, that energy can be transferred into different parts of the system, including the car and the surroundings. Scientists and engineers use evidence about energy transfer to make safer design decisions.
       </div>
-
-      <!-- PLACEHOLDER: Evidence-based explanation builder -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Evidence-Based Explanation Builder</div>
-        <div class="placeholder-desc">
-          Add a structured writing scaffold: Claim → Evidence → Reasoning
-          framework, or a free-write area for older/advanced students.
-          Consider offering sentence starters to support ELL or struggling writers.
-        </div>
-      </div>
-
-      <!-- PLACEHOLDER: Safety recommendation -->
-      <div class="placeholder">
-        <div class="placeholder-label">🧪 Placeholder — Safety Recommendation</div>
-        <div class="placeholder-desc">
-          Students write or select a safety recommendation based on their
-          investigation. Could be a free-write, a structured template, or a
-          choice of pre-written recommendations students rank and justify.
-        </div>
-      </div>
-
-      <!-- Field Journal — multi-part for final submission -->
-      <div class="field-journal">
-        <div class="journal-header">
-          <div class="journal-icon">📓</div>
-          <div class="journal-label">Field Journal — Final Explanation</div>
-          <div class="journal-save-badge" id="saved-s11">✔ Saved</div>
-        </div>
-        <div class="journal-prompt">
-          [Placeholder — Section 11 Journal Prompt]<br>
-          <em>Example: "Write your complete scientific explanation below.
-          Include: (1) what happened to the energy, (2) the evidence you used,
-          and (3) your safety recommendation for the engineers."</em>
-        </div>
-        <textarea class="journal-textarea"
-                  id="journal-s11"
-                  style="min-height: 160px;"
-                  placeholder="Write your scientific explanation and safety recommendation here…"
-                  oninput="saveJournal('s11', this.value)"></textarea>
-      </div>
-
-      <!-- Navigation -->
-      <div class="nav-row">
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
-        <button class="btn btn-continue" onclick="navigateTo('section-12')">Continue →</button>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ===================================================
-       SECTION 12 — Final Reflection: Close the Investigation
-  =================================================== -->
-  <section id="section-12" class="section">
-    <div class="section-header convergence">
-      <div class="section-tag convergence">Section 13 · Final Reflection</div>
-      <div class="section-title">Close the Investigation</div>
-    </div>
-    <div class="section-body convergence-body">
-
-      <div class="convergence-tag">🏁 Investigation Complete</div>
 
       <div class="narrative">
-        <!-- PLACEHOLDER: Closing narrative -->
-        <div class="placeholder">
-          <div class="placeholder-label">📋 Placeholder — Closing Narrative</div>
-          <div class="placeholder-desc">
-            Write a closing message from the Impact Motors team thanking students
-            for their investigation, highlighting what they discovered, and
-            connecting their work to real-world engineering and science.
-          </div>
-        </div>
+        <p>Mission complete.</p>
       </div>
 
-      <!-- PLACEHOLDER: Celebration / completion visual -->
-      <div class="img-placeholder" style="min-height: 120px;">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-        <span>Placeholder — Completion Badge or Celebration Visual</span>
-      </div>
-
-      <!-- Final Reflection Journal — multiple prompts -->
-      <div class="field-journal">
-        <div class="journal-header">
-          <div class="journal-icon">📓</div>
-          <div class="journal-label">Field Journal — Final Reflection</div>
-          <div class="journal-save-badge" id="saved-s12">✔ Saved</div>
-        </div>
-        <div class="journal-prompt">
-          [Placeholder — Final Reflection Prompts. Replace with 2–3 prompts, for example:]<br>
-          <em>1. What was the most surprising thing you discovered?<br>
-          2. How did this investigation change how you think about car safety?<br>
-          3. What question do you still have that you'd like to investigate?</em>
-        </div>
-        <textarea class="journal-textarea"
-                  id="journal-s12"
-                  style="min-height: 140px;"
-                  placeholder="Write your final reflection here…"
-                  oninput="saveJournal('s12', this.value)"></textarea>
-      </div>
-
-      <!-- Export row -->
-      <div class="export-row">
+      <!-- Finish row -->
+      <div class="s11-finish-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
         <button class="btn btn-export" onclick="exportJournal()">
           ⬇ Export My Field Journal
         </button>
+        <span class="s11-complete-badge">✔ Lesson Complete</span>
       </div>
 
-      <p style="font-family:var(--font-ui); font-size: 19px; color:var(--gray-steel); margin-top:14px;">
+      <p style="font-family:var(--font-ui); font-size: 17px; color:var(--gray-steel); margin-top:14px;">
         Your export will include all journal entries, your decisions, and a timestamp.
         Your teacher may ask you to submit this file.
       </p>
@@ -3497,13 +3633,11 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     'section-6':  { num: 7,  title: 'Decision Point 2' },
     'section-7a': { num: 8,  title: 'Path A — Deformation' },
     'section-7b': { num: 8,  title: 'Path B — Surroundings' },
-    'section-8':  { num: 9,  title: 'Convergence 2' },
-    'section-9':  { num: 10, title: 'Build Energy Model' },
-    'section-10': { num: 11, title: 'Test Safety Change' },
-    'section-11': { num: 12, title: 'Submit Explanation' },
-    'section-12': { num: 13, title: 'Final Reflection' },
+    'section-8':  { num: 9,  title: 'What Did We Discover About Energy?' },
+    'section-9':  { num: 10, title: 'Sharing Scientific Insights' },
+    'section-10': { num: 11, title: 'Mission Complete' },
   };
-  const TOTAL_SECTIONS = 13;
+  const TOTAL_SECTIONS = 11;
 
   // ── State ────────────────────────────────────────────────────
   let currentSection = 'section-0';
@@ -3520,6 +3654,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
   window.addEventListener('DOMContentLoaded', () => {
     loadFromStorage();
     restoreJournalFields();
+    restoreBriefFields();
     showSection('section-0');
   });
 
@@ -3708,18 +3843,17 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
     // Journal entries in section order
     const journalOrder = [
-      { key: 's2',  label: 'Section 2 — Welcome to Impact Motors' },
-      { key: 's4a', label: 'Section 4A — Path A: Motion (DP1)' },
-      { key: 's4b', label: 'Section 4B — Path B: Damage (DP1)' },
-      { key: 's5a', label: 'Section 5A — Convergence 1: What Did We Notice?' },
-      { key: 's5b', label: 'Section 5B — Convergence 1: What Does It Mean?' },
-      { key: 's7a', label: 'Section 8A — Path A: Deformation (DP2)' },
-      { key: 's7b', label: 'Section 8B — Path B: Surroundings (DP2)' },
-      { key: 's8',  label: 'Section 9 — Convergence 2: Energy Did Not Disappear' },
-      { key: 's9',  label: 'Section 10 — Build the Energy Model' },
-      { key: 's10', label: 'Section 11 — Test a Safety Change' },
-      { key: 's11', label: 'Section 12 — Scientific Explanation' },
-      { key: 's12', label: 'Section 13 — Final Reflection' },
+      { key: 's2',      label: 'Section 2 — Welcome to Impact Motors' },
+      { key: 's4a',     label: 'Section 4A — Path A: Motion (DP1)' },
+      { key: 's4b',     label: 'Section 4B — Path B: Damage (DP1)' },
+      { key: 's5a',     label: 'Section 5A — Convergence 1: What Did We Notice?' },
+      { key: 's5b',     label: 'Section 5B — Convergence 1: What Does It Mean?' },
+      { key: 's7a',     label: 'Section 8A — Path A: Deformation (DP2)' },
+      { key: 's7b',     label: 'Section 8B — Path B: Surroundings (DP2)' },
+      { key: 'brief_claim',  label: 'Section 10 — Scientific Brief: Claim' },
+      { key: 'brief_evcar',  label: 'Section 10 — Scientific Brief: Evidence from the Car' },
+      { key: 'brief_evsurr', label: 'Section 10 — Scientific Brief: Evidence from the Surroundings' },
+      { key: 'brief_expl',   label: 'Section 10 — Scientific Brief: Scientific Explanation' },
     ];
 
     lines.push('------------------------------------------------------');
@@ -4082,6 +4216,50 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       if (label && img) label.textContent = `Image not found: ${img.src.split('/').pop()}`;
     }
   }
+
+
+  // ── Section 9 — Scientific Brief Builder ─────────────────────
+
+  // Persist brief field values alongside journal data
+  function saveBriefField(key, value) {
+    journalData['brief_' + key] = value;
+    saveToStorage();
+  }
+
+  function restoreBriefFields() {
+    const fields = { claim: 'brief-claim', evcar: 'brief-ev-car', evsurr: 'brief-ev-surr', expl: 'brief-explanation' };
+    Object.entries(fields).forEach(([key, id]) => {
+      const el = document.getElementById(id);
+      if (el && journalData['brief_' + key]) el.value = journalData['brief_' + key];
+    });
+  }
+
+  function generateBrief() {
+    const fallback = '(not yet completed)';
+    const claim    = (document.getElementById('brief-claim')       || {}).value || '';
+    const evCar    = (document.getElementById('brief-ev-car')      || {}).value || '';
+    const evSurr   = (document.getElementById('brief-ev-surr')     || {}).value || '';
+    const expl     = (document.getElementById('brief-explanation') || {}).value || '';
+
+    const setOut = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val.trim() || fallback;
+    };
+
+    setOut('brief-out-claim',       claim);
+    setOut('brief-out-ev-car',      evCar);
+    setOut('brief-out-ev-surr',     evSurr);
+    setOut('brief-out-explanation', expl);
+
+    const output = document.getElementById('brief-output');
+    if (output) {
+      output.classList.add('visible');
+      output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+
+
 
 
   // ── DP2 Path A — Section 7A Energy Analysis Interactive ───────
