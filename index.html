@@ -137,43 +137,11 @@
       letter-spacing: 0.5px;
     }
 
-    /* =============================================
-       PROGRESS BAR & INDICATOR
-    ============================================= */
-    #progress-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      min-width: 160px;
-    }
-
-    #progress-label {
-      font-family: var(--font-ui);
-      font-size: 16px;
-      color: var(--gray-mid);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    #progress-bar-track {
-      width: 160px;
-      height: 6px;
-      background: var(--navy-light);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    #progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--orange), var(--blue));
-      border-radius: 3px;
-      transition: width 0.4s ease;
-      width: 0%;
-    }
+    /* Progress bar hidden from student view */
+    #progress-wrap { display: none !important; }
 
     /* =============================================
-       MAIN LAYOUT
+       MISSION PATH STRIP
     ============================================= */
     #app {
       max-width: 1100px;
@@ -634,8 +602,7 @@
     ============================================= */
     @media (max-width: 600px) {
       #masthead { flex-direction: column; align-items: flex-start; gap: 10px; }
-      #progress-wrap { align-items: flex-start; }
-      #progress-bar-track { width: 100%; }
+      #masthead-resume { flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; }
       .cover-title { font-size: 31px; }
       .section-body { padding: 20px 16px; }
       .decision-row { flex-direction: column; }
@@ -1826,8 +1793,304 @@
     .s9-scaffold-box p:last-child { margin-bottom: 0; }
 
     /* =============================================
-       SECTION 10 — Scientific Brief Builder
+       EMBEDDED CRASH MODEL (Section 10 Brief Builder)
     ============================================= */
+    .brief-model-block {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 0 0 22px;
+    }
+    .brief-model-block-title {
+      font-family: var(--font-head);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--off-white);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .brief-model-block-prompt {
+      font-size: 15px;
+      color: var(--gray-steel);
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+    /* Three-column toggle row */
+    .bm-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+    .bm-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .bm-phase {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .bm-toggle {
+      display: flex;
+      background: rgba(0,0,0,0.2);
+      border-radius: 99px;
+      padding: 3px;
+      gap: 2px;
+      width: 100%;
+      border: 1.5px solid rgba(255,255,255,0.12);
+    }
+    .bm-toggle-opt {
+      flex: 1;
+      text-align: center;
+      padding: 7px 4px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-steel);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      line-height: 1.2;
+      border: none;
+      background: transparent;
+      font-family: var(--font-ui);
+    }
+    .bm-toggle-opt:hover { color: var(--off-white); }
+    .bm-toggle-opt.bm-active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(59,130,246,0.35);
+    }
+    .bm-toggle-opt:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+    .bm-box {
+      width: 100%;
+      min-height: 68px;
+      background: rgba(0,0,0,0.18);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--gray-steel);
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .bm-box.bm-filled {
+      color: var(--off-white);
+      font-style: normal;
+      border-color: var(--blue);
+      background: rgba(59,130,246,0.08);
+    }
+    .bm-arrow-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 4px;
+      min-height: 68px;
+      flex-shrink: 0;
+    }
+    .bm-arrow-wrap svg {
+      width: 26px; height: 26px;
+      color: var(--gray-steel);
+      margin-bottom: calc((68px - 26px) / 2);
+    }
+    /* Visual diagram */
+    .bm-diagram {
+      display: none;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: var(--radius);
+      padding: 20px 16px 16px;
+      animation: fadeIn 0.3s ease;
+    }
+    .bm-diagram.bm-diagram-show { display: block; }
+    .bm-diagram-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: nowrap;
+    }
+    .bm-diag-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      min-width: 120px;
+      border-radius: 50%;
+      text-align: center;
+      padding: 12px;
+      gap: 4px;
+      border: 2px solid;
+    }
+    .bm-node-before { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.4); }
+    .bm-node-during { background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.4); }
+    .bm-node-after  { background: rgba(34,197,94,0.1);  border-color: rgba(34,197,94,0.4); }
+    .bm-diag-phase {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .bm-node-before .bm-diag-phase { color: var(--blue); }
+    .bm-node-during .bm-diag-phase { color: var(--orange); }
+    .bm-node-after  .bm-diag-phase { color: var(--success); }
+    .bm-diag-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--off-white);
+      line-height: 1.25;
+    }
+    .bm-diag-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 0 4px;
+      flex-shrink: 0;
+      color: var(--gray-steel);
+    }
+    .bm-diag-connector-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-steel);
+      white-space: nowrap;
+    }
+    .bm-diag-connector svg { width: 22px; height: 10px; color: var(--gray-steel); }
+    @media (max-width: 580px) {
+      .bm-row { flex-direction: column; align-items: stretch; }
+      .bm-arrow-wrap { display: none; }
+      .bm-diagram-flow { flex-direction: column; }
+      .bm-diag-connector { flex-direction: row; gap: 4px; padding: 4px 0; }
+      .bm-diag-connector svg { transform: rotate(90deg); }
+    }
+
+    /* =============================================
+       CRASH MODEL DIAGRAM — inside generated brief
+       Light background, lesson palette
+    ============================================= */
+    .brief-model-diagram-wrap {
+      padding: 18px 10px 14px;
+      background: #f4f7fb;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-light);
+      margin-bottom: 4px;
+    }
+    .bmd-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: nowrap;
+    }
+    .bmd-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 130px;
+      height: 130px;
+      min-width: 130px;
+      border-radius: 50%;
+      text-align: center;
+      padding: 14px;
+      gap: 5px;
+      border: 2px solid;
+      flex-shrink: 0;
+    }
+    .bmd-node-before {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .bmd-node-during {
+      background: #fff7ed;
+      border-color: #fed7aa;
+    }
+    .bmd-node-after {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+    .bmd-phase {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .bmd-node-before .bmd-phase { color: #3b82f6; }
+    .bmd-node-during .bmd-phase { color: #ea580c; }
+    .bmd-node-after  .bmd-phase { color: #16a34a; }
+    .bmd-rule {
+      width: 22px;
+      height: 1.5px;
+      border-radius: 99px;
+      margin: 1px auto;
+    }
+    .bmd-node-before .bmd-rule { background: #bfdbfe; }
+    .bmd-node-during .bmd-rule { background: #fed7aa; }
+    .bmd-node-after  .bmd-rule { background: #bbf7d0; }
+    .bmd-label {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2042;
+      line-height: 1.25;
+    }
+    .bmd-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 0 6px;
+      flex-shrink: 0;
+      color: #94a3b8;
+    }
+    .bmd-connector-label {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+    .bmd-connector svg {
+      width: 26px;
+      height: 11px;
+      color: #cbd5e1;
+    }
+    .bmd-empty {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: #94a3b8;
+      font-style: italic;
+      text-align: center;
+      padding: 10px 0;
+    }
+    @media (max-width: 580px) {
+      .bmd-flow { flex-direction: column; }
+      .bmd-connector { flex-direction: row; gap: 6px; padding: 4px 0; }
+      .bmd-connector svg { transform: rotate(90deg); }
+      .bmd-node { width: 110px; height: 110px; min-width: 110px; }
+    }
     .s10-brief-builder {
       background: rgba(0,0,0,0.15);
       border: 1px solid rgba(249,115,22,0.2);
@@ -2061,68 +2324,61 @@
     }
 
     /* ============================================================
-       RESUME CODE PANEL
+       RESUME CODE PANEL — now embedded in masthead util area
     ============================================================ */
-    #resume-panel {
-      background: var(--navy-dark);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 8px 24px;
-      display: none; /* shown by JS when not on section-0 */
+    #resume-panel { display: none !important; } /* legacy strip hidden always */
+
+    /* Inline resume/save code block inside masthead */
+    #masthead-resume {
+      display: none; /* shown by JS when not section-0 */
       align-items: center;
-      gap: 16px;
+      gap: 8px;
       flex-wrap: wrap;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 5px 10px;
+      flex-shrink: 0;
     }
-    #resume-panel .rp-label {
+    #masthead-resume .rp-label {
       font-family: var(--font-ui);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--orange);
       white-space: nowrap;
-      flex-shrink: 0;
     }
-    #resume-panel .rp-code-display {
+    #masthead-resume .rp-code-display {
       font-family: 'Courier New', monospace;
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 800;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       color: var(--off-white);
       background: rgba(255,255,255,0.08);
-      padding: 4px 12px;
-      border-radius: 6px;
+      padding: 3px 8px;
+      border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.15);
       user-select: all;
       cursor: text;
     }
-    #resume-panel .rp-hint {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      color: var(--gray-steel);
-      flex: 1;
-    }
-    #resume-panel .rp-divider {
-      width: 1px; height: 22px;
-      background: rgba(255,255,255,0.12);
+    #masthead-resume .rp-divider {
+      width: 1px; height: 18px;
+      background: rgba(255,255,255,0.15);
       flex-shrink: 0;
     }
-    #resume-panel .rp-enter-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    #resume-panel .rp-enter-label {
+    #masthead-resume .rp-enter-label {
       font-family: var(--font-ui);
-      font-size: 13px;
+      font-size: 11px;
       color: var(--gray-mid);
+      white-space: nowrap;
     }
     #resume-code-input {
       font-family: 'Courier New', monospace;
-      font-size: 15px;
-      letter-spacing: 3px;
+      font-size: 13px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      width: 100px;
-      padding: 4px 8px;
-      border-radius: 6px;
+      width: 80px;
+      padding: 3px 6px;
+      border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.2);
       background: rgba(255,255,255,0.06);
       color: var(--off-white);
@@ -2131,21 +2387,21 @@
     #resume-code-input::placeholder { letter-spacing: 1px; color: var(--gray-steel); text-transform: none; }
     #resume-code-input:focus { border-color: var(--blue); }
     .rp-load-btn {
-      padding: 4px 12px;
+      padding: 3px 10px;
       background: var(--blue);
       color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       font-family: var(--font-ui);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       cursor: pointer;
       transition: background var(--transition);
     }
     .rp-load-btn:hover { background: var(--blue-dim); }
-    @media (max-width: 700px) {
-      #resume-panel { flex-direction: column; align-items: flex-start; gap: 8px; }
-      #resume-panel .rp-divider { width: 40px; height: 1px; }
+    @media (max-width: 900px) {
+      #masthead-resume { flex-direction: column; align-items: flex-start; gap: 4px; }
+      #masthead-resume .rp-divider { width: 30px; height: 1px; }
     }
 
     /* ============================================================
@@ -2317,12 +2573,14 @@
       <h2>Impact Motors: Crash Investigation</h2>
     </div>
   </div>
-  <!-- Progress bar — hidden on Section 0 -->
-  <div id="progress-wrap">
-    <div id="progress-label">Section 1 of 12</div>
-    <div id="progress-bar-track">
-      <div id="progress-bar-fill"></div>
-    </div>
+  <!-- Inline save code area — hidden on Section 0, shown by JS -->
+  <div id="masthead-resume" role="complementary" aria-label="Save code area">
+    <span class="rp-label">📌 Save Code:</span>
+    <span class="rp-code-display" id="rp-code-display" title="Write this down to resume later">——————</span>
+    <div class="rp-divider"></div>
+    <span class="rp-enter-label">Resume:</span>
+    <input type="text" id="resume-code-input" maxlength="6" placeholder="Enter code" aria-label="Enter resume code" />
+    <button class="rp-load-btn" onclick="resumeCodeLoad()">Load</button>
   </div>
   <!-- Utility buttons — hidden on Section 0 -->
   <div id="util-buttons">
@@ -2333,7 +2591,7 @@
 
 <!-- Mission Path tracker strip — hidden on Section 0 -->
 <div id="mission-path">
-  <span class="mp-label">🗺 Your Mission Path</span>
+  <span class="mp-label">🗺 Your Investigation Path</span>
   <div class="mp-steps">
     <div class="mp-step" id="mp-dp1">
       <div class="mp-num">1</div>
@@ -2357,18 +2615,6 @@
 <!-- ============================================================
      RESUME CODE PANEL — shown on all sections except section-0
 ============================================================ -->
-<div id="resume-panel" role="complementary" aria-label="Resume code panel">
-  <span class="rp-label">📌 Your Save Code:</span>
-  <span class="rp-code-display" id="rp-code-display" title="Write this code down to resume later">——————</span>
-  <span class="rp-hint">Write this down to resume your investigation later on this device.</span>
-  <div class="rp-divider"></div>
-  <div class="rp-enter-row">
-    <span class="rp-enter-label">Resume a code:</span>
-    <input type="text" id="resume-code-input" maxlength="6" placeholder="Enter code" aria-label="Enter resume code" />
-    <button class="rp-load-btn" onclick="resumeCodeLoad()">Load</button>
-  </div>
-</div>
-
 <!-- ============================================================
      MAIN APP CONTAINER
 ============================================================ -->
@@ -3571,7 +3817,6 @@ Different investigation choices can reveal different clues.</p>
   =================================================== -->
   <section id="section-8" class="section">
     <div class="section-header convergence">
-      <div class="section-tag convergence">Section 9 · Convergence — DP2</div>
       <div class="section-title">What Did We Discover About Energy?</div>
     </div>
     <div class="section-body convergence-body">
@@ -3604,20 +3849,7 @@ Different investigation choices can reveal different clues.</p>
         <p><strong>What patterns do you notice across both investigations?</strong></p>
         <p>What do these results suggest about what happens to energy during a crash?</p>
         <p><strong>How is energy transferred in each case?</strong></p>
-      </div>
-
-      <!-- Scaffold box -->
-      <div class="s9-scaffold-box" role="note" aria-label="Explanation scaffold">
-        <p><strong>Build your explanation:</strong></p>
-        <p>During a crash, energy is transferred into __________ and __________.</p>
-        <p>Evidence from the car shows __________.</p>
-        <p>Evidence from the surroundings shows __________.</p>
-        <p>The motion of the car matters because __________.</p>
-      </div>
-
-      <div class="narrative">
-        <p>The engineering team is depending on your explanation to understand what's happening during these crashes.</p>
-        <p>Next, you will turn your findings into a scientific brief for the engineers at Impact Motors.</p>
+        <p>Now you are ready to share your scientific insights with the engineering team.</p>
       </div>
 
       <!-- Navigation -->
@@ -3635,7 +3867,6 @@ Different investigation choices can reveal different clues.</p>
   =================================================== -->
   <section id="section-9" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 10 · Creation &amp; Communication</div>
       <div class="section-title">Sharing Your Scientific Insights with the Engineering Team</div>
     </div>
     <div class="section-body">
@@ -3660,19 +3891,104 @@ Different investigation choices can reveal different clues.</p>
       <div class="s10-brief-builder" role="form" aria-label="Impact Motors Scientific Brief Builder">
         <div class="s10-brief-builder-title">Impact Motors Scientific Brief Builder</div>
 
+        <!-- 1. YOUR CLAIM -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-claim">1. Claim</label>
+          <label class="s10-brief-field-label" for="brief-claim">1. Your Claim</label>
           <p class="s10-brief-field-prompt">Where does the energy go during a crash?</p>
           <textarea class="s10-brief-textarea"
                     id="brief-claim"
                     placeholder="Example: During a crash, energy is transferred into..."
                     oninput="saveBriefField('claim', this.value)"
-                    aria-label="Claim: where does the energy go during a crash?"></textarea>
+                    aria-label="Your claim: where does the energy go during a crash?"></textarea>
         </div>
 
+        <!-- 2. YOUR CRASH ENERGY MODEL -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-ev-car">2. Evidence from the Car</label>
-          <p class="s10-brief-field-prompt">What evidence shows that energy affected the car?</p>
+          <label class="s10-brief-field-label">2. Your Crash Energy Model</label>
+          <p class="s10-brief-field-prompt">Build a model showing what happens before, during, and after the crash.</p>
+
+          <div class="brief-model-block">
+
+            <!-- THREE-COLUMN TOGGLE ROW -->
+            <div class="bm-row">
+
+              <!-- BEFORE -->
+              <div class="bm-col">
+                <div class="bm-phase">Before the Crash</div>
+                <div class="bm-toggle" role="group" aria-label="Motion before crash">
+                  <button class="bm-toggle-opt" id="bmb-slow" data-phase="before" data-val="Slow motion" onclick="bmPick(this)">Slow motion</button>
+                  <button class="bm-toggle-opt" id="bmb-fast" data-phase="before" data-val="Fast motion" onclick="bmPick(this)">Fast motion</button>
+                </div>
+                <div class="bm-box" id="bm-box-before">Choose a toggle above.</div>
+              </div>
+
+              <div class="bm-arrow-wrap" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 18h22M23 12l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+
+              <!-- DURING -->
+              <div class="bm-col">
+                <div class="bm-phase">During the Crash</div>
+                <div class="bm-toggle" role="group" aria-label="Energy transfer during crash">
+                  <button class="bm-toggle-opt" id="bmd-more" data-phase="during" data-val="More energy transferred" onclick="bmPick(this)">More energy transferred</button>
+                  <button class="bm-toggle-opt" id="bmd-less" data-phase="during" data-val="Less energy transferred" onclick="bmPick(this)">Less energy transferred</button>
+                </div>
+                <div class="bm-box" id="bm-box-during">Choose a toggle above.</div>
+              </div>
+
+              <div class="bm-arrow-wrap" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 18h22M23 12l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+
+              <!-- AFTER -->
+              <div class="bm-col">
+                <div class="bm-phase">After the Crash</div>
+                <div class="bm-toggle" role="group" aria-label="Damage after crash">
+                  <button class="bm-toggle-opt" id="bma-minimal" data-phase="after" data-val="Minimal damage" onclick="bmPick(this)">Minimal damage</button>
+                  <button class="bm-toggle-opt" id="bma-extensive" data-phase="after" data-val="Extensive damage" onclick="bmPick(this)">Extensive damage</button>
+                </div>
+                <div class="bm-box" id="bm-box-after">Choose a toggle above.</div>
+              </div>
+
+            </div><!-- /.bm-row -->
+
+            <!-- VISUAL MODEL DIAGRAM — revealed when Create Brief is clicked -->
+            <div class="bm-diagram" id="bm-diagram">
+              <div class="bm-diagram-flow">
+                <div class="bm-diag-node bm-node-before">
+                  <div class="bm-diag-phase">Before the Crash</div>
+                  <div class="bm-diag-label" id="bm-diag-before">—</div>
+                </div>
+                <div class="bm-diag-connector">
+                  <div class="bm-diag-connector-label">causes</div>
+                  <svg viewBox="0 0 28 12" fill="none"><path d="M1 6h22M18 2l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="bm-diag-node bm-node-during">
+                  <div class="bm-diag-phase">During the Crash</div>
+                  <div class="bm-diag-label" id="bm-diag-during">—</div>
+                </div>
+                <div class="bm-diag-connector">
+                  <div class="bm-diag-connector-label">effect</div>
+                  <svg viewBox="0 0 28 12" fill="none"><path d="M1 6h22M18 2l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="bm-diag-node bm-node-after">
+                  <div class="bm-diag-phase">After the Crash</div>
+                  <div class="bm-diag-label" id="bm-diag-after">—</div>
+                </div>
+              </div>
+            </div><!-- /.bm-diagram -->
+
+          </div><!-- /.brief-model-block -->
+        </div>
+
+        <!-- 3. SUPPORT WITH EVIDENCE FROM THE CAR -->
+        <div class="s10-brief-field">
+          <label class="s10-brief-field-label" for="brief-ev-car">3. Support with Evidence from the Car</label>
+          <p class="s10-brief-field-prompt">What evidence from the car supports your claim and model?</p>
           <textarea class="s10-brief-textarea"
                     id="brief-ev-car"
                     placeholder="Use evidence from the car analysis, such as bending, crumpling, compression, or shape change."
@@ -3680,9 +3996,10 @@ Different investigation choices can reveal different clues.</p>
                     aria-label="Evidence from the car analysis"></textarea>
         </div>
 
+        <!-- 4. SUPPORT WITH EVIDENCE FROM THE SURROUNDINGS -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-ev-surr">3. Evidence from the Surroundings</label>
-          <p class="s10-brief-field-prompt">What evidence shows that energy moved into the surroundings?</p>
+          <label class="s10-brief-field-label" for="brief-ev-surr">4. Support with Evidence from the Surroundings</label>
+          <p class="s10-brief-field-prompt">What evidence from the surroundings supports your claim and model?</p>
           <textarea class="s10-brief-textarea"
                     id="brief-ev-surr"
                     placeholder="Use evidence from the surroundings analysis, such as sound, heat, vibration, dust, or movement."
@@ -3690,9 +4007,10 @@ Different investigation choices can reveal different clues.</p>
                     aria-label="Evidence from the surroundings analysis"></textarea>
         </div>
 
+        <!-- 5. YOUR SCIENTIFIC EXPLANATION -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-explanation">4. Scientific Explanation</label>
-          <p class="s10-brief-field-prompt">Explain how the car's motion affects the amount of energy and how that energy is transferred during the crash.</p>
+          <label class="s10-brief-field-label" for="brief-explanation">5. Your Scientific Explanation</label>
+          <p class="s10-brief-field-prompt">Explain how energy is transferred during the crash and where the energy goes, using evidence from both the car and the surroundings.</p>
           <textarea class="s10-brief-textarea"
                     id="brief-explanation"
                     placeholder="Connect motion, energy, and evidence from the crash system."
@@ -3730,12 +4048,17 @@ Different investigation choices can reveal different clues.</p>
           </div>
 
           <div class="s10-brief-section">
-            <div class="s10-brief-section-label">Evidence from the Car</div>
+            <div class="s10-brief-section-label">Crash Energy Model</div>
+            <div id="brief-out-model" class="brief-model-diagram-wrap"></div>
+          </div>
+
+          <div class="s10-brief-section">
+            <div class="s10-brief-section-label">Support with Evidence from the Car</div>
             <div class="s10-brief-section-text" id="brief-out-ev-car"></div>
           </div>
 
           <div class="s10-brief-section">
-            <div class="s10-brief-section-label">Evidence from the Surroundings</div>
+            <div class="s10-brief-section-label">Support with Evidence from the Surroundings</div>
             <div class="s10-brief-section-text" id="brief-out-ev-surr"></div>
           </div>
 
@@ -3768,7 +4091,6 @@ Different investigation choices can reveal different clues.</p>
   =================================================== -->
   <section id="section-10" class="section">
     <div class="section-header">
-      <div class="section-tag">Section 11 · Lesson Wrap-Up</div>
       <div class="section-title">Mission Complete: Helping Impact Motors</div>
     </div>
     <div class="section-body">
@@ -4028,19 +4350,11 @@ Different investigation choices can reveal different clues.</p>
     const meta = SECTION_META[sectionId] || { num: 0, title: '' };
     const isLanding = (sectionId === 'section-0');
 
-    // Toggle progress bar, util buttons, mission path, and resume panel visibility
-    document.getElementById('progress-wrap').style.display  = isLanding ? 'none' : '';
+    // Toggle util buttons, mission path, and masthead resume area visibility
     document.getElementById('util-buttons').style.display   = isLanding ? 'none' : '';
     document.getElementById('mission-path').style.display   = isLanding ? 'none' : '';
-    const resumePanel = document.getElementById('resume-panel');
-    if (resumePanel) resumePanel.style.display = isLanding ? 'none' : 'flex';
-
-    if (!isLanding) {
-      const pct = Math.round((meta.num / TOTAL_SECTIONS) * 100);
-      document.getElementById('progress-label').textContent =
-        `Section ${meta.num} of ${TOTAL_SECTIONS} — ${meta.title}`;
-      document.getElementById('progress-bar-fill').style.width = pct + '%';
-    }
+    const mastheadResume = document.getElementById('masthead-resume');
+    if (mastheadResume) mastheadResume.style.display = isLanding ? 'none' : 'flex';
 
     // Update mission path decision labels whenever they change
     const dp1Labels = { A: 'Path A — Motion', B: 'Path B — Damage' };
@@ -4106,6 +4420,10 @@ Different investigation choices can reveal different clues.</p>
         dp2aAnalysisRun,
         dp2bSelectedRun,
         dp2bAnalysisRun,
+        briefModelBefore,
+        briefModelDuring,
+        briefModelAfter,
+        briefModelCreated,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       // Also snapshot under the resume code key for cross-session use
@@ -4137,6 +4455,10 @@ Different investigation choices can reveal different clues.</p>
       if (payload.dp2aAnalysisRun !== undefined) dp2aAnalysisRun = payload.dp2aAnalysisRun;
       if (payload.dp2bSelectedRun !== undefined) dp2bSelectedRun = payload.dp2bSelectedRun;
       if (payload.dp2bAnalysisRun !== undefined) dp2bAnalysisRun = payload.dp2bAnalysisRun;
+      if (payload.briefModelBefore !== undefined) briefModelBefore = payload.briefModelBefore;
+      if (payload.briefModelDuring !== undefined) briefModelDuring = payload.briefModelDuring;
+      if (payload.briefModelAfter  !== undefined) briefModelAfter  = payload.briefModelAfter;
+      if (payload.briefModelCreated !== undefined) briefModelCreated = payload.briefModelCreated;
     } catch(e) {
       console.warn('localStorage load failed:', e);
     }
@@ -4270,19 +4592,28 @@ Different investigation choices can reveal different clues.</p>
 
     // Scientific Brief
     dash(); line('  SCIENTIFIC BRIEF BUILDER'); dash(); blank();
-    const bFields = [
-      { key: 'brief_claim',  label: 'Claim', prompt: 'Where does the energy go during a crash?' },
-      { key: 'brief_evcar',  label: 'Evidence from the Car', prompt: 'What evidence shows that energy affected the car?' },
-      { key: 'brief_evsurr', label: 'Evidence from the Surroundings', prompt: 'What evidence shows that energy moved into the surroundings?' },
-      { key: 'brief_expl',   label: 'Scientific Explanation', prompt: 'How does motion affect energy transfer during the crash?' },
-    ];
-    bFields.forEach(({key, label, prompt}) => {
-      line(label + ':');
-      line('  Prompt: ' + prompt);
-      const val = journalData[key];
-      line('  Response: ' + (val && val.trim() ? val.trim() : '[No response]'));
-      blank();
-    });
+    line('Your Claim:');
+    const claimVal = journalData['brief_claim'];
+    line(claimVal && claimVal.trim() ? claimVal.trim() : '[No response]');
+    blank();
+    line('Crash Energy Model:');
+    line('  Before the Crash: ' + (briefModelBefore || '[No selection]'));
+    line('  During the Crash: ' + (briefModelDuring || '[No selection]'));
+    line('  After the Crash: '  + (briefModelAfter  || '[No selection]'));
+    line('  Briefing Model Created: ' + (briefModelCreated ? 'Yes' : 'No'));
+    blank();
+    line('Support with Evidence from the Car:');
+    const evCarVal = journalData['brief_evcar'];
+    line(evCarVal && evCarVal.trim() ? evCarVal.trim() : '[No response]');
+    blank();
+    line('Support with Evidence from the Surroundings:');
+    const evSurrVal = journalData['brief_evsurr'];
+    line(evSurrVal && evSurrVal.trim() ? evSurrVal.trim() : '[No response]');
+    blank();
+    line('Your Scientific Explanation:');
+    const explVal = journalData['brief_expl'];
+    line(explVal && explVal.trim() ? explVal.trim() : '[No response]');
+    blank();
 
     // Generated brief
     dash(); line('  COMPLETED SCIENTIFIC BRIEF'); dash(); blank();
@@ -4294,9 +4625,13 @@ Different investigation choices can reveal different clues.</p>
       blank();
       line('Claim:');
       line(journalData['brief_claim'] || '(not completed)'); blank();
-      line('Evidence from the Car:');
+      line('Crash Energy Model:');
+      line('  Before the Crash: ' + (briefModelBefore || '(not completed)'));
+      line('  During the Crash: ' + (briefModelDuring || '(not completed)'));
+      line('  After the Crash: '  + (briefModelAfter  || '(not completed)')); blank();
+      line('Support with Evidence from the Car:');
       line(journalData['brief_evcar'] || '(not completed)'); blank();
-      line('Evidence from the Surroundings:');
+      line('Support with Evidence from the Surroundings:');
       line(journalData['brief_evsurr'] || '(not completed)'); blank();
       line('Scientific Explanation:');
       line(journalData['brief_expl'] || '(not completed)'); blank();
@@ -4403,12 +4738,21 @@ Different investigation choices can reveal different clues.</p>
     dp2aAnalysisRun   = false;
     dp2bSelectedRun   = null;
     dp2bAnalysisRun   = false;
+    briefModelBefore  = null;
+    briefModelDuring  = null;
+    briefModelAfter   = null;
+    briefModelCreated = false;
     savedCurrentSection = null;
 
     // Clear all textareas and brief fields
     document.querySelectorAll('.journal-textarea, .s10-brief-textarea').forEach(el => el.value = '');
     // Clear carsim observation textareas (dynamically rendered)
     document.querySelectorAll('.cs-obs-textarea').forEach(el => el.value = '');
+    // Clear model toggles and diagram
+    document.querySelectorAll('.bm-toggle-opt').forEach(b => b.classList.remove('bm-active'));
+    document.querySelectorAll('.bm-box').forEach(b => { b.textContent = 'Choose a toggle above.'; b.classList.remove('bm-filled'); });
+    const bmDiag = document.getElementById('bm-diagram');
+    if (bmDiag) bmDiag.classList.remove('bm-diagram-show');
     const briefOutput = document.getElementById('brief-output');
     if (briefOutput) briefOutput.classList.remove('visible');
 
@@ -4732,6 +5076,44 @@ Different investigation choices can reveal different clues.</p>
   }
 
 
+  // ── Brief Crash Energy Model state ───────────────────────────
+  let briefModelBefore  = null;
+  let briefModelDuring  = null;
+  let briefModelAfter   = null;
+  let briefModelCreated = false;
+
+  function bmPick(btn) {
+    const phase = btn.dataset.phase;
+    const val   = btn.dataset.val;
+    document.querySelectorAll(`.bm-toggle-opt[data-phase="${phase}"]`).forEach(b => b.classList.remove('bm-active'));
+    btn.classList.add('bm-active');
+    if (phase === 'before') briefModelBefore = val;
+    if (phase === 'during') briefModelDuring = val;
+    if (phase === 'after')  briefModelAfter  = val;
+    bmUpdateBox(phase, val);
+    saveToStorage();
+  }
+
+  function bmUpdateBox(phase, val) {
+    const box = document.getElementById('bm-box-' + phase);
+    if (!box) return;
+    box.textContent = val;
+    box.classList.add('bm-filled');
+  }
+
+  function bmShowDiagram() {
+    const diag = document.getElementById('bm-diagram');
+    if (!diag) return;
+    const b = document.getElementById('bm-diag-before');
+    const d = document.getElementById('bm-diag-during');
+    const a = document.getElementById('bm-diag-after');
+    if (b) b.textContent = briefModelBefore || '—';
+    if (d) d.textContent = briefModelDuring || '—';
+    if (a) a.textContent = briefModelAfter  || '—';
+    diag.classList.add('bm-diagram-show');
+    diag.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   // ── Section 9 — Scientific Brief Builder ─────────────────────
 
   // Persist brief field values alongside journal data
@@ -4746,6 +5128,23 @@ Different investigation choices can reveal different clues.</p>
       const el = document.getElementById(id);
       if (el && journalData['brief_' + key]) el.value = journalData['brief_' + key];
     });
+    // Restore model toggle selections
+    if (briefModelBefore) {
+      const btn = document.querySelector(`.bm-toggle-opt[data-phase="before"][data-val="${briefModelBefore}"]`);
+      if (btn) { btn.classList.add('bm-active'); bmUpdateBox('before', briefModelBefore); }
+    }
+    if (briefModelDuring) {
+      const btn = document.querySelector(`.bm-toggle-opt[data-phase="during"][data-val="${briefModelDuring}"]`);
+      if (btn) { btn.classList.add('bm-active'); bmUpdateBox('during', briefModelDuring); }
+    }
+    if (briefModelAfter) {
+      const btn = document.querySelector(`.bm-toggle-opt[data-phase="after"][data-val="${briefModelAfter}"]`);
+      if (btn) { btn.classList.add('bm-active'); bmUpdateBox('after', briefModelAfter); }
+    }
+    // Restore model diagram if created
+    if (briefModelCreated) {
+      bmShowDiagram();
+    }
     // Re-generate brief if it was previously created
     if (journalData['brief_generated']) {
       generateBrief();
@@ -4768,6 +5167,49 @@ Different investigation choices can reveal different clues.</p>
     setOut('brief-out-ev-car',      evCar);
     setOut('brief-out-ev-surr',     evSurr);
     setOut('brief-out-explanation', expl);
+
+    // Build model diagram inside brief output
+    const modelEl = document.getElementById('brief-out-model');
+    if (modelEl) {
+      const bef = briefModelBefore || null;
+      const dur = briefModelDuring || null;
+      const aft = briefModelAfter  || null;
+      if (!bef && !dur && !aft) {
+        modelEl.innerHTML = '<p class="bmd-empty">No model selections recorded.</p>';
+      } else {
+        const arrowSvg = `<svg viewBox="0 0 26 11" fill="none"><path d="M1 5.5h20M17 2l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+        modelEl.innerHTML = `
+          <div class="bmd-flow">
+            <div class="bmd-node bmd-node-before">
+              <div class="bmd-phase">Before the Crash</div>
+              <div class="bmd-rule"></div>
+              <div class="bmd-label">${bef || '<span style="color:#94a3b8;font-weight:400;font-size:11px;">not selected</span>'}</div>
+            </div>
+            <div class="bmd-connector">
+              <div class="bmd-connector-label">causes</div>
+              ${arrowSvg}
+            </div>
+            <div class="bmd-node bmd-node-during">
+              <div class="bmd-phase">During the Crash</div>
+              <div class="bmd-rule"></div>
+              <div class="bmd-label">${dur || '<span style="color:#94a3b8;font-weight:400;font-size:11px;">not selected</span>'}</div>
+            </div>
+            <div class="bmd-connector">
+              <div class="bmd-connector-label">effect</div>
+              ${arrowSvg}
+            </div>
+            <div class="bmd-node bmd-node-after">
+              <div class="bmd-phase">After the Crash</div>
+              <div class="bmd-rule"></div>
+              <div class="bmd-label">${aft || '<span style="color:#94a3b8;font-weight:400;font-size:11px;">not selected</span>'}</div>
+            </div>
+          </div>`;
+      }
+    }
+
+    // Show model diagram as part of the brief
+    briefModelCreated = true;
+    bmShowDiagram();
 
     const output = document.getElementById('brief-output');
     if (output) {
@@ -4971,6 +5413,10 @@ Different investigation choices can reveal different clues.</p>
       if (payload.dp2aAnalysisRun !== undefined) dp2aAnalysisRun = payload.dp2aAnalysisRun;
       if (payload.dp2bSelectedRun !== undefined) dp2bSelectedRun = payload.dp2bSelectedRun;
       if (payload.dp2bAnalysisRun !== undefined) dp2bAnalysisRun = payload.dp2bAnalysisRun;
+      if (payload.briefModelBefore !== undefined) briefModelBefore = payload.briefModelBefore;
+      if (payload.briefModelDuring !== undefined) briefModelDuring = payload.briefModelDuring;
+      if (payload.briefModelAfter  !== undefined) briefModelAfter  = payload.briefModelAfter;
+      if (payload.briefModelCreated !== undefined) briefModelCreated = payload.briefModelCreated;
       localStorage.setItem(STORAGE_KEY, raw);
       restoreJournalFields();
       restoreBriefFields();
@@ -5036,7 +5482,6 @@ Different investigation choices can reveal different clues.</p>
     '.narrative p',
     '.dialogue-block',
     '.narrative-action',
-    '.s9-scaffold-box',
     '.s11-takeaway-box',
     '.pb-instruction-banner span:last-child',
     '.ea-energy-analysis__callout',
@@ -5044,6 +5489,7 @@ Different investigation choices can reveal different clues.</p>
   ];
   const TTS_EXCLUDE = [
     '.field-journal', '.journal-textarea', '.s10-brief-output',
+    '.s10-brief-builder', '.brief-model-block',
     '.nav-row', '.export-row', '.s11-finish-row',
     'button', 'textarea', 'input', '.placeholder',
   ];
@@ -5111,7 +5557,7 @@ Different investigation choices can reveal different clues.</p>
     const excludeSel = TTS_EXCLUDE.join(', ');
     clone.querySelectorAll(excludeSel).forEach(el => el.remove());
     // Also remove TTS button itself, hotspot layers, iframe, and hidden elements
-    clone.querySelectorAll('.tts-listen-btn, .pb-hotspot-layer, iframe, [hidden], .is-hidden, .embed-4a, .embed-4b, .embed-7a, .embed-7b, #brief-output, .s10-brief-output').forEach(el => el.remove());
+    clone.querySelectorAll('.tts-listen-btn, .pb-hotspot-layer, iframe, [hidden], .is-hidden, .embed-4a, .embed-4b, .embed-7a, .embed-7b, #brief-output, .s10-brief-output, .s10-brief-builder, .brief-model-block').forEach(el => el.remove());
 
     const parts = [];
     TTS_SELECTORS.forEach(sel => {
