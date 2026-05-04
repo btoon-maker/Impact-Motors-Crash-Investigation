@@ -2569,14 +2569,14 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       <div class="decision-row">
         <button class="btn btn-decision"
                 onclick="makeDecision('dp1', 'A', 'section-4a')">
-          What Was Happening Before the Crash?<br>
+          Review Motion Evidence<br>
           <small style="font-weight:normal; font-size: 18px; opacity:0.85;">
             Investigate how the car was moving
           </small>
         </button>
         <button class="btn btn-decision"
                 onclick="makeDecision('dp1', 'B', 'section-4b')">
-          What Changed During the Crash?<br>
+          Review Structural Damage Evidence<br>
           <small style="font-weight:normal; font-size: 18px; opacity:0.85;">
             Examine the damage evidence from the crash
           </small>
@@ -2596,7 +2596,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
   <section id="section-4a" class="section">
     <div class="section-header">
-      <div class="section-title">What Was Happening Before the Crash?</div>
+      <div class="section-title">Review Motion Evidence</div>
     </div>
     <div class="section-body">
 
@@ -2686,7 +2686,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
   <section id="section-4b" class="section">
     <div class="section-header">
-      <div class="section-title">What Changed During the Crash?</div>
+      <div class="section-title">Review Structural Damage Evidence</div>
     </div>
     <div class="section-body">
 
@@ -2835,11 +2835,11 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
       <div class="narrative">
 <p>
-   Your <strong>Junior Crash Test Scientist</strong> team has now shared evidence from the first crash-test review.
+   Your <strong>Junior Crash Test Scientist</strong> team has placed all shared evidence on each crash-test for review.
 </p>
 
 <p>
-  Everyone investigated the same three test runs, but from different perspectives: <strong>motion before impact</strong> and <strong>changes during impact</strong>.
+  Everyone investigated the same three test runs, but from different perspectives: <strong>motion before impact</strong> and <strong>structural changes after impact</strong>.
 </p>
 
 <p>
@@ -3237,7 +3237,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       </div>
 
       <div class="narrative">
-        <p>Now you have a new question to investigate. <strong>Where does the energy go during a crash?</strong></p>
+        <p>Now your team has a new question to investigate. <strong>Where does the energy go during a crash?</strong></p>
       </div>
 
       <div style="margin: 20px 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);">
@@ -3268,36 +3268,23 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 
       <div class="narrative">
 <p>
-  Before the engineers can make the car safer, your team needs to explain what happens to energy during the crash, and your <strong>Junior Crash Test Scientist</strong> team now has evidence that <strong>energy plays a role</strong> in these crashes.
-</p>
+Your Junior Crash Test Scientist team has evidence that energy plays a role in these crashes, but you still need to figure out what is happening during the crash.</p>
 
 <p>
-  But you still need a way to <strong>analyze what is happening</strong> during the crash.
-</p>
+Your team brings this question to Molly, the Senior Safety Engineer.</p>
 
-<p>
-  Your team goes to <strong>Molly</strong>, the Senior Safety Engineer, for support.
-</p>
+<div class="dialogue-box">
+“Good work, <strong>Junior Crast Test Scientist</strong> team. If energy is involved, we need to run an analysis.”</div>
 
 <p class="narrative-action">
-  She reviews your findings and nods.
+  She pulls up an analysis tool on her screen.
 </p>
 
 <div class="dialogue-box">
-  “Good work. If energy is involved, we need to run an analysis.”
-</div>
-
-<p class="narrative-action">
-  She pulls up a system on her screen.
-</p>
-
-<div class="dialogue-box">
-  “Impact Motors has a Crash Test Analysis Tool you can use. But first, you’ll need to decide what <strong>variable</strong> you want the tool to analyze.” Molly says, "You’ll also need to be specific about the kind of <strong>evidence</strong> you want it to examine.”
-</div>
+“You’ll need to decide what variable to analyze, and what kind of evidence to look for.”</div>
 
 <p>
-  Different choices will lead to different insights.
-</p>
+Different investigation choices can reveal different clues.</p>
 
 <h3 class="decision-prompt">
   Where will you start your energy analysis?
@@ -3679,7 +3666,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
       <div class="narrative">
         <p>Your investigation is almost complete.</p>
         <p>You have analyzed crash test data, looked for patterns, and investigated where energy went during the crash.</p>
-        <p>Now the engineering team needs your scientific explanation before they make changes to the vehicle design.</p>
+        <p>Now the engineering team needs your <strong>scientific explanation</strong> before they make changes to the vehicle design.</p>
       </div>
 
       <p class="narrative-action">Molly opens a final report template on the screen.</p>
@@ -4235,8 +4222,8 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     const sectionNames = {
       'section-0': 'Landing Page', 'section-1': 'Start Investigation',
       'section-2': 'Welcome to Impact Motors', 'section-3': 'Decision Point 1',
-      'section-4a': 'Path A — What Was Happening Before the Crash?',
-      'section-4b': 'Path B — What Changed During the Crash?',
+      'section-4a': 'Path A — Review Motion Evidence',
+      'section-4b': 'Path B — Review Structural Damage Evidence',
       'section-5a': 'Convergence — What Did We Notice?',
       'section-5b': 'Convergence — What Does It Mean?',
       'section-5c': 'What Are We Wondering?',
@@ -4255,8 +4242,8 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
     // Decision choices
     dash(); line('  MISSION PATH — DECISION CHOICES'); dash();
     line('Decision Point 1 — Where Will You Begin?');
-    if (decisions.dp1 === 'A') line('  ✓ What Was Happening Before the Crash? (Motion path)');
-    else if (decisions.dp1 === 'B') line('  ✓ What Changed During the Crash? (Damage path)');
+    if (decisions.dp1 === 'A') line('  ✓ Review Motion Evidence (Motion path)');
+    else if (decisions.dp1 === 'B') line('  ✓ Review Structural Damage Evidence (Damage path)');
     else line('  (not yet chosen)');
     blank();
     line('Decision Point 2 — Where Did the Energy Go?');
