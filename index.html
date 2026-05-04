@@ -4139,7 +4139,7 @@ No single investigation shows the full picture; your team will need to work toge
                   placeholder="Write your reflection here…"
                   oninput="saveFinalReflection('finalReflectionEvidence', this.value)"></textarea>
         <div class="journal-prompt" style="margin-top: 16px;">
-          <strong>How has your thinking about crashes or energy changed since the beginning of the lesson?</strong>
+          <strong>What changed your thinking the most during your investigation, and what evidence caused that change?</strong>
         </div>
         <textarea class="journal-textarea"
                   id="finalReflectionThinking"
@@ -4650,7 +4650,7 @@ No single investigation shows the full picture; your team will need to work toge
     const frTh = localStorage.getItem('sins_finalReflectionThinking') || '';
     line('How did this investigation show you how scientists use evidence to explain real-world events?');
     line(frEv.trim() || '[No response]'); blank();
-    line('How has your thinking about crashes or energy changed since the beginning of the lesson?');
+    line('What changed your thinking the most during your investigation, and what evidence caused that change?');
     line(frTh.trim() || '[No response]'); blank();
 
     rule(); line('  END OF FIELD JOURNAL'); rule();
