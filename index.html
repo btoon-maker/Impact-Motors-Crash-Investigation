@@ -2562,6 +2562,50 @@
     .tts-listen-btn.tts-active { background: rgba(249,115,22,0.15); border-color: rgba(249,115,22,0.5); color: var(--orange); }
     .tts-listen-btn .tts-icon { font-size: 15px; }
     @media (max-width: 600px) { .tts-listen-btn { font-size: 13px; padding: 5px 11px; } }
+
+    /* =============================================
+       SECTION 8B — Crash Energy Model Interactive
+    ============================================= */
+    .s8b-model-outer {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(249,115,22,0.25);
+      border-radius: var(--radius);
+      padding: 24px 28px 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    .s8b-model-header {
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid rgba(249,115,22,0.25);
+    }
+    .s8b-model-tag {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .s8b-model-subtitle {
+      font-size: 17px;
+      color: var(--gray-on-dark);
+      font-style: italic;
+    }
+    .s8b-warn {
+      display: none;
+      background: rgba(252,211,77,0.10);
+      border: 1px solid rgba(252,211,77,0.4);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: 17px;
+      color: #fde68a;
+      font-weight: 600;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .s8b-warn.show { display: block; }
   </style>
 </head>
 <body>
@@ -2715,7 +2759,7 @@ Cause and Effect; Systems and System Models; Energy and Matter</p>
 <p style="margin-bottom: 16px;">Recent crash tests don’t all match, and passenger safety may be at risk. The engineering team doesn’t yet know what’s happening during these crashes.</p>
 <p style="margin-bottom: 16px;"><strong>Your team has been brought in to investigate the crash evidence and figure out what’s happening.</strong></p>
 <p style="margin-bottom: 16px;">You report to Molly, the <strong>Senior Safety Engineer</strong>. She’s asked your team to analyze the crash data and determine what’s happening.</p>
-<p style="margin-bottom: 16px;"><p style="margin-bottom: 16px;"><strong>Your team will now investigate the crash.</strong>Examine the evidence, identify patterns, and build an explanation for what is happening.</p></p>
+<p style="margin-bottom: 16px;"><strong>Your team will now investigate the crash.</strong> Examine the evidence, identify patterns, and build an explanation for what is happening.</p>
 </div>
 
       <div style="margin: 24px 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);">
@@ -3188,7 +3232,7 @@ Compare the evidence. <i>What patterns do you notice between the motion data and
                   placeholder="Write your observations here…"
                   oninput="saveJournal('s5a', this.value)"></textarea>
       </div>
-<p class="section-bridge"><strong>Ypi notice a pattern, what might be causing it?</strong></p>
+<p class="section-bridge"><strong>You notice a pattern — what might be causing it?</strong></p>
       <!-- Navigation -->
       <div class="nav-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
@@ -3515,7 +3559,7 @@ Your team has evidence that energy is involved, but what is happening during the
 Your team brings this question to Molly, the Senior Safety Engineer.</p>
 
 <div class="dialogue-box">
-“Good work, <strong>Junior Crast Test Scientist</strong> team. Now we need to analyze what’s happening during the crash.”</div>
+“Good work, <strong>Junior Crash Test Scientist</strong> team. Now we need to analyze what’s happening during the crash.”</div>
 
 <p class="narrative-action">
   She pulls up an analysis tool on her screen.
@@ -3862,12 +3906,141 @@ Where will you start your energy analysis?      </p>
       <!-- Navigation -->
       <div class="nav-row">
         <button class="btn btn-back" onclick="goBack()">← Back</button>
-        <button class="btn btn-continue" onclick="navigateTo('section-9')">Continue →</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-8b')">Continue →</button>
       </div>
 
     </div>
   </section>
 
+
+  <!-- ===================================================
+       SECTION 8B — Modeling Energy Transfer within a Car Crash
+  =================================================== -->
+  <section id="section-8b" class="section">
+    <div class="section-header">
+      <div class="section-title">Modeling Energy Transfer within a Car Crash</div>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <p>To explain what happened, you need to build a model that shows how motion, energy transfer, and crash effects are connected.</p>
+      </div>
+
+      <!-- ── CRASH ENERGY MODEL INTERACTIVE ── -->
+      <div class="s8b-model-outer">
+
+        <div class="s8b-model-header">
+          <div class="s8b-model-tag">Your Crash Energy Model</div>
+          <p class="s8b-model-subtitle">Build your model based on your evidence, not what you think should happen.</p>
+        </div>
+
+        <!-- THREE-COLUMN TOGGLE ROW — reuses lesson .bm-* classes -->
+        <div class="bm-row">
+
+          <!-- BEFORE -->
+          <div class="bm-col">
+            <div class="bm-phase">Before the Crash</div>
+            <div class="bm-toggle" role="group" aria-label="Motion before crash">
+              <button class="bm-toggle-opt" data-phase="before" data-val="Slow motion" onclick="s8bPick(this)">Slow motion</button>
+              <button class="bm-toggle-opt" data-phase="before" data-val="Fast motion" onclick="s8bPick(this)">Fast motion</button>
+            </div>
+            <div class="bm-box" id="s8b-box-before">Choose a toggle above.</div>
+          </div>
+
+          <div class="bm-arrow-wrap" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 18h22M23 12l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- DURING -->
+          <div class="bm-col">
+            <div class="bm-phase">During the Crash</div>
+            <div class="bm-toggle" role="group" aria-label="Energy transfer during crash">
+              <button class="bm-toggle-opt" data-phase="during" data-val="More energy transferred" onclick="s8bPick(this)">More energy transferred</button>
+              <button class="bm-toggle-opt" data-phase="during" data-val="Less energy transferred" onclick="s8bPick(this)">Less energy transferred</button>
+            </div>
+            <div class="bm-box" id="s8b-box-during">Choose a toggle above.</div>
+          </div>
+
+          <div class="bm-arrow-wrap" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 18h22M23 12l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- AFTER -->
+          <div class="bm-col">
+            <div class="bm-phase">After the Crash</div>
+            <div class="bm-toggle" role="group" aria-label="Damage after crash">
+              <button class="bm-toggle-opt" data-phase="after" data-val="Minimal damage" onclick="s8bPick(this)">Minimal damage</button>
+              <button class="bm-toggle-opt" data-phase="after" data-val="Extensive damage" onclick="s8bPick(this)">Extensive damage</button>
+            </div>
+            <div class="bm-box" id="s8b-box-after">Choose a toggle above.</div>
+          </div>
+
+        </div><!-- /.bm-row -->
+
+        <!-- Incomplete warning -->
+        <div class="s8b-warn" id="s8b-warn">&#9888; Please choose one option for each phase before generating your model.</div>
+
+        <!-- Generate button — reuses .s10-create-btn style -->
+        <button class="s10-create-btn" id="s8b-create-btn" onclick="s8bCreateModel()">
+          Generate My Energy Model
+        </button>
+
+        <!-- Visual diagram — revealed after Generate; reuses .bm-diagram classes -->
+        <div class="bm-diagram" id="s8b-diagram">
+          <div class="bm-diagram-flow">
+            <div class="bm-diag-node bm-node-before">
+              <div class="bm-diag-phase">Before the Crash</div>
+              <div class="bm-diag-label" id="s8b-diag-before">—</div>
+            </div>
+            <div class="bm-diag-connector">
+              <div class="bm-diag-connector-label">causes</div>
+              <svg viewBox="0 0 28 12" fill="none"><path d="M1 6h22M18 2l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="bm-diag-node bm-node-during">
+              <div class="bm-diag-phase">During the Crash</div>
+              <div class="bm-diag-label" id="s8b-diag-during">—</div>
+            </div>
+            <div class="bm-diag-connector">
+              <div class="bm-diag-connector-label">effect</div>
+              <svg viewBox="0 0 28 12" fill="none"><path d="M1 6h22M18 2l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="bm-diag-node bm-node-after">
+              <div class="bm-diag-phase">After the Crash</div>
+              <div class="bm-diag-label" id="s8b-diag-after">—</div>
+            </div>
+          </div>
+        </div><!-- /#s8b-diagram -->
+
+        <!-- Field Journal — revealed inside interactive after model generated -->
+        <div class="field-journal" id="s8b-journal-wrap" style="display:none; margin-top:20px;">
+          <div class="journal-header">
+            <div class="journal-icon">&#128211;</div>
+            <div class="journal-label">Field Journal</div>
+            <div class="journal-save-badge" id="saved-s8b">&#10004; Saved</div>
+          </div>
+          <div class="journal-prompt">
+            <strong>Look at the crash energy model you built.</strong> What evidence led you to choose your model?
+          </div>
+          <textarea class="journal-textarea"
+                    id="journal-s8b"
+                    placeholder="Write your response here…"
+                    oninput="saveJournal('s8b', this.value)"></textarea>
+        </div>
+
+      </div><!-- /.s8b-model-outer -->
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-continue" onclick="navigateTo('section-9')">Continue →</button>
+      </div>
+
+    </div>
+  </section>
 
   <!-- ===================================================
        SECTION 9 — Sharing Your Scientific Insights
@@ -3914,92 +4087,10 @@ Where will you start your energy analysis?      </p>
                     aria-label="Your claim: Where does energy go during a crash?"></textarea>
         </div>
 
-        <!-- 2. YOUR CRASH ENERGY MODEL -->
+
+        <!-- 2. SUPPORT WITH EVIDENCE FROM THE CAR -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label">2. Your Crash Energy Model</label>
-          <p class="s10-brief-field-prompt">Build the model best supported by your evidence.</p>
-
-          <div class="brief-model-block">
-
-            <!-- THREE-COLUMN TOGGLE ROW -->
-            <div class="bm-row">
-
-              <!-- BEFORE -->
-              <div class="bm-col">
-                <div class="bm-phase">Before the Crash</div>
-                <div class="bm-toggle" role="group" aria-label="Motion before crash">
-                  <button class="bm-toggle-opt" id="bmb-slow" data-phase="before" data-val="Slow motion" onclick="bmPick(this)">Slow motion</button>
-                  <button class="bm-toggle-opt" id="bmb-fast" data-phase="before" data-val="Fast motion" onclick="bmPick(this)">Fast motion</button>
-                </div>
-                <div class="bm-box" id="bm-box-before">Choose a toggle above.</div>
-              </div>
-
-              <div class="bm-arrow-wrap" aria-hidden="true">
-                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 18h22M23 12l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-
-              <!-- DURING -->
-              <div class="bm-col">
-                <div class="bm-phase">During the Crash</div>
-                <div class="bm-toggle" role="group" aria-label="Energy transfer during crash">
-                  <button class="bm-toggle-opt" id="bmd-more" data-phase="during" data-val="More energy transferred" onclick="bmPick(this)">More energy transferred</button>
-                  <button class="bm-toggle-opt" id="bmd-less" data-phase="during" data-val="Less energy transferred" onclick="bmPick(this)">Less energy transferred</button>
-                </div>
-                <div class="bm-box" id="bm-box-during">Choose a toggle above.</div>
-              </div>
-
-              <div class="bm-arrow-wrap" aria-hidden="true">
-                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 18h22M23 12l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-
-              <!-- AFTER -->
-              <div class="bm-col">
-                <div class="bm-phase">After the Crash</div>
-                <div class="bm-toggle" role="group" aria-label="Damage after crash">
-                  <button class="bm-toggle-opt" id="bma-minimal" data-phase="after" data-val="Minimal damage" onclick="bmPick(this)">Minimal damage</button>
-                  <button class="bm-toggle-opt" id="bma-extensive" data-phase="after" data-val="Extensive damage" onclick="bmPick(this)">Extensive damage</button>
-                </div>
-                <div class="bm-box" id="bm-box-after">Choose a toggle above.</div>
-              </div>
-
-            </div><!-- /.bm-row -->
-
-            <!-- VISUAL MODEL DIAGRAM — revealed when Generate Scientific Brief is clicked -->
-            <div class="bm-diagram" id="bm-diagram">
-              <div class="bm-diagram-flow">
-                <div class="bm-diag-node bm-node-before">
-                  <div class="bm-diag-phase">Before the Crash</div>
-                  <div class="bm-diag-label" id="bm-diag-before">—</div>
-                </div>
-                <div class="bm-diag-connector">
-                  <div class="bm-diag-connector-label">causes</div>
-                  <svg viewBox="0 0 28 12" fill="none"><path d="M1 6h22M18 2l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <div class="bm-diag-node bm-node-during">
-                  <div class="bm-diag-phase">During the Crash</div>
-                  <div class="bm-diag-label" id="bm-diag-during">—</div>
-                </div>
-                <div class="bm-diag-connector">
-                  <div class="bm-diag-connector-label">effect</div>
-                  <svg viewBox="0 0 28 12" fill="none"><path d="M1 6h22M18 2l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <div class="bm-diag-node bm-node-after">
-                  <div class="bm-diag-phase">After the Crash</div>
-                  <div class="bm-diag-label" id="bm-diag-after">—</div>
-                </div>
-              </div>
-            </div><!-- /.bm-diagram -->
-
-          </div><!-- /.brief-model-block -->
-        </div>
-
-        <!-- 3. SUPPORT WITH EVIDENCE FROM THE CAR -->
-        <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-ev-car">3. Support with Evidence from the Car</label>
+          <label class="s10-brief-field-label" for="brief-ev-car">2. Support with Evidence from the Car</label>
           <p class="s10-brief-field-prompt">What evidence from the car supports your claim and model?</p>
           <textarea class="s10-brief-textarea"
                     id="brief-ev-car"
@@ -4008,9 +4099,9 @@ Where will you start your energy analysis?      </p>
                     aria-label="Evidence from the car analysis"></textarea>
         </div>
 
-        <!-- 4. SUPPORT WITH EVIDENCE FROM THE SURROUNDINGS -->
+        <!-- 3. SUPPORT WITH EVIDENCE FROM THE SURROUNDINGS -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-ev-surr">4. Support with Evidence from the Surroundings</label>
+          <label class="s10-brief-field-label" for="brief-ev-surr">3. Support with Evidence from the Surroundings</label>
           <p class="s10-brief-field-prompt">What evidence from the surroundings supports your claim and model?</p>
           <textarea class="s10-brief-textarea"
                     id="brief-ev-surr"
@@ -4019,9 +4110,9 @@ Where will you start your energy analysis?      </p>
                     aria-label="Evidence from the surroundings analysis"></textarea>
         </div>
 
-        <!-- 5. YOUR SCIENTIFIC EXPLANATION -->
+        <!-- 4. YOUR SCIENTIFIC EXPLANATION -->
         <div class="s10-brief-field">
-          <label class="s10-brief-field-label" for="brief-explanation">5. Your Scientific Explanation</label>
+          <label class="s10-brief-field-label" for="brief-explanation">4. Your Scientific Explanation</label>
           <p class="s10-brief-field-prompt">Explain how energy is transferred during the crash and where the energy goes, using evidence from both the car and the surroundings.</p>
           <textarea class="s10-brief-textarea"
                     id="brief-explanation"
@@ -4058,12 +4149,6 @@ Where will you start your energy analysis?      </p>
             <div class="s10-brief-section-label">Claim</div>
             <div class="s10-brief-section-text" id="brief-out-claim"></div>
           </div>
-
-          <div class="s10-brief-section">
-            <div class="s10-brief-section-label">Crash Energy Model</div>
-            <div id="brief-out-model" class="brief-model-diagram-wrap"></div>
-          </div>
-
           <div class="s10-brief-section">
             <div class="s10-brief-section-label">Support with Evidence from the Car</div>
             <div class="s10-brief-section-text" id="brief-out-ev-car"></div>
@@ -4261,10 +4346,11 @@ Where will you start your energy analysis?      </p>
     'section-7a': { num: 8,  title: 'Path A — Deformation' },
     'section-7b': { num: 8,  title: 'Path B — Surroundings' },
     'section-8':  { num: 9,  title: 'Team Briefing: What Did We Discover About Energy?' },
-    'section-9':  { num: 10, title: 'Sharing Scientific Insights' },
+    'section-8b': { num: 10, title: 'Modeling Energy Transfer within a Car Crash' },
+    'section-9':  { num: 11, title: 'Sharing Scientific Insights' },
     'section-10': { num: 11, title: 'Mission Complete' },
   };
-  const TOTAL_SECTIONS = 11;
+  const TOTAL_SECTIONS = 12;
 
   // ── State ────────────────────────────────────────────────────
   let currentSection = 'section-0';
@@ -4283,6 +4369,7 @@ Where will you start your energy analysis?      </p>
     loadFromStorage();
     restoreJournalFields();
     restoreBriefFields();
+    restoreSection8bModel();
     restoreFinalReflection();
     resumeCodeInit();
     ttsInit();
@@ -4542,6 +4629,7 @@ Where will you start your energy analysis?      </p>
       'section-7a': 'Path A — Analyze Energy in the Car',
       'section-7b': 'Path B — Analyze Energy in the Surroundings',
       'section-8': 'Convergence — Team Briefing: What Did We Discover About Energy?',
+      'section-8b': 'Modeling Energy Transfer within a Car Crash',
       'section-9': 'Sharing Scientific Insights with the Engineering Team',
       'section-10': 'Mission Complete',
     };
@@ -4571,6 +4659,7 @@ Where will you start your energy analysis?      </p>
       { key: 's5a', section: 'Section 5A — Team Briefing: What Did We Notice Across the Evidence?', prompt: 'What patterns do you notice across the test runs? Use evidence from at least two test runs.' },
       { key: 's5b', section: 'Section 5B — Team Briefing: What Does It Mean?', prompt: 'How does the Crash Science Briefing help explain why some test runs showed more change than others?' },
       { key: 's7a', section: 'Section 7A — Path A: Into the Car', prompt: 'What evidence do you see that energy moved into the car during the crash? Use details from at least one test run.' },
+      { key: 's8b', section: 'Section 8B — Modeling Energy Transfer within a Car Crash', prompt: 'Look at the crash energy model you built. What evidence led you to choose your model?' },
       { key: 's7b', section: 'Section 7B — Path B: Into the Surroundings', prompt: 'What evidence do you see that energy spread into the surroundings during the crash? Use details from at least one test run.' },
     ];
     journals.forEach(({key, section, prompt}) => {
@@ -4602,17 +4691,19 @@ Where will you start your energy analysis?      </p>
     line('  Run Energy Analysis clicked: ' + (dp2bAnalysisRun ? 'Yes' : 'No'));
     blank();
 
+    // Crash Energy Model — Section 8B
+    dash(); line('  CRASH ENERGY MODEL (Section 8B)'); dash(); blank();
+    line('Before the Crash: ' + (briefModelBefore || '[No selection]'));
+    line('During the Crash: ' + (briefModelDuring || '[No selection]'));
+    line('After the Crash: '  + (briefModelAfter  || '[No selection]'));
+    line('Model generated: ' + (briefModelCreated ? 'Yes' : 'No'));
+    blank();
+
     // Scientific Brief
     dash(); line('  SCIENTIFIC BRIEF BUILDER'); dash(); blank();
     line('Your Claim:');
     const claimVal = journalData['brief_claim'];
     line(claimVal && claimVal.trim() ? claimVal.trim() : '[No response]');
-    blank();
-    line('Crash Energy Model:');
-    line('  Before the Crash: ' + (briefModelBefore || '[No selection]'));
-    line('  During the Crash: ' + (briefModelDuring || '[No selection]'));
-    line('  After the Crash: '  + (briefModelAfter  || '[No selection]'));
-    line('  Briefing Model Created: ' + (briefModelCreated ? 'Yes' : 'No'));
     blank();
     line('Support with Evidence from the Car:');
     const evCarVal = journalData['brief_evcar'];
@@ -4637,10 +4728,6 @@ Where will you start your energy analysis?      </p>
       blank();
       line('Claim:');
       line(journalData['brief_claim'] || '(not completed)'); blank();
-      line('Crash Energy Model:');
-      line('  Before the Crash: ' + (briefModelBefore || '(not completed)'));
-      line('  During the Crash: ' + (briefModelDuring || '(not completed)'));
-      line('  After the Crash: '  + (briefModelAfter  || '(not completed)')); blank();
       line('Support with Evidence from the Car:');
       line(journalData['brief_evcar'] || '(not completed)'); blank();
       line('Support with Evidence from the Surroundings:');
@@ -4763,8 +4850,10 @@ Where will you start your energy analysis?      </p>
     // Clear model toggles and diagram
     document.querySelectorAll('.bm-toggle-opt').forEach(b => b.classList.remove('bm-active'));
     document.querySelectorAll('.bm-box').forEach(b => { b.textContent = 'Choose a toggle above.'; b.classList.remove('bm-filled'); });
-    const bmDiag = document.getElementById('bm-diagram');
-    if (bmDiag) bmDiag.classList.remove('bm-diagram-show');
+    const s8bDiag = document.getElementById('s8b-diagram');
+    if (s8bDiag) s8bDiag.classList.remove('bm-diagram-show');
+    const s8bJournal = document.getElementById('s8b-journal-wrap');
+    if (s8bJournal) s8bJournal.style.display = 'none';
     const briefOutput = document.getElementById('brief-output');
     if (briefOutput) briefOutput.classList.remove('visible');
 
@@ -5088,43 +5177,6 @@ Where will you start your energy analysis?      </p>
   }
 
 
-  // ── Brief Crash Energy Model state ───────────────────────────
-  let briefModelBefore  = null;
-  let briefModelDuring  = null;
-  let briefModelAfter   = null;
-  let briefModelCreated = false;
-
-  function bmPick(btn) {
-    const phase = btn.dataset.phase;
-    const val   = btn.dataset.val;
-    document.querySelectorAll(`.bm-toggle-opt[data-phase="${phase}"]`).forEach(b => b.classList.remove('bm-active'));
-    btn.classList.add('bm-active');
-    if (phase === 'before') briefModelBefore = val;
-    if (phase === 'during') briefModelDuring = val;
-    if (phase === 'after')  briefModelAfter  = val;
-    bmUpdateBox(phase, val);
-    saveToStorage();
-  }
-
-  function bmUpdateBox(phase, val) {
-    const box = document.getElementById('bm-box-' + phase);
-    if (!box) return;
-    box.textContent = val;
-    box.classList.add('bm-filled');
-  }
-
-  function bmShowDiagram() {
-    const diag = document.getElementById('bm-diagram');
-    if (!diag) return;
-    const b = document.getElementById('bm-diag-before');
-    const d = document.getElementById('bm-diag-during');
-    const a = document.getElementById('bm-diag-after');
-    if (b) b.textContent = briefModelBefore || '—';
-    if (d) d.textContent = briefModelDuring || '—';
-    if (a) a.textContent = briefModelAfter  || '—';
-    diag.classList.add('bm-diagram-show');
-    diag.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
 
   // ── Section 9 — Scientific Brief Builder ─────────────────────
 
@@ -5140,23 +5192,6 @@ Where will you start your energy analysis?      </p>
       const el = document.getElementById(id);
       if (el && journalData['brief_' + key]) el.value = journalData['brief_' + key];
     });
-    // Restore model toggle selections
-    if (briefModelBefore) {
-      const btn = document.querySelector(`.bm-toggle-opt[data-phase="before"][data-val="${briefModelBefore}"]`);
-      if (btn) { btn.classList.add('bm-active'); bmUpdateBox('before', briefModelBefore); }
-    }
-    if (briefModelDuring) {
-      const btn = document.querySelector(`.bm-toggle-opt[data-phase="during"][data-val="${briefModelDuring}"]`);
-      if (btn) { btn.classList.add('bm-active'); bmUpdateBox('during', briefModelDuring); }
-    }
-    if (briefModelAfter) {
-      const btn = document.querySelector(`.bm-toggle-opt[data-phase="after"][data-val="${briefModelAfter}"]`);
-      if (btn) { btn.classList.add('bm-active'); bmUpdateBox('after', briefModelAfter); }
-    }
-    // Restore model diagram if created
-    if (briefModelCreated) {
-      bmShowDiagram();
-    }
     // Re-generate brief if it was previously created
     if (journalData['brief_generated']) {
       generateBrief();
@@ -5180,48 +5215,6 @@ Where will you start your energy analysis?      </p>
     setOut('brief-out-ev-surr',     evSurr);
     setOut('brief-out-explanation', expl);
 
-    // Build model diagram inside brief output
-    const modelEl = document.getElementById('brief-out-model');
-    if (modelEl) {
-      const bef = briefModelBefore || null;
-      const dur = briefModelDuring || null;
-      const aft = briefModelAfter  || null;
-      if (!bef && !dur && !aft) {
-        modelEl.innerHTML = '<p class="bmd-empty">No model selections recorded.</p>';
-      } else {
-        const arrowSvg = `<svg viewBox="0 0 26 11" fill="none"><path d="M1 5.5h20M17 2l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-        modelEl.innerHTML = `
-          <div class="bmd-flow">
-            <div class="bmd-node bmd-node-before">
-              <div class="bmd-phase">Before the Crash</div>
-              <div class="bmd-rule"></div>
-              <div class="bmd-label">${bef || '<span style="color:#64748b;font-weight:400;font-size:11px;">not selected</span>'}</div>
-            </div>
-            <div class="bmd-connector">
-              <div class="bmd-connector-label">causes</div>
-              ${arrowSvg}
-            </div>
-            <div class="bmd-node bmd-node-during">
-              <div class="bmd-phase">During the Crash</div>
-              <div class="bmd-rule"></div>
-              <div class="bmd-label">${dur || '<span style="color:#64748b;font-weight:400;font-size:11px;">not selected</span>'}</div>
-            </div>
-            <div class="bmd-connector">
-              <div class="bmd-connector-label">effect</div>
-              ${arrowSvg}
-            </div>
-            <div class="bmd-node bmd-node-after">
-              <div class="bmd-phase">After the Crash</div>
-              <div class="bmd-rule"></div>
-              <div class="bmd-label">${aft || '<span style="color:#64748b;font-weight:400;font-size:11px;">not selected</span>'}</div>
-            </div>
-          </div>`;
-      }
-    }
-
-    // Show model diagram as part of the brief
-    briefModelCreated = true;
-    bmShowDiagram();
 
     const output = document.getElementById('brief-output');
     if (output) {
@@ -5235,6 +5228,80 @@ Where will you start your energy analysis?      </p>
 
 
 
+
+
+  // ── Section 8B — Crash Energy Model interactive ─────────────────
+
+  function s8bPick(btn) {
+    const phase = btn.dataset.phase;
+    const val   = btn.dataset.val;
+    document.querySelectorAll('#section-8b .bm-toggle-opt[data-phase="' + phase + '"]').forEach(b => b.classList.remove('bm-active'));
+    btn.classList.add('bm-active');
+    if (phase === 'before') briefModelBefore = val;
+    if (phase === 'during') briefModelDuring = val;
+    if (phase === 'after')  briefModelAfter  = val;
+    s8bUpdateBox(phase, val);
+    const warn = document.getElementById('s8b-warn');
+    if (warn) warn.classList.remove('show');
+    saveToStorage();
+  }
+
+  function s8bUpdateBox(phase, val) {
+    const box = document.getElementById('s8b-box-' + phase);
+    if (!box) return;
+    box.textContent = val;
+    box.classList.add('bm-filled');
+  }
+
+  function s8bCreateModel() {
+    if (!briefModelBefore || !briefModelDuring || !briefModelAfter) {
+      const warn = document.getElementById('s8b-warn');
+      if (warn) warn.classList.add('show');
+      return;
+    }
+    const b = document.getElementById('s8b-diag-before');
+    const d = document.getElementById('s8b-diag-during');
+    const a = document.getElementById('s8b-diag-after');
+    if (b) b.textContent = briefModelBefore;
+    if (d) d.textContent = briefModelDuring;
+    if (a) a.textContent = briefModelAfter;
+    const diag = document.getElementById('s8b-diagram');
+    if (diag) diag.classList.add('bm-diagram-show');
+    const journal = document.getElementById('s8b-journal-wrap');
+    if (journal) {
+      journal.style.display = 'block';
+      setTimeout(() => journal.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+    }
+    briefModelCreated = true;
+    saveToStorage();
+  }
+
+  function restoreSection8bModel() {
+    if (briefModelBefore) {
+      const btn = document.querySelector('#section-8b .bm-toggle-opt[data-phase="before"][data-val="' + briefModelBefore + '"]');
+      if (btn) { btn.classList.add('bm-active'); s8bUpdateBox('before', briefModelBefore); }
+    }
+    if (briefModelDuring) {
+      const btn = document.querySelector('#section-8b .bm-toggle-opt[data-phase="during"][data-val="' + briefModelDuring + '"]');
+      if (btn) { btn.classList.add('bm-active'); s8bUpdateBox('during', briefModelDuring); }
+    }
+    if (briefModelAfter) {
+      const btn = document.querySelector('#section-8b .bm-toggle-opt[data-phase="after"][data-val="' + briefModelAfter + '"]');
+      if (btn) { btn.classList.add('bm-active'); s8bUpdateBox('after', briefModelAfter); }
+    }
+    if (briefModelCreated) {
+      const b = document.getElementById('s8b-diag-before');
+      const d = document.getElementById('s8b-diag-during');
+      const a = document.getElementById('s8b-diag-after');
+      if (b) b.textContent = briefModelBefore || '—';
+      if (d) d.textContent = briefModelDuring || '—';
+      if (a) a.textContent = briefModelAfter  || '—';
+      const diag = document.getElementById('s8b-diagram');
+      if (diag) diag.classList.add('bm-diagram-show');
+      const journal = document.getElementById('s8b-journal-wrap');
+      if (journal) journal.style.display = 'block';
+    }
+  }
 
 
   // ── DP2 Path A — Section 7A Energy Analysis Interactive ───────
