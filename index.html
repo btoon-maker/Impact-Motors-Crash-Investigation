@@ -3255,288 +3255,222 @@ Examine how the car changed during the crash
       </div>
 
 <!-- Crash Science Briefing Interactive -->
-<iframe
-  srcdoc="<!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<title>Crash Science Briefing</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
-  background:transparent;
-}
+.mon-wrap{display:flex;flex-direction:column;align-items:center;padding:.75rem 0 0}
+.mon-bezel{width:100%;background:#1c1c1e;border-radius:12px 12px 4px 4px;border:1.5px solid #3a3a3c;box-shadow:0 8px 48px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden}
+.mon-chrome{display:flex;align-items:center;gap:7px;padding:8px 14px;background:#252527;border-bottom:1px solid #3a3a3c}
+.mdot{width:11px;height:11px;border-radius:50%}
+.mr{background:#ff5f57}.my{background:#febc2e}.mg{background:#28c840}
+.mon-url{flex:1;margin:0 12px;background:#111;border-radius:5px;height:20px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#555;font-family:monospace}
+.mon-url-lock{color:#22c55e;font-size:9px;margin-right:5px}
+.mon-screen{height:560px;display:flex;flex-direction:column;overflow:hidden;background:#0c1520}
+.arch-bar{display:flex;align-items:center;justify-content:space-between;padding:0 13px;height:32px;background:#15202d;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.arch-brand{display:flex;align-items:center;gap:8px}
+.arch-name{font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#fff;letter-spacing:.04em}
+.arch-name em{color:#f97316;font-style:normal}
+.arch-vsep{width:1px;height:12px;background:rgba(255,255,255,.13)}
+.arch-sys{font-size:8.5px;letter-spacing:.14em;color:#475569;text-transform:uppercase;font-family:'Nunito',sans-serif}
+.arch-user{display:flex;align-items:center;gap:6px}
+.arch-udot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+.arch-ulbl{font-size:8.5px;color:#475569;letter-spacing:.06em;font-family:'Nunito',sans-serif;text-transform:uppercase}
+.arch-menubar{display:flex;align-items:center;background:#101c28;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;padding:0 5px}
+.arch-mi{padding:3px 10px;font-size:10px;color:#64748b;cursor:default;font-family:'Nunito',sans-serif;border-radius:4px}
+.arch-body{flex:1;display:flex;overflow:hidden}
+.arch-sidebar{width:158px;flex-shrink:0;background:#0d1724;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;overflow:hidden}
+.arch-sb-hdr{padding:8px 11px 6px;font-size:8.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#2d3e52;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;font-family:'Nunito',sans-serif}
+.arch-tree{flex:1;overflow-y:auto;padding:5px 0}
+.arch-folder{display:flex;align-items:center;gap:5px;padding:4px 9px;font-size:10px;color:#3d5068;cursor:default;font-family:'Nunito',sans-serif}
+.arch-file{display:flex;align-items:center;gap:5px;padding:3px 9px 3px 20px;font-size:10px;color:#556070;cursor:default;font-family:'Nunito',sans-serif}
+.arch-file.sel{background:rgba(59,130,246,.12);color:#93c5fd;border-right:2px solid #3b82f6}
+.arch-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.arch-path{padding:4px 14px;font-size:9px;color:#2d3e52;background:#0c1520;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;letter-spacing:.03em;font-family:'Nunito',sans-serif}
+.arch-path .curr{color:#3b82f6}
+.arch-content{flex:1;overflow-y:auto;padding:9px 13px;background:#0c1520}
+.arch-doc-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.arch-doc-badge{display:flex;align-items:center;gap:5px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:4px;padding:2px 9px}
+.arch-doc-badge-dot{width:5px;height:5px;border-radius:50%;background:#22c55e}
+.arch-doc-badge-txt{font-size:8.5px;color:#93c5fd;font-family:'Nunito',sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.arch-doc-meta{font-size:8.5px;color:#2d3e52;font-family:'Nunito',sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.arch-status{height:20px;background:#080f19;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;padding:0 13px;flex-shrink:0}
+.arch-st{font-size:8.5px;color:#2d3e52;letter-spacing:.07em;font-family:'Nunito',sans-serif;text-transform:uppercase}
+.arch-st.on{color:#22c55e}
+.mon-neck{width:72px;height:26px;background:linear-gradient(180deg,#1c1c1e,#252527);margin:0 auto}
+.mon-basetop{width:180px;height:5px;background:#252527;border-radius:2px 2px 0 0;margin:0 auto}
+.mon-base{width:200px;height:13px;background:#1c1c1e;border-radius:0 0 8px 8px;border:1.5px solid #3a3a3c;border-top:none;margin:0 auto}
 
-.doc{
-  width:100%;
-  background:#F8FAFC;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 4px 24px rgba(0,0,0,.25);
-}
+/* ── Briefing ── */
+.bref{--navy:#2E4A72;--navy-dark:#1E3354;--navy-light:#3A5A87;--orange:#F97316;--orange-dim:#c45c0d;--blue:#3B82F6;--off-white:#F8FAFC;--gray-light:#E5E7EB;--gray-steel:#94A3B8;--gray-mid:#C1C9D4;--success:#22C55E;--radius:6px;--radius-lg:9px;--shadow:0 3px 18px rgba(0,0,0,.3);--shadow-sm:0 1px 6px rgba(0,0,0,.2)}
+.bref .doc{width:100%;background:var(--off-white);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden}
+.bref .classbar{background:var(--navy-dark);padding:4px 16px;display:flex;align-items:center;justify-content:space-between}
+.bref .company-logo{font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;color:#fff;letter-spacing:.04em}
+.bref .company-logo span{color:var(--orange)}
+.bref .classbar-badge{font-family:'Nunito',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;background:#dc2626;color:#fff;padding:2px 7px;border-radius:99px}
+.bref .accent-stripe{height:2px;background:linear-gradient(90deg,var(--orange) 0%,var(--orange-dim) 60%,transparent 100%)}
+.bref .doc-inner{padding:10px 16px 12px}
+.bref .doc-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:9px;border-bottom:1px solid var(--gray-light);margin-bottom:9px}
+.bref .doc-title{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--navy-dark);line-height:1.15}
+.bref .doc-subtitle{font-size:9.5px;color:var(--gray-steel);margin-top:2px;font-family:'Nunito',sans-serif}
+.bref .doc-meta{text-align:right;flex-shrink:0}
+.bref .doc-ref{font-family:'Nunito',sans-serif;font-size:7.5px;font-weight:600;color:var(--gray-steel);line-height:1.8;letter-spacing:.05em;text-transform:uppercase}
+.bref .body-p{font-size:10.5px;line-height:1.6;color:#334155;margin-bottom:6px;font-family:'Nunito',sans-serif}
+.bref .body-p strong{font-weight:700;color:var(--navy)}
+.bref .section-rule{border:none;border-top:1px solid var(--gray-light);margin:9px 0}
+.bref .diagram-label{font-family:'Nunito',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.13em;color:var(--gray-steel);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.bref .diagram-label::after{content:'';flex:1;height:1px;background:var(--gray-light)}
 
-.classbar{
-  background:#1E3354;
-  padding:8px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+/* Fig 1 */
+.bref .demo-wrap{background:var(--navy-dark);border-radius:var(--radius);padding:11px 13px 9px;box-shadow:var(--shadow-sm)}
+.bref .track-area{position:relative;height:36px;margin-bottom:9px;background:var(--navy);border-radius:var(--radius);overflow:hidden;border:1px solid var(--navy-light)}
+.bref .track-road{position:absolute;bottom:8px;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 11px,transparent 11px,transparent 21px)}
+.bref .track-car{position:absolute;bottom:8px;font-size:15px;line-height:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));transform:scaleX(-1);display:inline-block}
+.bref .impact-wall{position:absolute;right:0;top:0;bottom:0;width:7px;background:repeating-linear-gradient(180deg,var(--orange) 0,var(--orange) 5px,var(--orange-dim) 5px,var(--orange-dim) 10px)}
+.bref .impact-flash{position:absolute;inset:0;background:rgba(249,115,22,0);transition:background .08s;pointer-events:none;border-radius:var(--radius)}
+.bref .impact-flash.flash{background:rgba(249,115,22,.3)}
+.bref .meter-rows{display:flex;flex-direction:column;gap:5px}
+.bref .meter-row{display:flex;align-items:center;gap:7px}
+.bref .meter-label{font-family:'Nunito',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.07em;color:var(--gray-mid);text-transform:uppercase;width:42px;flex-shrink:0}
+.bref .meter-bar-track{flex:1;height:5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.bref .meter-bar-fill{height:100%;border-radius:99px;transition:width .1s ease-out}
+.bref .meter-bar-fill.speed{background:var(--success)}
+.bref .meter-bar-fill.energy{background:var(--orange)}
+.bref .meter-bar-fill.change{background:var(--blue)}
+.bref .meter-val{font-family:'Nunito',sans-serif;font-size:8.5px;font-weight:700;color:var(--gray-mid);width:30px;text-align:right;flex-shrink:0}
+.bref .slider-row{margin-top:8px;display:flex;align-items:center;gap:7px}
+.bref .slider-hint{font-family:'Nunito',sans-serif;font-size:8.5px;font-weight:700;color:var(--gray-steel);letter-spacing:.07em;text-transform:uppercase;flex-shrink:0}
+.bref input[type=range]{-webkit-appearance:none;flex:1;height:3px;background:rgba(255,255,255,.12);border-radius:99px;outline:none;cursor:pointer}
+.bref input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--orange);border:2px solid var(--navy-dark);box-shadow:0 0 0 2px rgba(249,115,22,.3);cursor:grab}
+.bref input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--orange);border:2px solid var(--navy-dark);cursor:grab}
+.bref .insight{font-family:'Nunito',sans-serif;font-size:8.5px;font-weight:600;line-height:1.5;color:#93c5fd;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-left:3px solid var(--blue);padding:6px 9px;margin-top:7px;border-radius:0 var(--radius) var(--radius) 0}
 
-.company-logo{
-  color:white;
-  font-weight:bold;
-}
-
-.company-logo span{
-  color:#F97316;
-}
-
-.classbar-badge{
-  background:#F97316;
-  color:white;
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:12px;
-}
-
-.doc-inner{
-  padding:30px;
-}
-
-.doc-title{
-  font-size:32px;
-  font-weight:bold;
-  color:#1E3354;
-  margin-bottom:8px;
-}
-
-.body-p{
-  line-height:1.7;
-  color:#334155;
-  margin-bottom:14px;
-}
-
-.demo-wrap{
-  background:#1E3354;
-  border-radius:12px;
-  padding:20px;
-  margin-top:20px;
-}
-
-.track-area{
-  position:relative;
-  height:60px;
-  background:#2E4A72;
-  border-radius:10px;
-  overflow:hidden;
-  margin-bottom:20px;
-}
-
-.track-road{
-  position:absolute;
-  bottom:15px;
-  left:0;
-  right:0;
-  height:2px;
-  background:repeating-linear-gradient(
-    90deg,
-    rgba(255,255,255,.2) 0,
-    rgba(255,255,255,.2) 14px,
-    transparent 14px,
-    transparent 28px
-  );
-}
-
-.track-car{
-  position:absolute;
-  bottom:12px;
-  font-size:24px;
-  transform:scaleX(-1);
-}
-
-.impact-wall{
-  position:absolute;
-  right:0;
-  top:0;
-  bottom:0;
-  width:10px;
-  background:#F97316;
-}
-
-.meter-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-  color:white;
-}
-
-.meter-label{
-  width:70px;
-  font-size:12px;
-  text-transform:uppercase;
-}
-
-.meter-bar-track{
-  flex:1;
-  height:8px;
-  background:rgba(255,255,255,.15);
-  border-radius:999px;
-  overflow:hidden;
-}
-
-.meter-bar-fill{
-  height:100%;
-}
-
-.speed{background:#22C55E;}
-.energy{background:#F97316;}
-.change{background:#3B82F6;}
-
-.slider-row{
-  margin-top:20px;
-  color:white;
-}
-
-input[type=range]{
-  width:100%;
-}
-
-.insight{
-  margin-top:16px;
-  background:rgba(59,130,246,.15);
-  border-left:4px solid #3B82F6;
-  padding:12px;
-  color:#93C5FD;
-  border-radius:6px;
-}
-
-.key-finding{
-  margin-top:24px;
-  background:#1E3354;
-  color:white;
-  padding:20px;
-  border-radius:12px;
-}
+/* Key finding */
+.bref .key-finding{margin-top:8px;background:var(--navy-dark);border-radius:var(--radius);padding:7px 11px;display:flex;align-items:center;gap:8px}
+.bref .key-finding-icon{width:24px;height:24px;background:var(--orange);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.bref .key-finding-body{flex:1}
+.bref .key-finding-label{font-family:'Nunito',sans-serif;font-size:7px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);margin-bottom:1px}
+.bref .key-finding-text{font-family:'Nunito',sans-serif;font-size:9.5px;font-weight:800;color:#fff;line-height:1.25}
+.bref .key-finding-science{font-family:'Nunito',sans-serif;font-size:7.5px;font-weight:600;color:var(--gray-steel);margin-top:2px}
+.bref .key-finding-science span{font-weight:700;color:var(--gray-mid)}
 </style>
-</head>
 
-<body>
-
-<div class='doc'>
-
-<div class='classbar'>
-<div class='company-logo'>IMPACT<span>MOTORS</span></div>
-<div class='classbar-badge'>ACTIVE</div>
-</div>
-
-<div class='doc-inner'>
-
-<div class='doc-title'>Crash Science Briefing</div>
-
-<p class='body-p'>
-A moving car has energy because it is in motion.
-During a crash, that energy does not disappear.
-It moves through the crash system and can cause changes.
-</p>
-
-<p class='body-p'>
-When a car is moving faster before impact,
-more energy is involved in the crash.
-That can help explain why some test runs showed more front-end change than others.
-</p>
-
-<div class='demo-wrap'>
-
-<div class='track-area'>
-<div class='track-road'></div>
-<div class='track-car' id='car'>🚗</div>
-<div class='impact-wall'></div>
-</div>
-
-<div class='meter-row'>
-<div class='meter-label'>Speed</div>
-<div class='meter-bar-track'>
-<div class='meter-bar-fill speed' id='speedBar' style='width:30%'></div>
-</div>
-</div>
-
-<div class='meter-row'>
-<div class='meter-label'>Energy</div>
-<div class='meter-bar-track'>
-<div class='meter-bar-fill energy' id='energyBar' style='width:10%'></div>
-</div>
-</div>
-
-<div class='meter-row'>
-<div class='meter-label'>Change</div>
-<div class='meter-bar-track'>
-<div class='meter-bar-fill change' id='changeBar' style='width:10%'></div>
-</div>
-</div>
-
-<div class='slider-row'>
-<input type='range' id='slider' min='5' max='100' value='30'>
-</div>
-
-<div class='insight' id='insight'>
-Drag the slider to change the car speed.
-</div>
-
-</div>
-
-<div class='key-finding'>
-⚡ Faster motion means more energy is involved in the crash.
-</div>
-
-</div>
+<div class="mon-wrap">
+  <div class="mon-bezel">
+    <div class="mon-chrome">
+      <div class="mdot mr"></div><div class="mdot my"></div><div class="mdot mg"></div>
+      <div class="mon-url"><span class="mon-url-lock">🔒</span>archive.impactmotors.internal › safety › briefings › CSB-5B-001</div>
+    </div>
+    <div class="mon-screen">
+      <div class="arch-bar">
+        <div class="arch-brand">
+          <div class="arch-name">IMPACT<em>MOTORS</em></div>
+          <div class="arch-vsep"></div>
+          <div class="arch-sys">Data Archive</div>
+        </div>
+        <div class="arch-user"><div class="arch-udot"></div><div class="arch-ulbl">Secure · Level 2</div></div>
+      </div>
+      <div class="arch-menubar">
+        <span class="arch-mi">File</span><span class="arch-mi">Documents</span><span class="arch-mi">Search</span><span class="arch-mi">View</span><span class="arch-mi">Help</span>
+      </div>
+      <div class="arch-body">
+        <div class="arch-sidebar">
+          <div class="arch-sb-hdr">Document Tree</div>
+          <div class="arch-tree">
+            <div class="arch-folder">📁 Safety Division</div>
+            <div class="arch-folder" style="padding-left:18px">📁 Briefings</div>
+            <div class="arch-file sel">📄 CSB-5B-001</div>
+            <div class="arch-file">📄 CSB-5B-002</div>
+            <div class="arch-file">📄 CSB-5A-007</div>
+            <div class="arch-folder" style="padding-left:18px">📁 Test Reports</div>
+            <div class="arch-file">📄 TR-2025-041</div>
+            <div class="arch-file">📄 TR-2025-039</div>
+            <div class="arch-folder">📁 Engineering</div>
+            <div class="arch-folder">📁 Compliance</div>
+          </div>
+        </div>
+        <div class="arch-main">
+          <div class="arch-path">Archive › <span>Safety Division</span> › <span>Briefings</span> › <span class="curr">CSB-5B-001</span></div>
+          <div class="arch-content">
+            <div class="arch-doc-bar">
+              <div class="arch-doc-badge"><div class="arch-doc-badge-dot"></div><div class="arch-doc-badge-txt">Document Retrieved</div></div>
+              <div class="arch-doc-meta">READ ONLY · Accessed May 2026</div>
+            </div>
+            <div class="bref">
+              <div class="doc">
+                <div class="classbar">
+                  <div class="company-logo">IMPACT<span>MOTORS</span></div>
+                  <div class="classbar-badge">Archived</div>
+                </div>
+                <div class="accent-stripe"></div>
+                <div class="doc-inner">
+                  <div class="doc-header">
+                    <div>
+                      <div class="doc-title">Crash Science Briefing</div>
+                      <div class="doc-subtitle">Energy, motion, and what happens at impact</div>
+                    </div>
+                    <div class="doc-meta">
+                      <div class="doc-ref">REF: CSB-5B-001<br>SUBJECT: Kinetic Energy<br>READ TIME: ~2 min</div>
+                    </div>
+                  </div>
+                  <p class="body-p">A moving car has energy because it is <strong>in motion</strong>. During a crash, that energy does not disappear. It moves through the crash system and can cause changes.</p>
+                  <p class="body-p">When a car is moving <strong>faster before impact</strong>, more energy is involved in the crash. That can help explain why some test runs showed more front-end change than others.</p>
+                  <hr class="section-rule">
+                  <div class="diagram-label">Fig. 1 &mdash; Interactive energy model</div>
+                  <div class="demo-wrap">
+                    <div class="track-area" id="trackArea">
+                      <div class="track-road"></div>
+                      <div class="track-car" id="car">🚗</div>
+                      <div class="impact-wall"></div>
+                      <div class="impact-flash" id="flash"></div>
+                    </div>
+                    <div class="meter-rows">
+                      <div class="meter-row"><span class="meter-label">Speed</span><div class="meter-bar-track"><div class="meter-bar-fill speed" id="barSpeed" style="width:30%"></div></div><span class="meter-val" id="valSpeed">Med</span></div>
+                      <div class="meter-row"><span class="meter-label">Energy</span><div class="meter-bar-track"><div class="meter-bar-fill energy" id="barEnergy" style="width:9%"></div></div><span class="meter-val" id="valEnergy">Low</span></div>
+                      <div class="meter-row"><span class="meter-label">Change</span><div class="meter-bar-track"><div class="meter-bar-fill change" id="barChange" style="width:9%"></div></div><span class="meter-val" id="valChange">Min</span></div>
+                    </div>
+                    <div class="slider-row">
+                      <span class="slider-hint">Slow</span>
+                      <input type="range" id="speedSlider" min="5" max="100" value="30" step="1">
+                      <span class="slider-hint">Fast</span>
+                    </div>
+                    <div class="insight" id="insightBox">Drag the slider to change the car's speed — watch how energy and potential change scale with it.</div>
+                  </div>
+                  <div class="key-finding">
+                    <div class="key-finding-icon">⚡</div>
+                    <div class="key-finding-body">
+                      <div class="key-finding-label">Key Finding</div>
+                      <div class="key-finding-text">Faster motion means more energy is involved in the crash.</div>
+                      <div class="key-finding-science">Deeper science: <span>KE = ½ × mass × velocity²</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="arch-status">
+        <div class="arch-st on">● Connected · Impact Motors Internal Network</div>
+        <div class="arch-st">CSB-5B-001 · READ ONLY · 1 document</div>
+      </div>
+    </div>
+  </div>
+  <div class="mon-neck"></div>
+  <div class="mon-basetop"></div>
+  <div class="mon-base"></div>
 </div>
 
 <script>
-const slider=document.getElementById('slider');
-const speedBar=document.getElementById('speedBar');
-const energyBar=document.getElementById('energyBar');
-const changeBar=document.getElementById('changeBar');
-const insight=document.getElementById('insight');
-
-slider.addEventListener('input',()=>{
-
-let s=parseInt(slider.value);
-
-speedBar.style.width=s+'%';
-
-let energy=Math.round((s/100)*(s/100)*100);
-
-energyBar.style.width=energy+'%';
-changeBar.style.width=energy*.9+'%';
-
-if(s<25){
-insight.innerHTML='Low speed = less energy in the crash system.';
-}
-else if(s<60){
-insight.innerHTML='Medium speed = more energy and more change.';
-}
-else{
-insight.innerHTML='High speed = much more energy involved in the crash.';
-}
-
-});
+var slider=document.getElementById('speedSlider'),barSpeed=document.getElementById('barSpeed'),barEnergy=document.getElementById('barEnergy'),barChange=document.getElementById('barChange'),valSpeed=document.getElementById('valSpeed'),valEnergy=document.getElementById('valEnergy'),valChange=document.getElementById('valChange'),car=document.getElementById('car'),flash=document.getElementById('flash'),insight=document.getElementById('insightBox');
+var animFrame=null,carPos=5,driving=false,lastSpeed=30;
+function getSpeedLabel(s){return s<25?'Slow':s<55?'Med':s<80?'Fast':'High'}
+function getEnergyLabel(e){return e<15?'Low':e<40?'Med':e<70?'High':'Max'}
+function getChangeLabel(c){return c<15?'Min':c<40?'Mod':c<70?'High':'Major'}
+function getInsight(s){if(s<25)return'At low speed, relatively little energy enters the crash system. Changes to the car are minimal.';if(s<55)return'At medium speed, more energy is involved than at low speed. More change to the car is likely.';if(s<80)return'At high speed, the energy involved is large. This is where significant front-end change appears in test runs.';return'Maximum speed — energy is enormous. Even well-designed safety systems are under extreme stress at this level.'}
+function update(){var s=parseInt(slider.value);lastSpeed=s;var energy=Math.round((s/100)*(s/100)*100),change=Math.round(energy*0.92);barSpeed.style.width=s+'%';barEnergy.style.width=energy+'%';barChange.style.width=change+'%';valSpeed.textContent=getSpeedLabel(s);valEnergy.textContent=getEnergyLabel(energy);valChange.textContent=getChangeLabel(change);insight.textContent=getInsight(s);startCar(s)}
+function startCar(speed){if(animFrame)cancelAnimationFrame(animFrame);carPos=5;car.style.left=carPos+'%';car.textContent='🚗';driving=true;var increment=(speed/100)*2.8+0.4;function step(){if(!driving)return;carPos+=increment;car.style.left=Math.min(carPos,86)+'%';if(carPos>=86){driving=false;car.textContent='💥';flash.classList.add('flash');setTimeout(function(){flash.classList.remove('flash')},180);setTimeout(function(){car.textContent='🚗';carPos=5;car.style.left=carPos+'%';setTimeout(function(){startCar(lastSpeed)},900)},500);return}animFrame=requestAnimationFrame(step)}animFrame=requestAnimationFrame(step)}
+slider.addEventListener('input',function(){driving=false;if(animFrame)cancelAnimationFrame(animFrame);update()});
+update();
 </script>
-
-</body>
-</html>"
-
-  style="width:100%; max-width:950px; height:860px; border:none; border-radius:12px; display:block; margin:20px auto;"
-
-  scrolling="no"
-
-  title="Crash Science Briefing">
-</iframe>      
 
       <div class="narrative">
 <p><strong>Use the briefing to help explain what you observed during your investgation.</strong></p>
