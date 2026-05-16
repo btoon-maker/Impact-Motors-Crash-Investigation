@@ -89,6 +89,14 @@
     /* =============================================
        HEADER / MASTHEAD
     ============================================= */
+    /* Sticky wrapper — both masthead and mission path stay fixed together */
+    #sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+
     #masthead {
       background: var(--navy);
       border-bottom: 3px solid var(--orange);
@@ -97,10 +105,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
     }
 
     #masthead .brand {
@@ -665,6 +669,7 @@
       padding: 10px 24px;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
     }
@@ -2682,6 +2687,7 @@
 <!-- ============================================================
      MASTHEAD / HEADER
 ============================================================ -->
+<div id="sticky-header">
 <header id="masthead">
   <div class="brand">
     <div class="badge">SINS</div>
@@ -2728,6 +2734,7 @@
     </div>
   </div>
 </div>
+</div><!-- /#sticky-header -->
 
 
 <!-- ============================================================
