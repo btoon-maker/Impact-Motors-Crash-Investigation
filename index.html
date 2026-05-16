@@ -891,6 +891,132 @@
     }
     .s0-acc-inner .placeholder-desc { color: #374151; }
 
+    /* ============================================================
+       INSTRUCTIONAL ALIGNMENT PANEL — professional grid layout
+       ============================================================ */
+    .align-overview {
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: #374151;
+      line-height: 1.75;
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .align-section-label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue-dim);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .align-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-light);
+    }
+
+    .align-objectives-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .align-obj-card {
+      background: rgba(59,130,246,0.07);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+
+    .align-obj-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .align-obj-text {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: #374151;
+      line-height: 1.65;
+    }
+
+    .align-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .align-meta-card {
+      background: #fff;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+
+    .align-meta-heading {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--navy-dark);
+      margin-bottom: 7px;
+    }
+
+    .align-meta-body {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: #4B5563;
+      line-height: 1.65;
+    }
+
+    .align-sins-card {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-left: 4px solid #f59e0b;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+    }
+
+    .align-sins-heading {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #92400e;
+      margin-bottom: 7px;
+    }
+
+    .align-sins-body {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: #374151;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 680px) {
+      .align-objectives-grid { grid-template-columns: 1fr; }
+      .align-meta-grid        { grid-template-columns: 1fr; }
+    }
+
     /* Footer */
     .s0-footer {
       text-align: center;
@@ -2773,40 +2899,54 @@
       <div class="s0-acc-body" hidden>
         <div class="s0-acc-inner">
 
-          <p class="s0-acc-heading">Learning Objectives</p>
-          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
-            <div class="placeholder-label" style="color:#2563eb;">&#128203; Learning Objectives</div>
-            <div class="placeholder-desc" style="color:#374151;">
-<ul>
-  <li>Students will analyze crash test evidence to identify patterns in motion and damage.</li>
-  <li>Students will develop a scientific explanation describing what happens before, during, and after a crash.</li>
-  <li>Students will construct a model to represent how energy is transferred during a crash and how that transfer is connected to motion, vehicle changes, and surrounding effects.</li>
-  <li>Students will use evidence from multiple test runs to support their explanation.</li>
-</ul>
+          <p class="align-overview">
+            In this lesson, students investigate crash test evidence to develop a scientific explanation for how energy is transferred during a collision and how that transfer connects to motion, vehicle changes, and surrounding effects.
+          </p>
+
+          <div class="align-section-label">Learning Objectives</div>
+          <div class="align-objectives-grid">
+            <div class="align-obj-card">
+              <div class="align-obj-num">1</div>
+              <div class="align-obj-text">Analyze crash test evidence to identify patterns in motion and damage.</div>
+            </div>
+            <div class="align-obj-card">
+              <div class="align-obj-num">2</div>
+              <div class="align-obj-text">Develop a scientific explanation describing what happens before, during, and after a crash.</div>
+            </div>
+            <div class="align-obj-card">
+              <div class="align-obj-num">3</div>
+              <div class="align-obj-text">Construct a model to represent how energy is transferred during a crash and how that transfer is connected to motion, vehicle changes, and surrounding effects.</div>
+            </div>
+            <div class="align-obj-card">
+              <div class="align-obj-num">4</div>
+              <div class="align-obj-text">Use evidence from multiple test runs to support a scientific explanation.</div>
             </div>
           </div>
 
-          <p class="s0-acc-heading" style="margin-top:16px;">Standards Alignment</p>
-          <div class="placeholder" style="border-color:#3B82F6;background:rgba(59,130,246,0.06);color:var(--navy);">
-            <div class="placeholder-label" style="color:#2563eb;">&#128203;Arizona State Standards</div>
-            <div class="placeholder-desc" style="color:#374151;">
-<p><strong>Arizona Science Standard:</strong><br>
-5.P4U1.6 — Construct an explanation relating energy transfer to changes in motion</p>
-
-<p><strong>Science and Engineering Practices:</strong><br>
-Developing and Using Models; Constructing Explanations; Analyzing and Interpreting Data</p>
-
-<p><strong>Crosscutting Concepts:</strong><br>
-Cause and Effect; Systems and System Models; Energy and Matter</p>
+          <div class="align-section-label">Standards &amp; Practices</div>
+          <div class="align-meta-grid">
+            <div class="align-meta-card">
+              <div class="align-meta-heading">&#128208; Arizona Science Standard</div>
+              <div class="align-meta-body"><strong>5.P4U1.6</strong> &#8212; Construct an explanation relating energy transfer to changes in motion.</div>
+            </div>
+            <div class="align-meta-card">
+              <div class="align-meta-heading">&#128300; Science &amp; Engineering Practices</div>
+              <div class="align-meta-body">Developing and Using Models &middot; Constructing Explanations &middot; Analyzing and Interpreting Data</div>
+            </div>
+            <div class="align-meta-card">
+              <div class="align-meta-heading">&#128279; Crosscutting Concepts</div>
+              <div class="align-meta-body">Cause and Effect &middot; Systems and System Models &middot; Energy and Matter</div>
             </div>
           </div>
 
-            </div>
+          <div class="align-sins-card">
+            <div class="align-sins-heading">&#11088; SINS Framework Alignment</div>
+            <div class="align-sins-body">Students enter through a narrative role as crash investigators at Impact Motors, choose investigation pathways, compare evidence at convergence points, use models for sensemaking, apply understanding to new crash data, and export a Mission Journal artifact.</div>
           </div>
 
-        </div>
-      </div>
-    </div>
+        </div><!-- /s0-acc-inner -->
+      </div><!-- /s0-acc-body -->
+    </div><!-- /s0-accordion -->
 
     <!-- Footer -->
     <footer class="s0-footer">
